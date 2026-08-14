@@ -38,15 +38,21 @@ export const ZapierChatbot: React.FC = () => {
   const handlePasteClick = () => {
     const lastCopied = localStorage.getItem('last_copied_concept');
     if (lastCopied) {
+      // Write to clipboard as fallback
       navigator.clipboard.writeText(lastCopied).then(() => {
-        setPasteStatus('הועתק! 📋');
+        setPasteStatus('הודבק! 📋');
         setTimeout(() => setPasteStatus(null), 2500);
       }).catch(() => {
-        setPasteStatus('שגיאה ❌');
+        setPasteStatus('שגיאה בהדבקה ❌');
         setTimeout(() => setPasteStatus(null), 2500);
       });
+      // Attempt to send the concept to the Zapier chatbot iframe via postMessage
+      const iframe = document.querySelector('iframe');
+      if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.postMessage({ type: 'pasteConcept', text: lastCopied }, '*');
+      }
     } else {
-      setPasteStatus('אין מושג ⚠️');
+      setPasteStatus('אין מושג להדבקה ⚠️');
       setTimeout(() => setPasteStatus(null), 2500);
     }
   };
