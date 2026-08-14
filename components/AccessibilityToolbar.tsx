@@ -40,28 +40,37 @@ export const AccessibilityToolbar: React.FC = () => {
 
   return (
     <>
-      {/* תפריט נגישות צף - ממוקם בשמאל כדי לא להתנגש עם הצ'אטבוט בימין */}
-      <div id="accessibility-widget" className="fixed bottom-6 left-6 z-50">
+      {/* תפריט נגישות צף - מוגדר בסגנון אינליין קשיח להבטחת תצוגה מעל הכל */}
+      <div 
+        id="accessibility-widget" 
+        style={{ position: 'fixed', bottom: '24px', left: '24px', zIndex: 99999 }}
+      >
         <button
           id="acc-toggle-btn"
           onClick={() => setIsOpen(!isOpen)}
           aria-label="פתח תפריט נגישות"
           className="w-12 h-12 bg-cyan-500 hover:bg-cyan-400 text-slate-950 rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-cyan-300"
+          style={{ width: '48px', height: '48px', cursor: 'pointer' }}
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 fill-current" viewBox="0 0 24 24">
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 fill-current" viewBox="0 0 24 24" style={{ width: '24px', height: '24px' }}>
             <path d="M12 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm9 7h-6v13h-2v-6h-2v6H9V9H3V7h18v2z"/>
           </svg>
         </button>
 
         {/* תפריט נגישות */}
         {isOpen && (
-          <div id="acc-menu" className="absolute bottom-16 left-0 w-72 bg-slate-900 border border-slate-700 rounded-xl p-5 shadow-2xl text-slate-200 text-sm dir-rtl" style={{ direction: 'rtl' }}>
+          <div 
+            id="acc-menu" 
+            className="absolute bottom-16 left-0 w-72 bg-slate-900 border border-slate-700 rounded-xl p-5 shadow-2xl text-slate-200 text-sm dir-rtl" 
+            style={{ direction: 'rtl', textAlign: 'right', position: 'absolute', bottom: '64px', left: '0px', width: '288px' }}
+          >
             <div className="flex justify-between items-center pb-3 border-b border-slate-800 mb-4">
               <h3 className="font-bold text-white text-base">התאמת נגישות</h3>
               <button
                 id="acc-close-btn"
                 onClick={() => setIsOpen(false)}
                 className="text-slate-400 hover:text-white text-lg"
+                style={{ cursor: 'pointer' }}
               >
                 &times;
               </button>
@@ -70,37 +79,43 @@ export const AccessibilityToolbar: React.FC = () => {
             <div className="space-y-2.5">
               <button
                 onClick={() => accAction('font-up')}
-                className="w-full text-right px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors"
+                className="w-full text-right px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors text-white"
+                style={{ cursor: 'pointer' }}
               >
                 הגדל טקסט (+)
               </button>
               <button
                 onClick={() => accAction('font-down')}
-                className="w-full text-right px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors"
+                className="w-full text-right px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors text-white"
+                style={{ cursor: 'pointer' }}
               >
                 הקטן טקסט (-)
               </button>
               <button
                 onClick={() => accAction('contrast')}
-                className="w-full text-right px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors"
+                className="w-full text-right px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors text-white"
+                style={{ cursor: 'pointer' }}
               >
                 ניגודיות גבוהה (שחור/לבן)
               </button>
               <button
                 onClick={() => accAction('grayscale')}
-                className="w-full text-right px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors"
+                className="w-full text-right px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors text-white"
+                style={{ cursor: 'pointer' }}
               >
                 גווני אפור
               </button>
               <button
                 onClick={() => accAction('highlight-links')}
-                className="w-full text-right px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors"
+                className="w-full text-right px-3 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors text-white"
+                style={{ cursor: 'pointer' }}
               >
                 הדגשת קישורים
               </button>
               <button
                 onClick={() => accAction('reset')}
                 className="w-full text-right px-3 py-2 bg-red-950/40 text-red-300 hover:bg-red-900/50 rounded-lg transition-colors mt-2"
+                style={{ cursor: 'pointer' }}
               >
                 איפוס הגדרות
               </button>
@@ -113,6 +128,7 @@ export const AccessibilityToolbar: React.FC = () => {
                   setIsOpen(false);
                 }}
                 className="text-xs text-cyan-400 hover:underline"
+                style={{ cursor: 'pointer' }}
               >
                 הצהרת נגישות מלאה
               </button>

@@ -5,6 +5,7 @@ import { B2BPrompt } from './types';
 import { PrivacyPolicyModal } from './components/PrivacyPolicyModal';
 import { TermsOfServiceModal } from './components/TermsOfServiceModal';
 import { AccessibilityStatementModal } from './components/AccessibilityStatementModal';
+import { CookieSettingsModal } from './components/CookieSettingsModal';
 import { CookieBanner } from './components/CookieBanner';
 import { AccessibilityToolbar } from './components/AccessibilityToolbar';
 import { ZapierChatbot } from './components/ZapierChatbot';
@@ -34,6 +35,7 @@ const App: React.FC = () => {
   const [isPrivacyPolicyOpen, setIsPrivacyPolicyOpen] = useState(false);
   const [isTermsOfServiceOpen, setIsTermsOfServiceOpen] = useState(false);
   const [isAccessibilityStatementOpen, setIsAccessibilityStatementOpen] = useState(false);
+  const [isCookieSettingsOpen, setIsCookieSettingsOpen] = useState(false);
   const [isCookieBannerOpen, setIsCookieBannerOpen] = useState(() => {
     return !localStorage.getItem('b2b_cookie_consent');
   });
@@ -1330,7 +1332,7 @@ const App: React.FC = () => {
           <span>|</span>
           <a href="https://www.linkedin.com/in/ohad-baram-58a22632a" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">LinkedIn 🔗</a>
           <span>|</span>
-          <button onClick={() => setIsCookieBannerOpen(true)} className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">ניהול עוגיות 🍪</button>
+          <button onClick={() => setIsCookieSettingsOpen(true)} className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">ניהול עוגיות 🍪</button>
         </div>
       </footer>
 
@@ -1340,6 +1342,7 @@ const App: React.FC = () => {
       <PrivacyPolicyModal isOpen={isPrivacyPolicyOpen} onClose={() => setIsPrivacyPolicyOpen(false)} />
       <TermsOfServiceModal isOpen={isTermsOfServiceOpen} onClose={() => setIsTermsOfServiceOpen(false)} />
       <AccessibilityStatementModal isOpen={isAccessibilityStatementOpen} onClose={() => setIsAccessibilityStatementOpen(false)} />
+      <CookieSettingsModal isOpen={isCookieSettingsOpen} onClose={() => setIsCookieSettingsOpen(false)} />
       <AccessibilityToolbar />
       <ZapierChatbot />
       <Toast message={toastMessage} show={showToast} />
