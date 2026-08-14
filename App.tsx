@@ -30,6 +30,7 @@ const App: React.FC = () => {
   const [mainView, setMainView] = useState<'home' | 'prompts'>('home');
   const [activeB2BCategory, setActiveB2BCategory] = useState<string>('all');
   const [isPrivacyPolicyOpen, setIsPrivacyPolicyOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
 
   // --- ניהול מנעול פרומפטים פרימיום (Gating) ---
   const [unlockedPremium, setUnlockedPremium] = useState<boolean>(() => {
@@ -360,10 +361,10 @@ const App: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#070A10] text-slate-100 font-assistant text-right relative selection:bg-cyan-500 selection:text-black" dir="rtl">
+    <div className={`min-h-screen font-assistant text-right relative selection:bg-cyan-500 selection:text-black transition-colors duration-300 ${isDarkMode ? 'bg-[#070A10] text-slate-100 dark' : 'bg-slate-50 text-slate-900'}`} dir="rtl">
       
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-[#070A10]/95 backdrop-blur-md border-b border-slate-800/80 px-6 py-4">
+      <header className={`sticky top-0 z-50 backdrop-blur-md border-b px-6 py-4 transition-colors ${isDarkMode ? 'bg-[#070A10]/95 border-slate-800/80 text-white' : 'bg-white/95 border-slate-200 text-slate-900 shadow-sm'}`}>
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => setMainView('home')}>
             <div className="w-10 h-10 bg-cyan-500/10 border border-cyan-500/30 rounded-xl flex items-center justify-center text-cyan-400 text-xl font-black shadow-lg">🤖</div>
@@ -382,6 +383,13 @@ const App: React.FC = () => {
           </nav>
 
           <div className="flex items-center gap-3">
+            <button
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              title={isDarkMode ? "מעבר למצב בהיר ☀️" : "מעבר למצב כהה 🌙"}
+              className="p-3 bg-slate-900 border border-slate-800 text-cyan-400 hover:text-white rounded-xl transition-all font-black text-sm flex items-center justify-center cursor-pointer shadow-md"
+            >
+              {isDarkMode ? '☀️' : '🌙'}
+            </button>
             <button onClick={openContactView} className="px-6 py-3 bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white rounded-xl font-black text-xs md:text-sm transition-all shadow-lg hover:shadow-cyan-500/20 active:scale-95 flex items-center gap-2">
               <span>תיאום שיחת אבחון</span>
               <span>📞</span>

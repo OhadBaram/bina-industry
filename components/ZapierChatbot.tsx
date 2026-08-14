@@ -90,25 +90,32 @@ export const ZapierChatbot: React.FC = () => {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
-      {/* כפתור הפעלה צף בפינה */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label="סוכן AI צ׳אטבוט מחובר ל-Zapier"
-        className="w-14 h-14 bg-gradient-to-tr from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-black rounded-full flex items-center justify-center text-2xl shadow-2xl transition-all duration-300 transform hover:scale-110 border-2 border-slate-800 ring-4 ring-cyan-500/20 relative"
-      >
-        <span>💬</span>
-        <span className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-[#070A10] animate-pulse"></span>
-      </button>
+    <div className="fixed bottom-6 right-6 z-[9999]">
+      {/* כפתור הפעלה צף בפינה עם תגית בולטת לעין */}
+      <div className="flex items-center gap-3">
+        {!isOpen && (
+          <span className="hidden sm:inline-block px-3 py-1.5 bg-[#0D131F] text-cyan-400 border border-cyan-500/50 rounded-xl text-xs font-black shadow-2xl animate-pulse">
+            💬 סוכן AI בלייב
+          </span>
+        )}
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="סוכן AI צ׳אטבוט מחובר ל-Zapier"
+          className="w-16 h-16 bg-gradient-to-tr from-cyan-400 via-blue-500 to-indigo-600 hover:from-cyan-300 hover:to-indigo-500 text-white font-black rounded-full flex items-center justify-center text-3xl shadow-2xl transition-all duration-300 transform hover:scale-110 border-2 border-slate-900 ring-4 ring-cyan-500/40 relative cursor-pointer"
+        >
+          <span>🤖</span>
+          <span className="absolute -top-1 -right-1 w-4.5 h-4.5 bg-emerald-500 rounded-full border-2 border-[#070A10] animate-pulse"></span>
+        </button>
+      </div>
 
       {/* חלון צ׳אטבוט צף נפתח בפינה */}
       {isOpen && (
-        <div className="absolute bottom-16 right-0 w-[92vw] max-w-[420px] h-[580px] bg-[#0D131F] rounded-3xl shadow-2xl border border-slate-800 animate-fadeIn flex flex-col justify-between overflow-hidden" dir="rtl" style={{ direction: 'rtl', textAlign: 'right' }}>
+        <div className="absolute bottom-20 right-0 w-[92vw] max-w-[420px] h-[580px] bg-[#0D131F] rounded-3xl shadow-2xl border-2 border-cyan-500/40 animate-fadeIn flex flex-col justify-between overflow-hidden" dir="rtl" style={{ direction: 'rtl', textAlign: 'right' }}>
           
           {/* Header */}
           <div className="bg-[#070A10] px-5 py-4 border-b border-slate-800 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-black text-base">
+              <div className="w-9 h-9 rounded-xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-400 font-black text-base">
                 🤖
               </div>
               <div className="text-right">
@@ -130,7 +137,7 @@ export const ZapierChatbot: React.FC = () => {
               </button>
               <button
                 onClick={() => setIsOpen(false)}
-                className="text-slate-400 hover:text-white font-black text-base p-1"
+                className="text-slate-400 hover:text-white font-black text-base p-1 cursor-pointer"
               >
                 ✕
               </button>
