@@ -39,11 +39,11 @@ const App: React.FC = () => {
   const [isCookieBannerOpen, setIsCookieBannerOpen] = useState(() => {
     return !localStorage.getItem('b2b_cookie_consent');
   });
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   // --- ניהול מוזיקת רקע וקריוקי סלוגן ---
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
-  const [sloganPanelState, setSloganPanelState] = useState<'hidden' | 'expanded' | 'collapsed'>('hidden');
+  const [sloganPanelState, setSloganPanelState] = useState<'hidden' | 'expanded' | 'collapsed'>('collapsed');
   const [activeWordIndex, setActiveWordIndex] = useState(-1);
   const [shouldPulseCTA, setShouldPulseCTA] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -610,13 +610,6 @@ const App: React.FC = () => {
           </nav>
 
           <div className="flex items-center gap-3">
-            <button
-              onClick={toggleMusic}
-              title={isPlayingMusic ? "השתק מוזיקת רקע 🔈" : "הפעל מוזיקת רקע 🔊"}
-              className="p-3 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-cyan-600 dark:text-cyan-400 hover:text-cyan-500 rounded-xl transition-all font-black text-sm flex items-center justify-center cursor-pointer shadow-md"
-            >
-              {isPlayingMusic ? '🔊' : '🔈'}
-            </button>
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
               title={isDarkMode ? "מעבר למצב בהיר ☀️" : "מעבר למצב כהה 🌙"}
