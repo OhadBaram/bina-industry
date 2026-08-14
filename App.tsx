@@ -703,11 +703,28 @@ const App: React.FC = () => {
               </h1>
 
               <p className={`text-lg md:text-2xl font-medium max-w-4xl mx-auto leading-relaxed mb-12 ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
-                <span className="underline decoration-cyan-500/60 decoration-2 underline-offset-4 font-bold">פתרונות מדף</span> לא עובדים בתעשייה מורכבת. אני מאבחן את{' '}
-                <span className="underline decoration-cyan-500/60 decoration-2 underline-offset-4 font-bold">צווארי הבקבוק</span> בעסק שלכם, מכשיר את הצוותים ל-{' '}
-                <span className="underline decoration-cyan-500/60 decoration-2 underline-offset-4 font-bold">עבודה עצמאית עם כלי AI</span>, ומפתח סוכנים ואוטומציות שמייצרים תוצאות בשטח.
+                <button
+                  onClick={() => triggerConceptExplanation('פתרונות מדף', 'מוצרי מדף גנריים שלא מותאמים לצרכים, למערכות או לאבטחת המידע של הארגון, ואינם פותרים בעיות מורכבות בצורה מדויקת.')}
+                  className="underline decoration-cyan-500/60 decoration-2 underline-offset-4 hover:text-cyan-500 font-bold transition-all cursor-pointer"
+                  title="הדבק מושג לצ׳אטבוט 📋"
+                >
+                  פתרונות מדף
+                </button> לא עובדים בתעשייה מורכבת. אני מאבחן את{' '}
+                <button
+                  onClick={() => triggerConceptExplanation('צווארי הבקבוק', 'נקודות התורפה ותהליכי העבודה הידניים המייגעים בארגון שמעכבים את העבודה ופוגעים בפרודוקטיביות.')}
+                  className="underline decoration-cyan-500/60 decoration-2 underline-offset-4 hover:text-cyan-500 font-bold transition-all cursor-pointer"
+                  title="הדבק מושג לצ׳אטבוט 📋"
+                >
+                  צווארי הבקבוק
+                </button> בעסק שלכם, מכשיר את הצוותים ל-{' '}
+                <button
+                  onClick={() => triggerConceptExplanation('עבודה עצמאית עם כלי AI', 'הקניית מיומנויות הנדסת פרומפטים מתקדמת לצוותים כדי שיוכלו להשתמש בצורה יומיומית ויעילה במודלים השונים.')}
+                  className="underline decoration-cyan-500/60 decoration-2 underline-offset-4 hover:text-cyan-500 font-bold transition-all cursor-pointer"
+                  title="הדבק מושג לצ׳אטבוט 📋"
+                >
+                  עבודה עצמאית עם כלי AI
+                </button>, ומפתח סוכנים ואוטומציות שמייצרים תוצאות בשטח.
               </p>
-
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-5 max-w-xl mx-auto">
                 <button

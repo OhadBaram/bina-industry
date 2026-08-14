@@ -8,7 +8,7 @@ export const ZapierChatbot: React.FC = () => {
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 1024);
   const [isShrinking, setIsShrinking] = useState(false);
   const [isExploding, setIsExploding] = useState(false);
-
+  const [pasteStatus, setPasteStatus] = useState<string | null>(null);
 
   // זיהוי שינוי גודל מסך
   useEffect(() => {
@@ -35,7 +35,27 @@ export const ZapierChatbot: React.FC = () => {
     }, 380);
   };
 
-
+  const handlePasteClick = () => {
+    const lastCopied = localStorage.getItem('last_copied_concept');
+    if (lastCopied) {
+      // Write to clipboard as fallback
+      navigator.clipboard.writeText(lastCopied).then(() => {
+        setPasteStatus('הודבק! 📋');
+        setTimeout(() => setPasteStatus(null), 2500);
+      }).catch(() => {
+        setPasteStatus('שגיאה בהדבקה ❌');
+        setTimeout(() => setPasteStatus(null), 2500);
+      });
+      // Attempt to send the concept to the Zapier chatbot iframe via postMessage
+      const iframe = document.querySelector('iframe');
+      if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.postMessage({ type: 'pasteConcept', text: lastCopied }, '*');
+      }
+    } else {
+      setPasteStatus('אין מושג להדבקה ⚠️');
+      setTimeout(() => setPasteStatus(null), 2500);
+    }
+  };
 
   return (
     <>
@@ -98,13 +118,19 @@ export const ZapierChatbot: React.FC = () => {
 
             <div className="flex items-center gap-2.5">
               <button
+                onClick={handlePasteClick}
+                className="text-[11px] font-black px-2.5 py-1.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 rounded-xl transition-all cursor-pointer shadow-md flex items-center justify-center min-w-[95px]"
+                title="הדבק את המושג האחרון מהלוח לצ׳אט"
+              >
+                {pasteStatus || 'הדבק מושג 📋'}
+              </button>
+              <button
                 onClick={handleCloseClick}
                 className="text-slate-400 hover:text-white font-black text-base p-1 cursor-pointer"
               >
                 ✕
               </button>
             </div>
-
           </div>
 
           {/* Official Zapier Interfaces Embed Iframe */}
