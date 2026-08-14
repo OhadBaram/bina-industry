@@ -148,7 +148,10 @@ export const ZapierChatbot: React.FC = () => {
   return (
     <>
       {/* 1. FLOATING LAUNCHER BUTTON - ALWAYS VISIBLE AT BOTTOM RIGHT */}
-      <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[999999] flex items-center gap-3 pointer-events-auto">
+      <div 
+        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[999999] flex items-center gap-3 pointer-events-auto"
+        style={{ position: 'fixed', bottom: '24px', right: '24px', zIndex: 999999, display: 'flex', alignItems: 'center' }}
+      >
         {!isOpen && (
           <span className="hidden sm:inline-block px-3 py-1.5 bg-[#0D131F] text-cyan-400 border border-cyan-500/50 rounded-xl text-xs font-black shadow-2xl animate-pulse">
             💬 Zapier Chatbot AI
@@ -158,11 +161,13 @@ export const ZapierChatbot: React.FC = () => {
           onClick={() => setIsOpen(!isOpen)}
           aria-label="סוכן AI צ׳אטבוט מחובר ל-Zapier"
           className="w-16 h-16 bg-gradient-to-tr from-cyan-400 via-blue-500 to-indigo-600 hover:from-cyan-300 hover:to-indigo-500 text-white font-black rounded-full flex items-center justify-center text-3xl shadow-2xl transition-all duration-300 transform hover:scale-110 border-2 border-slate-900 ring-4 ring-cyan-500/40 relative cursor-pointer"
+          style={{ width: '64px', height: '64px', cursor: 'pointer' }}
         >
           <span>🤖</span>
           <span className="absolute -top-1 -right-1 w-4.5 h-4.5 bg-emerald-500 rounded-full border-2 border-[#070A10] animate-pulse"></span>
         </button>
       </div>
+
 
       {/* 2. CHATBOT DRAWER CONTAINER - POSITIONED SAFELY ON ALL SCREEN SIZES */}
       {isOpen && (
