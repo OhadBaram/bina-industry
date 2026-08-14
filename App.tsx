@@ -638,22 +638,33 @@ const App: React.FC = () => {
                   <div>
                     <div className="flex items-center justify-between mb-6">
                       <span className="w-9 h-9 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold text-sm border border-indigo-500/30">03</span>
-                      <span className="text-[11px] font-bold px-3 py-1.5 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 rounded-xl border border-indigo-500/30">
-                        AUTOMATION
+                      <span className="text-[11px] font-bold px-3 py-1.5 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 rounded-xl border border-indigo-500/30 font-mono">
+                        03 // ENTERPRISE DATA & APIS
                       </span>
                     </div>
 
-                    <span className="text-xs font-bold text-slate-500 dark:text-slate-400 block mb-1">אוטומציות ואינטגרציות תפעוליות</span>
+                    <span className="text-xs font-bold text-cyan-600 dark:text-cyan-400 block mb-1">ארכיטקטורת נתונים, סוכנים ואינטגרציות עומק</span>
                     <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-3 leading-tight">
-                      חיבור שרשרת התפעול ללא מגע יד אדם
+                      הופכים מודלי AI למערכות ליבה תפעוליות, לא לעוד "תוסף" שביר
                     </h3>
 
                     <p className="text-slate-600 dark:text-slate-300 text-sm font-medium leading-relaxed mb-6">
-                      יצירת זרימות עבודה חכמות בין מערכות הליבה: קליטת לידים וניתובם, הפקת הצעות מחיר, סנכרון מסמכים ועדכון מערכות ERP ו-CRM באמינות מלאה.
+                      תכנון הנדסי של זרימות עבודה מורכבות, חיבור מאגרי ידע ארגוניים ואוטומציה יציבה שעומדת בעומסים אמיתיים.
                     </p>
 
-                    <div className="p-4 bg-slate-100 dark:bg-[#070A10] rounded-2xl border border-slate-200 dark:border-slate-800 text-xs font-bold text-cyan-600 dark:text-cyan-300 mb-6">
-                      ⚡ אפס תקלות — אוטומציה עמידה בעומסים
+                    <div className="space-y-3 mb-6 bg-slate-50 dark:bg-[#070A10] p-4 rounded-2xl border border-slate-200 dark:border-slate-800 text-xs text-slate-700 dark:text-slate-300">
+                      <div className="flex items-start gap-2">
+                        <span className="text-cyan-500 font-bold">⚬</span>
+                        <p><strong className="text-slate-900 dark:text-white font-bold">אינטגרציית APIs ישירה:</strong> חיבור דו-כיווני מאובטח בין מודלי שפה, מערכות ERP, מסדי נתונים ו-CRMs, ללא תלות בכלים מוגבלים.</p>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <span className="text-cyan-500 font-bold">⚬</span>
+                        <p><strong className="text-slate-900 dark:text-white font-bold">חסינות תקלות (Fault Tolerance):</strong> תכנון מלא של מנגנוני טיפול בשגיאות (Error Handling), אימות קלטים (Schema Validation) וניטור רציף.</p>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <span className="text-cyan-500 font-bold">⚬</span>
+                        <p><strong className="text-slate-900 dark:text-white font-bold">אבטחה בסטנדרט ארגוני:</strong> עבודה בסביבות מבודדות, מודלים מקומיים (Local/Private VPC) ומדיניות מוחלטת של אי-שמירת היסטוריה (Zero Data Retention).</p>
+                      </div>
                     </div>
                   </div>
 
@@ -838,6 +849,77 @@ const App: React.FC = () => {
                   </div>
                 </div>
 
+              </div>
+            </section>
+
+            {/* 6.5. INDUSTRIAL STANDARD COMPARISON SECTION (למה אנחנו? ההבדל בין חיבור אוטומציות לתשתית AI תעשייתית) */}
+            <section className="bg-white dark:bg-[#0D131F] rounded-[3rem] p-8 md:p-14 border border-slate-200 dark:border-slate-800 shadow-2xl dark:shadow-none space-y-10 animate-fadeIn">
+              <div className="text-center max-w-3xl mx-auto space-y-3">
+                <span className="inline-flex items-center px-4 py-1.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 rounded-full text-xs font-black border border-cyan-500/30 uppercase tracking-wider">
+                  למה אנחנו?
+                </span>
+                <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white leading-tight">
+                  ההבדל בין "חיבור אוטומציות" לתשתית AI תעשייתית
+                </h2>
+                <p className="text-slate-600 dark:text-slate-400 font-bold text-base md:text-lg">
+                  השוואה ישירה בין הפתרונות השבירים בשוק לבין הסטנדרט ההנדסי של בינה לתעשייה
+                </p>
+              </div>
+
+              <div className="grid lg:grid-cols-3 gap-8">
+                {/* Comparison Item 1 */}
+                <div className="bg-slate-50 dark:bg-[#070A10] rounded-3xl p-6 md:p-8 border border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-4 hover:border-cyan-500/50 transition-all shadow-sm">
+                  <div className="space-y-4">
+                    <div className="p-5 bg-red-500/10 border border-red-500/30 rounded-2xl">
+                      <span className="text-xs font-black text-red-600 dark:text-red-400 block mb-1.5">🛑 בשוק הרגיל</span>
+                      <p className="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 leading-relaxed">
+                        בונים תהליכי No-Code בסיסיים שנשברים בכל שינוי קטן, ללא תיעוד וללא טיפול בשגיאות.
+                      </p>
+                    </div>
+                    <div className="p-5 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl">
+                      <span className="text-xs font-black text-emerald-600 dark:text-emerald-400 block mb-1.5">✅ בבינה לתעשייה</span>
+                      <p className="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 leading-relaxed">
+                        ארכיטקטורת נתונים מנוהלת, בדיקות עומסים ותהליכים עמידים עם אפס אובדן מידע.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Comparison Item 2 */}
+                <div className="bg-slate-50 dark:bg-[#070A10] rounded-3xl p-6 md:p-8 border border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-4 hover:border-cyan-500/50 transition-all shadow-sm">
+                  <div className="space-y-4">
+                    <div className="p-5 bg-red-500/10 border border-red-500/30 rounded-2xl">
+                      <span className="text-xs font-black text-red-600 dark:text-red-400 block mb-1.5">🛑 בשוק הרגיל</span>
+                      <p className="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 leading-relaxed">
+                        זורקים רישיונות ChatGPT לעובדים ומקווים שהם "יסתדרו לבד".
+                      </p>
+                    </div>
+                    <div className="p-5 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl">
+                      <span className="text-xs font-black text-emerald-600 dark:text-emerald-400 block mb-1.5">✅ בבינה לתעשייה</span>
+                      <p className="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 leading-relaxed">
+                        הכשרה מעשית ממוקדת-תפקיד על מקרי בוחן ונתונים אמיתיים מתוך העסק שלכם.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Comparison Item 3 */}
+                <div className="bg-slate-50 dark:bg-[#070A10] rounded-3xl p-6 md:p-8 border border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-4 hover:border-cyan-500/50 transition-all shadow-sm">
+                  <div className="space-y-4">
+                    <div className="p-5 bg-red-500/10 border border-red-500/30 rounded-2xl">
+                      <span className="text-xs font-black text-red-600 dark:text-red-400 block mb-1.5">🛑 בשוק הרגיל</span>
+                      <p className="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 leading-relaxed">
+                        פתרונות מדף גנריים שלא מתחשבים באבטחת מידע או רגולציה.
+                      </p>
+                    </div>
+                    <div className="p-5 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl">
+                      <span className="text-xs font-black text-emerald-600 dark:text-emerald-400 block mb-1.5">✅ בבינה לתעשייה</span>
+                      <p className="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 leading-relaxed">
+                        התאמה מדויקת לנהלי ה-IT, שמירה קפדנית על פרטיות המידע ואפשרות למודלים סגורים.
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </section>
 
