@@ -15,6 +15,7 @@ export const ZapierChatbot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [activeTab, setActiveTab] = useState<'zapier_embed' | 'ai'>('zapier_embed');
   const [highlightPulse, setHighlightPulse] = useState(false);
+  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 1024);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -36,6 +37,13 @@ export const ZapierChatbot: React.FC = () => {
       scrollToBottom();
     }
   }, [messages, isOpen, activeTab]);
+
+  // זיהוי שינוי גודל מסך
+  useEffect(() => {
+    const handleResize = () => setIsLargeScreen(window.innerWidth > 1024);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // מניפולציה וטיפול בלחיצות על מושגים מכל מקום באתר
   useEffect(() => {
@@ -171,7 +179,7 @@ export const ZapierChatbot: React.FC = () => {
       {/* 2. CHATBOT DRAWER CONTAINER - POSITIONED SAFELY ON ALL SCREEN SIZES */}
       {isOpen && (
         <div
-          className={`fixed bottom-24 right-3 sm:right-6 w-[calc(100vw-24px)] max-w-[440px] lg:max-w-[520px] h-[85vh] max-h-[600px] lg:max-h-[750px] bg-[#0D131F] rounded-3xl shadow-2xl border-2 transition-all duration-300 animate-fadeIn flex flex-col justify-between overflow-hidden z-[999999] ${
+          className={`bg-[#0D131F] rounded-3xl shadow-2xl border-2 transition-all duration-300 animate-fadeIn overflow-hidden ${
             highlightPulse ? 'border-cyan-400 ring-4 ring-cyan-500/50 scale-[1.01]' : 'border-cyan-500/40'
           }`}
           dir="rtl"
@@ -179,11 +187,14 @@ export const ZapierChatbot: React.FC = () => {
             direction: 'rtl', 
             textAlign: 'right', 
             position: 'fixed', 
+            bottom: '96px',
+            right: window.innerWidth < 640 ? '12px' : '24px',
+            width: isLargeScreen ? '520px' : 'min(440px, calc(100vw - 24px))',
+            height: isLargeScreen ? '750px' : 'min(600px, 80vh)',
             zIndex: 999999, 
             display: 'flex', 
             flexDirection: 'column', 
-            justifyContent: 'space-between',
-            overflow: 'hidden'
+            justifyContent: 'space-between'
           }}
         >
           {/* Header */}
