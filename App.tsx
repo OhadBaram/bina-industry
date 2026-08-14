@@ -47,7 +47,12 @@ const App: React.FC = () => {
   const [activeWordIndex, setActiveWordIndex] = useState(-1);
   const [shouldPulseCTA, setShouldPulseCTA] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const sloganWords = ["מפסיקים", "לנסות.", "מטמיעים", "AI", "בארגון."];
+  const sloganWords = [
+    "מפסיקים", "לשחק", "עם", "AI.", 
+    "מטמיעים", "תשתית", "סוכנים", "ואוטומציה", "שמייצרת", "תוצאות.", 
+    "בינה", "לתעשייה;", "שמים", "את", "הבינה", "בעשייה.", 
+    "תתאמו", "שיחת", "אבחון", "והבנת", "צרכים", "עוד", "היום."
+  ];
 
   useEffect(() => {
     // בדיקה האם כבר ניגנו בסשן הנוכחי
@@ -81,13 +86,11 @@ const App: React.FC = () => {
     };
 
     const handleTimeUpdate = () => {
-      const time = audio.currentTime;
-      // חלוקת זמנים להבלטת המילים בקצב הנאמר בסלוגן
-      if (time >= 0 && time < 0.8) setActiveWordIndex(0);
-      else if (time >= 0.8 && time < 1.6) setActiveWordIndex(1);
-      else if (time >= 1.6 && time < 2.4) setActiveWordIndex(2);
-      else if (time >= 2.4 && time < 3.2) setActiveWordIndex(3);
-      else if (time >= 3.2) setActiveWordIndex(4);
+      if (!audio.duration) return;
+      const progress = audio.currentTime / audio.duration;
+      const totalWords = sloganWords.length;
+      const activeIdx = Math.min(totalWords - 1, Math.floor(progress * totalWords));
+      setActiveWordIndex(activeIdx);
     };
 
     const handleEnded = () => {
@@ -1453,14 +1456,14 @@ const App: React.FC = () => {
       {/* חלונית סלוגן קריוקי צפה - מוצגת רק בעת ניגון מוזיקת הרקע */}
       {showSloganPanel && (
         <div 
-          className="fixed bottom-24 left-6 z-[99999] bg-slate-950/90 dark:bg-slate-900/90 border border-slate-700/60 rounded-2xl p-5 shadow-2xl animate-fadeIn space-y-2 text-right dir-rtl"
-          style={{ width: '280px', position: 'fixed', bottom: '96px', left: '24px', zIndex: 99999, direction: 'rtl' }}
+          className="fixed bottom-24 left-6 z-[99999] bg-slate-950/95 dark:bg-slate-900/95 border border-slate-700/60 rounded-3xl p-6 md:p-8 shadow-2xl animate-fadeIn space-y-2 text-right dir-rtl"
+          style={{ width: window.innerWidth < 640 ? 'calc(100vw - 32px)' : '420px', position: 'fixed', bottom: '96px', left: window.innerWidth < 640 ? '16px' : '24px', zIndex: 99999, direction: 'rtl' }}
         >
-          <div className="flex flex-wrap gap-2 text-lg font-black leading-relaxed justify-start">
+          <div className="flex flex-wrap gap-x-2.5 gap-y-3.5 text-lg md:text-xl font-black leading-relaxed justify-start">
             {sloganWords.map((word, idx) => (
               <span
                 key={idx}
-                className={`transition-all duration-300 px-1 rounded-md ${
+                className={`transition-all duration-300 px-1.5 py-0.5 rounded-lg ${
                   activeWordIndex === idx 
                     ? 'text-cyan-400 bg-cyan-500/20 scale-110 shadow border border-cyan-500/30' 
                     : 'text-slate-400 dark:text-slate-500'
