@@ -8,6 +8,7 @@ export const ZapierChatbot: React.FC = () => {
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 1024);
   const [isShrinking, setIsShrinking] = useState(false);
   const [isExploding, setIsExploding] = useState(false);
+  const [pasteStatus, setPasteStatus] = useState<string | null>(null);
 
   // זיהוי שינוי גודל מסך
   useEffect(() => {
@@ -37,14 +38,16 @@ export const ZapierChatbot: React.FC = () => {
   const handlePasteClick = () => {
     const lastCopied = localStorage.getItem('last_copied_concept');
     if (lastCopied) {
-      // במקום לאתחל את הצ'אטבוט מחדש, אנו מעתיקים שוב ללוח ומדריכים את המשתמש להדביק
       navigator.clipboard.writeText(lastCopied).then(() => {
-        alert(`המונח "${lastCopied}" מוכן להדבקה! 📋\n\nלחצו קליק ימני (או לחיצה ארוכה בנייד) בתוך תיבת השיחה של הצ'אטבוט, ובחרו "הדבק" (או לחצו Ctrl+V).`);
+        setPasteStatus('הועתק! 📋');
+        setTimeout(() => setPasteStatus(null), 2500);
       }).catch(() => {
-        alert(`המונח להסבר הוא: "${lastCopied}"\n\nפשוט בצעו הדבקה (Ctrl+V או קליק ימני) בתיבת השיחה של הצ'אטבוט למטה.`);
+        setPasteStatus('שגיאה ❌');
+        setTimeout(() => setPasteStatus(null), 2500);
       });
     } else {
-      alert('טרם הועתק מושג מהאתר. לחצו על אחד המושגים המודגשים באתר תחילה!');
+      setPasteStatus('אין מושג ⚠️');
+      setTimeout(() => setPasteStatus(null), 2500);
     }
   };
 
@@ -110,10 +113,10 @@ export const ZapierChatbot: React.FC = () => {
             <div className="flex items-center gap-2.5">
               <button
                 onClick={handlePasteClick}
-                className="text-[11px] font-black px-2.5 py-1.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 rounded-xl transition-all cursor-pointer shadow-md flex items-center gap-1"
-                title="הדבק מושג שהועתק מהאתר"
+                className="text-[11px] font-black px-2.5 py-1.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 rounded-xl transition-all cursor-pointer shadow-md flex items-center justify-center min-w-[95px]"
+                title="העתק את המושג האחרון ללוח להדבקה פשוטה בצ'אט"
               >
-                הדבק מושג 📋
+                {pasteStatus || 'העתק מושג 📋'}
               </button>
               <button
                 onClick={handleCloseClick}
