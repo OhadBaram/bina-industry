@@ -43,7 +43,7 @@ const App: React.FC = () => {
 
   // --- ניהול מוזיקת רקע וקריוקי סלוגן ---
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
-  const [showSloganPanel, setShowSloganPanel] = useState(false);
+  const [sloganPanelState, setSloganPanelState] = useState<'hidden' | 'expanded' | 'collapsed'>('hidden');
   const [activeWordIndex, setActiveWordIndex] = useState(-1);
   const [shouldPulseCTA, setShouldPulseCTA] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -57,7 +57,11 @@ const App: React.FC = () => {
   useEffect(() => {
     // בדיקה האם כבר ניגנו בסשן הנוכחי
     const played = sessionStorage.getItem('bina_music_played');
-    if (played === 'true') return;
+    
+    // אם כבר ניגנו בסשן זה, נאתחל ישר למצב מיקרופון מכווץ
+    if (played === 'true') {
+      setSloganPanelState('collapsed');
+    }
 
     const audio = new Audio('/מוזיקת רקע.mp4');
     audio.loop = false; // שמע מופעל פעם אחת בלבד
@@ -67,7 +71,7 @@ const App: React.FC = () => {
     let hasStarted = false;
 
     const handleInitialClick = (e: MouseEvent) => {
-      if (hasStarted) return;
+      if (hasStarted || played === 'true') return;
 
       const target = e.target as HTMLElement;
       const isInteractive = target.closest('button') || target.closest('a') || target.closest('.cursor-pointer') || target.tagName === 'BUTTON';
@@ -76,7 +80,7 @@ const App: React.FC = () => {
         audio.play().then(() => {
           hasStarted = true;
           setIsPlayingMusic(true);
-          setShowSloganPanel(true);
+          setSloganPanelState('expanded');
           sessionStorage.setItem('bina_music_played', 'true');
           document.removeEventListener('click', handleInitialClick);
         }).catch(err => {
@@ -94,14 +98,17 @@ const App: React.FC = () => {
     };
 
     const handleEnded = () => {
-      setShowSloganPanel(false);
+      setSloganPanelState('collapsed');
       setIsPlayingMusic(false);
       setShouldPulseCTA(true);
     };
 
     audio.addEventListener('timeupdate', handleTimeUpdate);
     audio.addEventListener('ended', handleEnded);
-    document.addEventListener('click', handleInitialClick);
+    
+    if (played !== 'true') {
+      document.addEventListener('click', handleInitialClick);
+    }
 
     return () => {
       document.removeEventListener('click', handleInitialClick);
@@ -111,16 +118,26 @@ const App: React.FC = () => {
     };
   }, []);
 
+  const playMusicFromMicrophone = () => {
+    if (!audioRef.current) return;
+    audioRef.current.currentTime = 0; // ניגון מההתחלה
+    audioRef.current.play().then(() => {
+      setIsPlayingMusic(true);
+      setSloganPanelState('expanded');
+      setShouldPulseCTA(false); // הפסקת ההבהוב בעת ניגון חוזר
+    }).catch(err => console.log('Audio playback failed from microphone:', err));
+  };
+
   const toggleMusic = () => {
     if (!audioRef.current) return;
     if (isPlayingMusic) {
       audioRef.current.pause();
       setIsPlayingMusic(false);
-      setShowSloganPanel(false);
+      setSloganPanelState('collapsed');
     } else {
       audioRef.current.play().then(() => {
         setIsPlayingMusic(true);
-        setShowSloganPanel(true);
+        setSloganPanelState('expanded');
       }).catch(err => console.log('Audio playback failed:', err));
     }
   };
@@ -1453,8 +1470,8 @@ const App: React.FC = () => {
       <AccessibilityStatementModal isOpen={isAccessibilityStatementOpen} onClose={() => setIsAccessibilityStatementOpen(false)} />
       <CookieSettingsModal isOpen={isCookieSettingsOpen} onClose={() => setIsCookieSettingsOpen(false)} />
       
-      {/* חלונית סלוגן קריוקי צפה - מוצגת רק בעת ניגון מוזיקת הרקע */}
-      {showSloganPanel && (
+      {/* חלונית סלוגן קריוקי צפה - במצב מורחב */}
+      {sloganPanelState === 'expanded' && (
         <div 
           className="fixed bottom-24 left-6 z-[99999] bg-slate-950/95 dark:bg-slate-900/95 border border-slate-700/60 rounded-3xl p-6 md:p-8 shadow-2xl animate-fadeIn space-y-4 text-right dir-rtl"
           style={{ width: window.innerWidth < 640 ? 'calc(100vw - 32px)' : '420px', position: 'fixed', bottom: '96px', left: window.innerWidth < 640 ? '16px' : '24px', zIndex: 99999, direction: 'rtl' }}
@@ -1495,6 +1512,18 @@ const App: React.FC = () => {
             })}
           </div>
         </div>
+      )}
+
+      {/* כפתור מיקרופון צף להתחלת השמעה חוזרת במצב מכווץ */}
+      {sloganPanelState === 'collapsed' && (
+        <button
+          onClick={playMusicFromMicrophone}
+          className="fixed bottom-24 left-6 z-[99999] bg-cyan-500 hover:bg-cyan-400 text-slate-950 rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-105"
+          style={{ position: 'fixed', bottom: '96px', left: '24px', zIndex: 99999, width: '48px', height: '48px', cursor: 'pointer' }}
+          title="שמע את הסלוגן 🎙️"
+        >
+          <span className="text-xl">🎙️</span>
+        </button>
       )}
 
       <AccessibilityToolbar />
