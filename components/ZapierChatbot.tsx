@@ -3,8 +3,11 @@ import React, { useState, useEffect } from 'react';
 const ZAPIER_CHATBOT_IFRAME = 'https://interfaces.zapier.com/embed/chatbot/cmssrqyy2002hq5yg3j99toye';
 
 export const ZapierChatbot: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  // בניידים הצאטבוט יהיה סגור כברירת מחדל
+  const [isOpen, setIsOpen] = useState(window.innerWidth >= 768);
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 1024);
+  const [iframeUrl, setIframeUrl] = useState(ZAPIER_CHATBOT_IFRAME);
+  const [iframeKey, setIframeKey] = useState(0);
 
   // זיהוי שינוי גודל מסך
   useEffect(() => {
@@ -12,6 +15,17 @@ export const ZapierChatbot: React.FC = () => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  const handlePasteClick = () => {
+    const lastCopied = localStorage.getItem('last_copied_concept');
+    if (lastCopied) {
+      // טעינה מחדש של ה-iframe עם השאילתה כפרמטר pre-fill
+      setIframeKey(prev => prev + 1);
+      setIframeUrl(`${ZAPIER_CHATBOT_IFRAME}?message=${encodeURIComponent(lastCopied)}&q=${encodeURIComponent(lastCopied)}&query=${encodeURIComponent(lastCopied)}`);
+    } else {
+      alert('טרם הועתק מושג מהאתר. לחצו על אחד המושגים המודגשים באתר תחילה!');
+    }
+  };
 
   return (
     <>
@@ -70,7 +84,14 @@ export const ZapierChatbot: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2.5">
+              <button
+                onClick={handlePasteClick}
+                className="text-[11px] font-black px-2.5 py-1.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 rounded-xl transition-all cursor-pointer shadow-md flex items-center gap-1"
+                title="הדבק מושג שהועתק מהאתר"
+              >
+                הדבק מושג 📋
+              </button>
               <button
                 onClick={() => setIsOpen(false)}
                 className="text-slate-400 hover:text-white font-black text-base p-1 cursor-pointer"
@@ -83,7 +104,8 @@ export const ZapierChatbot: React.FC = () => {
           {/* Official Zapier Interfaces Embed Iframe */}
           <div className="flex-1 w-full h-full bg-[#070A10] relative" dir="rtl" style={{ direction: 'rtl', textAlign: 'right' }}>
             <iframe
-              src={ZAPIER_CHATBOT_IFRAME}
+              key={iframeKey}
+              src={iframeUrl}
               height="100%"
               width="100%"
               allow="clipboard-write *"

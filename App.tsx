@@ -71,6 +71,8 @@ const App: React.FC = () => {
     let hasStarted = false;
 
     const handleInitialClick = (e: MouseEvent) => {
+      // מניעת הפעלה אוטומטית של מוזיקה בניידים
+      if (window.innerWidth < 768) return;
       if (hasStarted || played === 'true') return;
 
       const target = e.target as HTMLElement;
@@ -175,19 +177,21 @@ const App: React.FC = () => {
   // העתקת מושג מקצועי והצגת טוסט הסבר
   const triggerConceptExplanation = (concept: string, explanation?: string) => {
     navigator.clipboard.writeText(concept).then(() => {
-      setToastMessage('המושג הועתק! 📋 ניתן להדביק בצ׳אטבוט בפינה להסבר.');
+      localStorage.setItem('last_copied_concept', concept); // שמירה לטובת הדבקה בצ'אטבוט
+      setToastMessage(`הועתק: "${concept}" 📋 ניתן להדביק כעת בחלון הצ׳אטבוט להסבר.`);
       setShowToast(true);
       setTimeout(() => setShowToast(false), 4500);
     }).catch(() => {
       const el = document.createElement('textarea');
       el.value = concept;
       el.style.position = 'fixed';
+      el.style.opacity = '0';
       document.body.appendChild(el);
-      el.focus();
       el.select();
       document.execCommand('copy');
       document.body.removeChild(el);
-      setToastMessage('המושג הועתק! 📋 ניתן להדביק בצ׳אטבוט בפינה להסבר.');
+      localStorage.setItem('last_copied_concept', concept);
+      setToastMessage(`הועתק: "${concept}" 📋 ניתן להדביק כעת בחלון הצ׳אטבוט להסבר.`);
       setShowToast(true);
       setTimeout(() => setShowToast(false), 4500);
     });
