@@ -161,7 +161,7 @@ const App: React.FC = () => {
       setUnlockedPremium(true);
       localStorage.setItem('b2b_leads_unlocked', 'true');
       setShowUnlockModal(false);
-      setToastMessage('פנייתך התקבלה בהצלחה! נחזור אליך לשיחת אבחון בהקדם 🚀');
+      setToastMessage('פנייתך התקבלה בהצלחה! אחזור אליך לשיחת אבחון בהקדם 🚀');
       setShowToast(true);
       setTimeout(() => setShowToast(false), 4000);
     }
@@ -299,7 +299,7 @@ const App: React.FC = () => {
         </div>
         <h3 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-3 tracking-tight">בואו נבדוק התאמה לארגון שלכם</h3>
         <p className="text-slate-600 dark:text-slate-400 font-bold text-base md:text-lg max-w-2xl mx-auto">
-          השאירו פרטים, ספרו לנו בקצרה מה האתגר, ונחזור אליכם לשיחת אפיון ראשונית ללא עלות.
+          השאירו פרטים, ספרו לי בקצרה מה האתגר, ואחזור אליך לשיחת אפיון ראשונית ללא עלות.
         </p>
       </div>
 
@@ -308,7 +308,7 @@ const App: React.FC = () => {
           <div className="text-6xl mb-4">🎉</div>
           <h4 className="text-3xl font-black text-emerald-900 dark:text-emerald-200 mb-3">תודה רבה! הפנייה התקבלה בהצלחה</h4>
           <p className="text-emerald-800 dark:text-emerald-300 font-bold text-base md:text-lg max-w-xl mx-auto mb-6">
-            קיבלנו את פרטי הארגון שלך. אנו נחזור אליך בהקדם לשיחת אבחון ואפיון ראשונית.
+            קיבלתי את פרטי הארגון שלך. אחזור אליך בהקדם לשיחת אבחון ואפיון ראשונית.
           </p>
           <button
             onClick={() => {
@@ -527,7 +527,7 @@ const App: React.FC = () => {
                   </div>
                   <h3 className="text-2xl font-black text-slate-900 dark:text-white">רכישת כלים ללא חיבור לתהליכים</h3>
                   <p className="text-slate-600 dark:text-slate-300 text-base md:text-lg font-medium leading-relaxed">
-                    חברות קונות מנויים ל-ChatGPT או מחברות תוספים בסיסיים, אבל העובדים לא משתמשים, התהליכים לא מתחברים, וההשקעה יורדת לטמיון.
+                    חברות קונות מנויים למודלי AI (כמו ChatGPT) או מחברות תוספים בסיסיים, אבל העובדים לא משתמשים, התהליכים לא מתחברים, וההשקעה יורדת לטמיון.
                   </p>
                 </div>
 
@@ -702,8 +702,7 @@ const App: React.FC = () => {
                       className="w-full text-right p-4 bg-slate-100 dark:bg-[#070A10] rounded-2xl border border-slate-200 dark:border-slate-800 text-xs font-bold text-cyan-600 dark:text-cyan-300 mb-6 hover:border-cyan-500 hover:scale-[1.01] transition-all cursor-pointer flex items-center justify-between shadow-sm"
                       title="לחץ לקבלת הסבר מפורט בסוכן ה-AI"
                     >
-                      <span>🛡️ אפשרות לפריסת מודלים מקומיים (Local LLMs)</span>
-                      <span className="text-[11px] bg-cyan-500/20 px-2.5 py-1 rounded-lg text-cyan-600 dark:text-cyan-400 font-black">לחץ להסבר הבוט 💡</span>
+                      <span>🛡️ אפשרות לפריסת מודלים מקומיים (Local LLMs) 💡</span>
                     </button>
                   </div>
 
@@ -748,7 +747,7 @@ const App: React.FC = () => {
                     </span>
                     <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">מאגר הפרומפטים המקצועי של "מדברים בינה"</h2>
                     <p className="text-slate-600 dark:text-slate-300 text-base md:text-xl font-medium leading-relaxed">
-                      חלק קטן מתוך ארגז הכלים שאני מביא לארגונים. סננו לפי נושא, העתיקו והתנסו בעצמכם.
+                      דוגמאות והמחשות להנדסת פרומפטים נכונה. סננו לפי נושא, העתיקו והתנסו בעצמכם כדי להבין איך לרתום את המודל למשימות מוגדרות.
                     </p>
                   </div>
 
@@ -896,7 +895,7 @@ const App: React.FC = () => {
                     <div className="p-5 bg-red-500/10 border border-red-500/30 rounded-2xl">
                       <span className="text-xs font-black text-red-600 dark:text-red-400 block mb-1.5">🛑 בשוק הרגיל</span>
                       <p className="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 leading-relaxed">
-                        זורקים רישיונות ChatGPT לעובדים ומקווים שהם "יסתדרו לבד".
+                        זורקים רישיונות למודלי AI לעובדים (כמו ChatGPT או Claude) ומקווים שהם "יסתדרו לבד".
                       </p>
                     </div>
                     <div className="p-5 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl">
@@ -942,7 +941,7 @@ const App: React.FC = () => {
               </span>
               <h2 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white mb-4">מאגר הפרומפטים המקצועי של "מדברים בינה"</h2>
               <p className="text-slate-600 dark:text-slate-400 font-bold text-base md:text-lg max-w-3xl mx-auto">
-                חלק מתוך ארגז הכלים שאני מביא לארגונים. סננו לפי נושא, העתיקו והתנסו בעצמכם.
+                דוגמאות והמחשות להנדסת פרומפטים נכונה. סננו לפי נושא, העתיקו והתנסו בעצמכם כדי להבין איך לרתום את המודל למשימות מוגדרות.
               </p>
             </div>
 
