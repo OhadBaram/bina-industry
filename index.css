@@ -92,3 +92,21 @@ iframe[src*="interfaces.zapier.com"] {
   animation: none !important;
   transition: none !important;
 }
+
+/* User custom accessibility classes */
+body.acc-high-contrast {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+body.acc-high-contrast * {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+}
+body.acc-grayscale {
+  filter: grayscale(100%) !important;
+}
+body.acc-highlight-links a, body.acc-highlight-links button {
+  text-decoration: underline !important;
+  color: #ffff00 !important;
+}

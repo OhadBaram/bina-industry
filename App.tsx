@@ -34,6 +34,7 @@ const App: React.FC = () => {
   const [isPrivacyPolicyOpen, setIsPrivacyPolicyOpen] = useState(false);
   const [isTermsOfServiceOpen, setIsTermsOfServiceOpen] = useState(false);
   const [isAccessibilityStatementOpen, setIsAccessibilityStatementOpen] = useState(false);
+  const [isCookieBannerOpen, setIsCookieBannerOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
 
   useEffect(() => {
@@ -1327,11 +1328,11 @@ const App: React.FC = () => {
           <span>|</span>
           <a href="https://www.linkedin.com/in/ohad-baram-58a22632a" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">LinkedIn 🔗</a>
           <span>|</span>
-          <button onClick={() => localStorage.removeItem('b2b_cookie_consent')} className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">ניהול עוגיות 🍪</button>
+          <button onClick={() => setIsCookieBannerOpen(true)} className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">ניהול עוגיות 🍪</button>
         </div>
       </footer>
 
-      <CookieBanner onOpenPrivacyPolicy={() => setIsPrivacyPolicyOpen(true)} />
+      <CookieBanner onOpenPrivacyPolicy={() => setIsPrivacyPolicyOpen(true)} isOpen={isCookieBannerOpen} onClose={() => setIsCookieBannerOpen(false)} />
       <PrivacyPolicyModal isOpen={isPrivacyPolicyOpen} onClose={() => setIsPrivacyPolicyOpen(false)} />
       <TermsOfServiceModal isOpen={isTermsOfServiceOpen} onClose={() => setIsTermsOfServiceOpen(false)} />
       <AccessibilityStatementModal isOpen={isAccessibilityStatementOpen} onClose={() => setIsAccessibilityStatementOpen(false)} />

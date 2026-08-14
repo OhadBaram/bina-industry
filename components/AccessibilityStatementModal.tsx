@@ -23,37 +23,23 @@ export const AccessibilityStatementModal: React.FC<AccessibilityStatementModalPr
           <span className="px-3 py-1 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 rounded-full text-xs font-black mb-2 inline-block border border-cyan-500/30">
             ♿ רמה AA לפי תקן ישראלי 5568
           </span>
-          <h2 className="text-2xl md:text-3xl font-black dark:text-white">הצהרת נגישות – בינה לתעשייה</h2>
+          <h2 className="text-2xl md:text-3xl font-black dark:text-white">הצהרת נגישות</h2>
           <p className="text-xs text-slate-500 dark:text-slate-400 font-bold mt-1">עדכון אחרון: אוגוסט 2026 | עומד בדרישות תקנות שוויון זכויות לאנשים עם מוגבלות</p>
         </div>
 
         <div className="space-y-4 text-slate-700 dark:text-slate-300 text-xs md:text-sm font-medium leading-relaxed">
-          <p>
-            באתר "בינה לתעשייה" אנו רואים בחשיבות עליונה את הנגשת האתר והשירותים לכלל האוכלוסייה, כולל אנשים עם מוגבלויות, מתוך אמונה כי לכל אדם מגיעה הזדמנות שווה ונגישות מלאה למידע ולטכנולוגיה.
-          </p>
-
-          <h4 className="font-black text-sm dark:text-white text-cyan-600 dark:text-cyan-400">התאמות הנגישות שבוצעו באתר:</h4>
-          <ul className="list-disc list-inside space-y-1.5 font-bold">
-            <li>האתר נבנה בהתאם להנחיות הנגישות בדרגה AA של תקן WCAG 2.0 והתקן הישראלי ת"י 5568.</li>
-            <li>תמיכה מלאה בניווט מקלדת (Tab, Shift+Tab, מקשי החיצים ו-Enter).</li>
-            <li>סרגל נגישות צף הכולל הגדלה והקטנה של טקסטים, שינוי ניגודיות (ניגודיות גבוהה, גווני אפור), הדגשת קישורים, גופן קריא וביטול הנפשות.</li>
-            <li>התאמה מלאה לטכנולוגיות מסייעות (כמו קוראי מסך) ומכשירים ניידים.</li>
+          <p>אנו רואים חשיבות רבה בהנגשת האתר לאנשים עם מוגבלויות, בהתאם לתקן הישראלי (ת"י 5568) ברמת AA.</p>
+          
+          <p className="font-bold text-slate-900 dark:text-white">התאמות שבוצעו באתר:</p>
+          <ul className="list-disc pr-5 space-y-1">
+            <li>תפריט נגישות לשינוי גודל טקסט, ניגודיות וגווני אפור.</li>
+            <li>תמיכה בניווט מקלדת ומבנה היררכי לקוראי מסך.</li>
+            <li>התאמה מלאה לדפדפנים מודרניים ומכשירים ניידים.</li>
           </ul>
-
-          <h4 className="font-black text-sm dark:text-white text-cyan-600 dark:text-cyan-400">באילו אמצעים טכנולוגיים ודפדפנים נבדק האתר:</h4>
-          <p>
-            האתר נבדק ונמצא תואם בדפדפנים המובילים: Google Chrome, Mozilla Firefox, Safari, ו-Microsoft Edge, הן במחשבים שולחניים והן במכשירים ניידים (iOS ו-Android).
-          </p>
-
-          <h4 className="font-black text-sm dark:text-white text-cyan-600 dark:text-cyan-400">פרטי יצירת קשר עם רכז הנגישויות:</h4>
-          <p>
-            אם במהלך הגלישה באתר נתקלתם בקושי או ברכיב שאינו נגיש מספיק, נשמח לקבל מכם משוב כדי שנוכל לתקן ולפרסם עדכון בהקדם:
-          </p>
-          <div className="font-bold border-r-4 border-cyan-500 pr-3 my-2 bg-slate-50 dark:bg-slate-950 p-4 rounded-xl">
-            <p>רכז נגישות: אוהד ברעם</p>
-            <p>כתובת אימייל לפניות: accessibility@bina-industry.co.il</p>
-            <p>יצירת קשר נוספת: דרך טופס פניית יצירת קשר באתר או באמצעות LinkedIn.</p>
-          </div>
+          
+          <p className="font-bold text-slate-900 dark:text-white mt-4">פרטי יצירת קשר בנושאי נגישות:</p>
+          <p>אם נתקלתם בבעיית נגישות, ניתן לפנות אלינו ישירות בדוא"ל: <a href="mailto:ohadbaramqa@gmail.com" className="text-cyan-600 dark:text-cyan-400 underline">ohadbaramqa@gmail.com</a></p>
+          <p className="font-bold text-slate-900 dark:text-white">רכז נגישות: אוהד ברעם</p>
         </div>
 
         <div className="pt-4 border-t border-slate-200 dark:border-slate-800 text-center">
@@ -61,7 +47,7 @@ export const AccessibilityStatementModal: React.FC<AccessibilityStatementModalPr
             onClick={onClose}
             className="px-8 py-3 bg-cyan-500 hover:bg-cyan-400 text-white font-black rounded-2xl text-xs shadow-lg transition-all"
           >
-            אישור וסגירה ✅
+            סגירה ✅
           </button>
         </div>
       </div>

@@ -2,26 +2,32 @@ import React, { useState, useEffect } from 'react';
 
 interface CookieBannerProps {
   onOpenPrivacyPolicy: () => void;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-export const CookieBanner: React.FC<CookieBannerProps> = ({ onOpenPrivacyPolicy }) => {
+export const CookieBanner: React.FC<CookieBannerProps> = ({ onOpenPrivacyPolicy, isOpen, onClose }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const consent = localStorage.getItem('b2b_cookie_consent');
-    if (!consent) {
+    if (!consent || isOpen) {
       setIsVisible(true);
+    } else {
+      setIsVisible(false);
     }
-  }, []);
+  }, [isOpen]);
 
   const handleAcceptAll = () => {
     localStorage.setItem('b2b_cookie_consent', 'all');
     setIsVisible(false);
+    onClose();
   };
 
   const handleNecessaryOnly = () => {
     localStorage.setItem('b2b_cookie_consent', 'necessary');
     setIsVisible(false);
+    onClose();
   };
 
   if (!isVisible) return null;
