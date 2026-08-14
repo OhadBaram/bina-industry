@@ -12,7 +12,7 @@ const ZAPIER_CHATBOT_IFRAME = 'https://interfaces.zapier.com/embed/chatbot/cmssr
 
 export const ZapierChatbot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<'ai' | 'zapier_embed'>('ai');
+  const [activeTab, setActiveTab] = useState<'zapier_embed' | 'ai'>('zapier_embed');
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -30,10 +30,10 @@ export const ZapierChatbot: React.FC = () => {
   };
 
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && activeTab === 'ai') {
       scrollToBottom();
     }
-  }, [messages, isOpen]);
+  }, [messages, isOpen, activeTab]);
 
   // שליחת הודעה וסינכרון בזמן אמת ל-Zapier Webhook
   const handleSendMessage = async (textToSend?: string) => {
@@ -52,7 +52,6 @@ export const ZapierChatbot: React.FC = () => {
     setIsSending(true);
 
     try {
-      // שליחה ל-Zapier Webhook
       await fetch(ZAPIER_WEBHOOK_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -66,15 +65,14 @@ export const ZapierChatbot: React.FC = () => {
       console.log('Zapier webhook sync:', err);
     }
 
-    // תגובה אוטומטית חכמה של סוכן ה-AI בעברית
     setTimeout(() => {
-      let botReply = 'תודה על הפנייה! קיבלתי את הודעתך והיא הועברה ישירות לאוהד ברעם. אנו נחזור אליך בהקדם.';
+      let botReply = 'תודה על הפנייה! קיבלנו את הודעתך והיא הועברה ישירות לאוהד ברעם. אנו נחזור אליך בהקדם.';
       
       const lower = messageText.toLowerCase();
       if (lower.includes('סוכן') || lower.includes('agent') || lower.includes('rag')) {
-        botReply = 'אנו מתמחים בפיתוח סוכני AI אוטונומיים (Custom AI Agents) מחוברים למאגרי המידע וה-CRM של החברה, בפרטיות מלאה (Zero Retention). נשמח לתאם פגישת אבחון!';
+        botReply = 'אנו מתמחים בפיתוח סוכני AI אוטונומיים (Custom AI Agents) מחוברים למאגרי המידע וה-CRM של החברה, בפרטיות מלאה. נשמח לתאם פגישת אבחון!';
       } else if (lower.includes('סדנא') || lower.includes('הדרכה') || lower.includes('צוות')) {
-        botReply = 'אנו מעבירים סדנאות Hands-on ממוקדות תפקיד (הנהלה, שיווק, תפעול, כספים) עם הנדסת פרומפטים מתקדמת. נשמח לשלוח סילבוס מותאם!';
+        botReply = 'אנו מעבירים סדנאות מעשיות ממוקדות תפקיד (הנהלה, שיווק, תפעול, כספים) עם הנדסת פרומפטים מתקדמת. נשמח לשלוח סילבוס מותאם!';
       } else if (lower.includes('אוטומציה') || lower.includes('אינטגרציה') || lower.includes('n8n') || lower.includes('make')) {
         botReply = 'אנו בונים אוטומציות תפעוליות עמידות בעומסים בין מערכות הליבה (ERP, CRM, לידים, הצעות מחיר). נשמח לבחון את התהליכים אצלכם!';
       }
@@ -93,19 +91,19 @@ export const ZapierChatbot: React.FC = () => {
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
-      {/* כפתור הפעלה צף */}
+      {/* כפתור הפעלה צף בפינה */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        aria-label="צ׳אטבוט מחובר ל-Zapier"
+        aria-label="סוכן AI צ׳אטבוט מחובר ל-Zapier"
         className="w-14 h-14 bg-gradient-to-tr from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-black rounded-full flex items-center justify-center text-2xl shadow-2xl transition-all duration-300 transform hover:scale-110 border-2 border-slate-800 ring-4 ring-cyan-500/20 relative"
       >
         <span>💬</span>
         <span className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-[#070A10] animate-pulse"></span>
       </button>
 
-      {/* חלון צ׳אטבוט נפתח */}
+      {/* חלון צ׳אטבוט צף נפתח בפינה */}
       {isOpen && (
-        <div className="absolute bottom-16 right-0 w-[92vw] max-w-[420px] h-[580px] bg-[#0D131F] rounded-3xl shadow-2xl border border-slate-800 animate-fadeIn flex flex-col justify-between overflow-hidden" dir="rtl">
+        <div className="absolute bottom-16 right-0 w-[92vw] max-w-[420px] h-[580px] bg-[#0D131F] rounded-3xl shadow-2xl border border-slate-800 animate-fadeIn flex flex-col justify-between overflow-hidden" dir="rtl" style={{ direction: 'rtl', textAlign: 'right' }}>
           
           {/* Header */}
           <div className="bg-[#070A10] px-5 py-4 border-b border-slate-800 flex items-center justify-between">
@@ -113,22 +111,22 @@ export const ZapierChatbot: React.FC = () => {
               <div className="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-black text-base">
                 🤖
               </div>
-              <div>
+              <div className="text-right">
                 <h4 className="font-black text-sm text-white leading-tight">סוכן AI | בינה לתעשייה</h4>
                 <div className="flex items-center gap-1.5 text-[11px] text-emerald-400 font-bold">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                  <span>מחובר ל-Zapier Webhook live</span>
+                  <span>מחובר ל-Zapier live (RTL)</span>
                 </div>
               </div>
             </div>
 
             <div className="flex items-center gap-2">
               <button
-                onClick={() => setActiveTab(activeTab === 'ai' ? 'zapier_embed' : 'ai')}
+                onClick={() => setActiveTab(activeTab === 'zapier_embed' ? 'ai' : 'zapier_embed')}
                 className="text-[11px] font-bold px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-cyan-300 rounded-lg transition-all"
                 title="החלפת מצב צ׳אט"
               >
-                {activeTab === 'ai' ? 'Zapier Embed 🔗' : 'AI Chat 🤖'}
+                {activeTab === 'zapier_embed' ? 'AI Webhook 🤖' : 'Zapier Embed 🔗'}
               </button>
               <button
                 onClick={() => setIsOpen(false)}
@@ -139,7 +137,22 @@ export const ZapierChatbot: React.FC = () => {
             </div>
           </div>
 
-          {/* TAB 1: Native Interactive AI Chatbot connected to Zapier Webhook */}
+          {/* TAB 1: Official Zapier Interfaces Embed Iframe */}
+          {activeTab === 'zapier_embed' && (
+            <div className="flex-1 w-full h-full bg-[#070A10] relative" dir="rtl" style={{ direction: 'rtl', textAlign: 'right' }}>
+              <iframe
+                src={ZAPIER_CHATBOT_IFRAME}
+                height="100%"
+                width="100%"
+                allow="clipboard-write *"
+                style={{ border: 'none', direction: 'rtl', textAlign: 'right' }}
+                title="Zapier Chatbot Embed"
+                dir="rtl"
+              />
+            </div>
+          )}
+
+          {/* TAB 2: Native Interactive AI Chatbot connected to Zapier Webhook */}
           {activeTab === 'ai' && (
             <div className="flex-1 flex flex-col justify-between p-4 overflow-hidden bg-[#070A10]">
               
@@ -203,6 +216,7 @@ export const ZapierChatbot: React.FC = () => {
                   onChange={(e) => setInputValue(e.target.value)}
                   placeholder="כתיבת הודעה לסוכן ה-AI..."
                   className="flex-1 px-4 py-3 bg-[#0D131F] border border-slate-800 rounded-xl text-white text-xs font-medium outline-none focus:border-cyan-500 transition-all text-right"
+                  dir="rtl"
                 />
                 <button
                   type="submit"
@@ -212,21 +226,6 @@ export const ZapierChatbot: React.FC = () => {
                   שלח 🚀
                 </button>
               </form>
-            </div>
-          )}
-
-          {/* TAB 2: Official Zapier Interfaces Embed Iframe */}
-          {activeTab === 'zapier_embed' && (
-            <div className="flex-1 w-full h-full bg-[#070A10]" dir="rtl" style={{ direction: 'rtl' }}>
-              <iframe
-                src={ZAPIER_CHATBOT_IFRAME}
-                height="100%"
-                width="100%"
-                allow="clipboard-write *"
-                style={{ border: 'none', direction: 'rtl' }}
-                title="Zapier Chatbot Embed"
-                dir="rtl"
-              />
             </div>
           )}
 
