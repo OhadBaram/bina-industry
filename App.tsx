@@ -41,14 +41,21 @@ const App: React.FC = () => {
   });
   const [isDarkMode, setIsDarkMode] = useState(true);
 
-  // --- ניהול מוזיקת רקע ---
+  // --- ניהול מוזיקת רקע וקריוקי סלוגן ---
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
+  const [showSloganPanel, setShowSloganPanel] = useState(false);
+  const [activeWordIndex, setActiveWordIndex] = useState(-1);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const sloganWords = ["מפסיקים", "לנסות.", "מטמיעים", "AI", "בארגון."];
 
   useEffect(() => {
+    // בדיקה האם כבר ניגנו בסשן הנוכחי
+    const played = sessionStorage.getItem('bina_music_played');
+    if (played === 'true') return;
+
     const audio = new Audio('/מוזיקת רקע.mp4');
-    audio.loop = true;
-    audio.volume = 0.2; // עוצמת שמע רקע נעימה
+    audio.loop = false; // שמע מופעל פעם אחת בלבד
+    audio.volume = 0.3;
     audioRef.current = audio;
 
     let hasStarted = false;
@@ -63,6 +70,8 @@ const App: React.FC = () => {
         audio.play().then(() => {
           hasStarted = true;
           setIsPlayingMusic(true);
+          setShowSloganPanel(true);
+          sessionStorage.setItem('bina_music_played', 'true');
           document.removeEventListener('click', handleInitialClick);
         }).catch(err => {
           console.log('Audio playback failed or blocked:', err);
@@ -70,10 +79,29 @@ const App: React.FC = () => {
       }
     };
 
+    const handleTimeUpdate = () => {
+      const time = audio.currentTime;
+      // חלוקת זמנים להבלטת המילים בקצב הנאמר בסלוגן
+      if (time >= 0 && time < 0.8) setActiveWordIndex(0);
+      else if (time >= 0.8 && time < 1.6) setActiveWordIndex(1);
+      else if (time >= 1.6 && time < 2.4) setActiveWordIndex(2);
+      else if (time >= 2.4 && time < 3.2) setActiveWordIndex(3);
+      else if (time >= 3.2) setActiveWordIndex(4);
+    };
+
+    const handleEnded = () => {
+      setShowSloganPanel(false);
+      setIsPlayingMusic(false);
+    };
+
+    audio.addEventListener('timeupdate', handleTimeUpdate);
+    audio.addEventListener('ended', handleEnded);
     document.addEventListener('click', handleInitialClick);
 
     return () => {
       document.removeEventListener('click', handleInitialClick);
+      audio.removeEventListener('timeupdate', handleTimeUpdate);
+      audio.removeEventListener('ended', handleEnded);
       audio.pause();
     };
   }, []);
@@ -83,9 +111,11 @@ const App: React.FC = () => {
     if (isPlayingMusic) {
       audioRef.current.pause();
       setIsPlayingMusic(false);
+      setShowSloganPanel(false);
     } else {
       audioRef.current.play().then(() => {
         setIsPlayingMusic(true);
+        setShowSloganPanel(true);
       }).catch(err => console.log('Audio playback failed:', err));
     }
   };
@@ -1407,6 +1437,31 @@ const App: React.FC = () => {
       <TermsOfServiceModal isOpen={isTermsOfServiceOpen} onClose={() => setIsTermsOfServiceOpen(false)} />
       <AccessibilityStatementModal isOpen={isAccessibilityStatementOpen} onClose={() => setIsAccessibilityStatementOpen(false)} />
       <CookieSettingsModal isOpen={isCookieSettingsOpen} onClose={() => setIsCookieSettingsOpen(false)} />
+      
+      {/* חלונית סלוגן קריוקי צפה - מוצגת רק בעת ניגון מוזיקת הרקע */}
+      {showSloganPanel && (
+        <div 
+          className="fixed bottom-24 left-6 z-[99999] bg-slate-950/90 dark:bg-slate-900/90 border border-slate-700/60 rounded-2xl p-5 shadow-2xl animate-fadeIn space-y-2 text-right dir-rtl"
+          style={{ width: '280px', position: 'fixed', bottom: '96px', left: '24px', zIndex: 99999, direction: 'rtl' }}
+        >
+          <span className="text-[10px] font-black text-cyan-400 tracking-wider block mb-1">🎙️ סלוגן הארגון</span>
+          <div className="flex flex-wrap gap-2 text-lg font-black leading-relaxed justify-start">
+            {sloganWords.map((word, idx) => (
+              <span
+                key={idx}
+                className={`transition-all duration-300 px-1 rounded-md ${
+                  activeWordIndex === idx 
+                    ? 'text-cyan-400 bg-cyan-500/20 scale-110 shadow border border-cyan-500/30' 
+                    : 'text-slate-400 dark:text-slate-500'
+                }`}
+              >
+                {word}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
       <AccessibilityToolbar />
       <ZapierChatbot />
       <Toast message={toastMessage} show={showToast} />
