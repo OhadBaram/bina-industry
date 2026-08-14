@@ -167,8 +167,6 @@ export const ZapierChatbot: React.FC = () => {
           <span className="absolute -top-1 -right-1 w-4.5 h-4.5 bg-emerald-500 rounded-full border-2 border-[#070A10] animate-pulse"></span>
         </button>
       </div>
-
-
       {/* 2. CHATBOT DRAWER CONTAINER - POSITIONED SAFELY ON ALL SCREEN SIZES */}
       {isOpen && (
         <div
@@ -176,9 +174,17 @@ export const ZapierChatbot: React.FC = () => {
             highlightPulse ? 'border-cyan-400 ring-4 ring-cyan-500/50 scale-[1.01]' : 'border-cyan-500/40'
           }`}
           dir="rtl"
-          style={{ direction: 'rtl', textAlign: 'right' }}
+          style={{ 
+            direction: 'rtl', 
+            textAlign: 'right', 
+            position: 'fixed', 
+            zIndex: 999999, 
+            display: 'flex', 
+            flexDirection: 'column', 
+            justifyContent: 'space-between',
+            overflow: 'hidden'
+          }}
         >
-          
           {/* Header */}
           <div className="bg-[#070A10] px-5 py-4 border-b border-slate-800 flex items-center justify-between">
             <div className="flex items-center gap-3">
