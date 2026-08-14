@@ -1474,7 +1474,7 @@ const App: React.FC = () => {
       {sloganPanelState === 'expanded' && (
         <div 
           className="fixed bottom-24 left-6 z-[99999] bg-slate-950/95 dark:bg-slate-900/95 border border-slate-700/60 rounded-3xl p-6 md:p-8 shadow-2xl animate-fadeIn space-y-4 text-right dir-rtl"
-          style={{ width: window.innerWidth < 640 ? 'calc(100vw - 32px)' : '420px', position: 'fixed', bottom: '96px', left: window.innerWidth < 640 ? '16px' : '24px', zIndex: 99999, direction: 'rtl' }}
+          style={{ width: window.innerWidth < 640 ? 'calc(100vw - 32px)' : '420px', position: 'fixed', bottom: '96px', left: window.innerWidth < 640 ? '16px' : '24px', zIndex: 99999, direction: 'rtl', fontFamily: '"Frank Ruhl Libre", Georgia, serif' }}
         >
           <div className="space-y-4 text-lg md:text-xl font-black leading-relaxed text-right">
             {sloganLines.map((line, lineIdx) => {
