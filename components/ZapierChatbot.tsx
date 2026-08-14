@@ -167,10 +167,11 @@ export const ZapierChatbot: React.FC = () => {
           <span className="absolute -top-1 -right-1 w-4.5 h-4.5 bg-emerald-500 rounded-full border-2 border-[#070A10] animate-pulse"></span>
         </button>
       </div>
+
       {/* 2. CHATBOT DRAWER CONTAINER - POSITIONED SAFELY ON ALL SCREEN SIZES */}
       {isOpen && (
         <div
-          className={`fixed bottom-24 right-3 sm:right-6 w-[min(440px,calc(100vw-24px))] lg:w-[520px] h-[min(600px,85vh)] lg:h-[750px] bg-[#0D131F] rounded-3xl shadow-2xl border-2 transition-all duration-300 animate-fadeIn flex flex-col justify-between overflow-hidden z-[999999] ${
+          className={`fixed bottom-24 right-3 sm:right-6 w-[calc(100vw-24px)] max-w-[440px] lg:max-w-[520px] h-[85vh] max-h-[600px] lg:max-h-[750px] bg-[#0D131F] rounded-3xl shadow-2xl border-2 transition-all duration-300 animate-fadeIn flex flex-col justify-between overflow-hidden z-[999999] ${
             highlightPulse ? 'border-cyan-400 ring-4 ring-cyan-500/50 scale-[1.01]' : 'border-cyan-500/40'
           }`}
           dir="rtl"
