@@ -13,7 +13,7 @@ const ZAPIER_CHATBOT_IFRAME = 'https://interfaces.zapier.com/embed/chatbot/cmssr
 export const ZapierChatbot: React.FC = () => {
   // הצ׳אטבוט מופיע פתוח כברירת מחדל עם טעינת האתר
   const [isOpen, setIsOpen] = useState(true);
-  const [activeTab, setActiveTab] = useState<'zapier_embed' | 'ai'>('ai');
+  const [activeTab, setActiveTab] = useState<'zapier_embed' | 'ai'>('zapier_embed');
   const [highlightPulse, setHighlightPulse] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
