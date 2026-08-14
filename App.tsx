@@ -664,11 +664,11 @@ const App: React.FC = () => {
                 
                 {/* Left Column: Avatar & LinkedIn */}
                 <div className="lg:col-span-4 flex flex-col items-center text-center bg-[#070A10] p-8 rounded-[2.5rem] border border-slate-800 shadow-inner">
-                  <div className="w-36 h-36 rounded-full overflow-hidden shadow-2xl mb-4 border-4 border-slate-800 ring-4 ring-cyan-500/20">
+                  <div className="w-40 h-40 rounded-full overflow-hidden shadow-2xl mb-4 border-4 border-slate-800 ring-4 ring-cyan-500/20 bg-[#070A10]">
                     <img
                       src="/ohad.jpeg"
                       alt="אוהד ברעם - מנהל מוצר ומוביל טרנספורמציה"
-                      className="w-full h-full object-cover object-center"
+                      className="w-full h-full object-cover object-top"
                     />
                   </div>
                   <h3 className="text-2xl font-black text-white mb-1">אוהד ברעם</h3>
