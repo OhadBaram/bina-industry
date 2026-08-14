@@ -1494,13 +1494,12 @@ const App: React.FC = () => {
                         key={wordIdx}
                         className="transition-all duration-300 px-1.5 py-0.5 rounded-lg inline-block"
                         style={{
-                          transform: isActive ? 'scale(1.25)' : 'scale(1)',
+                          transform: isActive ? 'scale(1.3)' : 'scale(1)',
                           color: isActive ? '#22d3ee' : '#64748b', // ציאן מודגש לעומת אפור רקע
                           backgroundColor: isActive ? 'rgba(6, 182, 212, 0.2)' : 'transparent',
                           boxShadow: isActive ? '0 0 12px rgba(6, 182, 212, 0.5)' : 'none',
-                          border: isActive ? '1px solid rgba(6, 182, 212, 0.3)' : 'none',
-                          fontWeight: isActive ? 900 : 700,
-                          fontSize: isActive ? '1.18em' : '1em' // הגדלה של לפחות 18 אחוז מהגודל המקורי
+                          border: '1px solid ' + (isActive ? 'rgba(6, 182, 212, 0.4)' : 'transparent'),
+                          fontWeight: isActive ? 900 : 700
                         }}
                       >
                         {word}
