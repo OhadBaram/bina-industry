@@ -492,7 +492,7 @@ const App: React.FC = () => {
               </h1>
 
               <p className={`text-lg md:text-2xl font-medium max-w-4xl mx-auto leading-relaxed mb-12 ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
-                פתרונות מדף לא עובדים בתעשייה מורכבת. אנחנו מאבחנים את צווארי הבקבוק בעסק שלכם, מכשירים את הצוותים לעבודה עצמאית עם כלי AI, ומפתחים סוכנים ואוטומציות שמייצרים תוצאות בשטח.
+                פתרונות מדף לא עובדים בתעשייה מורכבת. אני מאבחן את צווארי הבקבוק בעסק שלכם, מכשיר את הצוותים לעבודה עצמאית עם כלי AI, ומפתח סוכנים ואוטומציות שמייצרים תוצאות בשטח.
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-5 max-w-xl mx-auto">
@@ -538,7 +538,7 @@ const App: React.FC = () => {
                   </div>
                   <h3 className="text-2xl font-black text-slate-900 dark:text-white">הכשרה אנושית + תשתיות יציבות</h3>
                   <p className="text-slate-600 dark:text-slate-300 text-base md:text-lg font-medium leading-relaxed">
-                    שילוב בין הכשרה אנושית עמוקה לבין ארכיטקטורת מערכות יציבה. אנחנו לא עוזבים עד שהכלים עובדים בחיי היום-יום של הצוות.
+                    שילוב בין הכשרה אנושית עמוקה לבין ארכיטקטורת מערכות יציבה. אני לא עוזב עד שהכלים עובדים בחיי היום-יום של הצוות.
                   </p>
                 </div>
               </div>
@@ -557,9 +557,14 @@ const App: React.FC = () => {
                   <div>
                     <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
                       <span className="w-9 h-9 rounded-xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center font-bold text-sm border border-cyan-500/30">01</span>
-                      <span className="text-xs font-bold px-3 py-1.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 rounded-xl border border-cyan-500/30">
-                        CUSTOM AI AGENTS
-                      </span>
+                      <button
+                        onClick={() => triggerConceptExplanation('CUSTOM AI AGENTS', 'סוכני AI מותאמים אישית פועלים כאנשי צוות וירטואליים האוטונומיים מול מאגרי המידע וה-CRM של החברה, לביצוע משימות מורכבות בדיוק מוחלט.')}
+                        className="text-xs font-bold px-3 py-1.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 rounded-xl border border-cyan-500/30 hover:border-cyan-500 hover:scale-105 transition-all cursor-pointer flex items-center gap-1.5"
+                        title="לחץ לקבלת הסבר מפורט בסוכן ה-AI"
+                      >
+                        <span>CUSTOM AI AGENTS</span>
+                        <span className="text-[10px]">💡</span>
+                      </button>
                     </div>
 
                     <span className="text-xs font-bold text-slate-500 dark:text-slate-400 block mb-1">סוכני AI מותאמים אישית</span>
@@ -743,7 +748,7 @@ const App: React.FC = () => {
                     </span>
                     <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">מאגר הפרומפטים המקצועי של "מדברים בינה"</h2>
                     <p className="text-slate-600 dark:text-slate-300 text-base md:text-xl font-medium leading-relaxed">
-                      חלק קטן מתוך ארגז הכלים שאנחנו מביאים לארגונים. סננו לפי נושא, העתיקו והתנסו בעצמכם.
+                      חלק קטן מתוך ארגז הכלים שאני מביא לארגונים. סננו לפי נושא, העתיקו והתנסו בעצמכם.
                     </p>
                   </div>
 
@@ -937,7 +942,7 @@ const App: React.FC = () => {
               </span>
               <h2 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white mb-4">מאגר הפרומפטים המקצועי של "מדברים בינה"</h2>
               <p className="text-slate-600 dark:text-slate-400 font-bold text-base md:text-lg max-w-3xl mx-auto">
-                חלק מתוך ארגז הכלים שאנחנו מביאים לארגונים. סננו לפי נושא, העתיקו והתנסו בעצמכם.
+                חלק מתוך ארגז הכלים שאני מביא לארגונים. סננו לפי נושא, העתיקו והתנסו בעצמכם.
               </p>
             </div>
 

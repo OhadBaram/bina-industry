@@ -42,6 +42,7 @@ export const ZapierChatbot: React.FC = () => {
     const handleTriggerConcept = (question: string, explanation: string) => {
       setIsOpen(true);
       setActiveTab('ai');
+      setInputValue(question);
       setHighlightPulse(true);
       setTimeout(() => setHighlightPulse(false), 2000);
 
