@@ -26,7 +26,6 @@ export const ZapierChatbot: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
   const [isSending, setIsSending] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const chatbotRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -146,9 +145,9 @@ export const ZapierChatbot: React.FC = () => {
   };
 
   return (
-    <div ref={chatbotRef} className="fixed bottom-6 right-6 z-[99999]">
-      {/* כפתור הפעלה צף בפינה עם תגית בולטת לעין */}
-      <div className="flex items-center gap-3">
+    <>
+      {/* 1. FLOATING LAUNCHER BUTTON - ALWAYS VISIBLE AT BOTTOM RIGHT */}
+      <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[999999] flex items-center gap-3 pointer-events-auto">
         {!isOpen && (
           <span className="hidden sm:inline-block px-3 py-1.5 bg-[#0D131F] text-cyan-400 border border-cyan-500/50 rounded-xl text-xs font-black shadow-2xl animate-pulse">
             💬 סוכן AI בלייב
@@ -164,11 +163,11 @@ export const ZapierChatbot: React.FC = () => {
         </button>
       </div>
 
-      {/* חלון צ׳אטבוט צף נפתח בפינה */}
+      {/* 2. CHATBOT DRAWER CONTAINER - POSITIONED SAFELY ON ALL SCREEN SIZES */}
       {isOpen && (
         <div
-          className={`absolute bottom-20 right-0 w-[92vw] max-w-[420px] h-[580px] bg-[#0D131F] rounded-3xl shadow-2xl border-2 transition-all duration-300 animate-fadeIn flex flex-col justify-between overflow-hidden ${
-            highlightPulse ? 'border-cyan-400 ring-4 ring-cyan-500/50 scale-[1.02]' : 'border-cyan-500/40'
+          className={`fixed bottom-24 right-3 sm:right-6 w-[min(420px,calc(100vw-24px))] h-[min(580px,78vh)] bg-[#0D131F] rounded-3xl shadow-2xl border-2 transition-all duration-300 animate-fadeIn flex flex-col justify-between overflow-hidden z-[999999] ${
+            highlightPulse ? 'border-cyan-400 ring-4 ring-cyan-500/50 scale-[1.01]' : 'border-cyan-500/40'
           }`}
           dir="rtl"
           style={{ direction: 'rtl', textAlign: 'right' }}
@@ -192,7 +191,7 @@ export const ZapierChatbot: React.FC = () => {
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setActiveTab(activeTab === 'zapier_embed' ? 'ai' : 'zapier_embed')}
-                className="text-[11px] font-bold px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-cyan-300 rounded-lg transition-all"
+                className="text-[11px] font-bold px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-cyan-300 rounded-lg transition-all cursor-pointer"
                 title="החלפת מצב צ׳אט"
               >
                 {activeTab === 'zapier_embed' ? 'AI Webhook 🤖' : 'Zapier Embed 🔗'}
@@ -253,19 +252,19 @@ export const ZapierChatbot: React.FC = () => {
               <div className="flex gap-2 overflow-x-auto py-2 border-t border-slate-800/80 no-scrollbar">
                 <button
                   onClick={() => handleSendMessage('מה זה RAG Architecture?')}
-                  className="flex-shrink-0 text-[11px] font-bold px-3 py-1.5 bg-[#0D131F] hover:bg-slate-800 text-slate-300 rounded-xl border border-slate-800"
+                  className="flex-shrink-0 text-[11px] font-bold px-3 py-1.5 bg-[#0D131F] hover:bg-slate-800 text-slate-300 rounded-xl border border-slate-800 cursor-pointer"
                 >
                   ⚡ RAG
                 </button>
                 <button
                   onClick={() => handleSendMessage('מה זה Private Data?')}
-                  className="flex-shrink-0 text-[11px] font-bold px-3 py-1.5 bg-[#0D131F] hover:bg-slate-800 text-slate-300 rounded-xl border border-slate-800"
+                  className="flex-shrink-0 text-[11px] font-bold px-3 py-1.5 bg-[#0D131F] hover:bg-slate-800 text-slate-300 rounded-xl border border-slate-800 cursor-pointer"
                 >
                   🔒 Private Data
                 </button>
                 <button
                   onClick={() => handleSendMessage('מה זה Zero Retention?')}
-                  className="flex-shrink-0 text-[11px] font-bold px-3 py-1.5 bg-[#0D131F] hover:bg-slate-800 text-slate-300 rounded-xl border border-slate-800"
+                  className="flex-shrink-0 text-[11px] font-bold px-3 py-1.5 bg-[#0D131F] hover:bg-slate-800 text-slate-300 rounded-xl border border-slate-800 cursor-pointer"
                 >
                   🛡️ Zero Retention
                 </button>
@@ -290,7 +289,7 @@ export const ZapierChatbot: React.FC = () => {
                 <button
                   type="submit"
                   disabled={!inputValue.trim() || isSending}
-                  className="px-4 py-3 bg-cyan-500 hover:bg-cyan-400 text-black font-black rounded-xl text-xs transition-all disabled:opacity-50"
+                  className="px-4 py-3 bg-cyan-500 hover:bg-cyan-400 text-black font-black rounded-xl text-xs transition-all disabled:opacity-50 cursor-pointer"
                 >
                   שלח 🚀
                 </button>
@@ -300,6 +299,6 @@ export const ZapierChatbot: React.FC = () => {
 
         </div>
       )}
-    </div>
+    </>
   );
 };
