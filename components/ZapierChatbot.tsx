@@ -17,7 +17,7 @@ export const ZapierChatbot: React.FC = () => {
     {
       id: '1',
       sender: 'bot',
-      text: 'שלום! אני סוכן ה-AI של בינה לתעשייה. במה אוכל לסייע לארגון שלך היום?',
+      text: 'שלום! אני סוכן ה-AI של בינה לתעשייה. לחצו על כל מושג באתר (כמו RAG, Private Data או Zero Retention) ואציג לכם הסבר מקיף!',
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
   ]);
@@ -34,6 +34,39 @@ export const ZapierChatbot: React.FC = () => {
       scrollToBottom();
     }
   }, [messages, isOpen, activeTab]);
+
+  // האזנה לאירוע לחיצה על מושגים ברחבי האתר
+  useEffect(() => {
+    const handleConceptClick = (event: Event) => {
+      const customEvt = event as CustomEvent<{ question: string; explanation: string }>;
+      if (!customEvt.detail) return;
+      const { question, explanation } = customEvt.detail;
+
+      setIsOpen(true);
+      setActiveTab('ai');
+
+      const userMsg: Message = {
+        id: Date.now().toString(),
+        sender: 'user',
+        text: question,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+
+      const botMsg: Message = {
+        id: (Date.now() + 1).toString(),
+        sender: 'bot',
+        text: explanation,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+
+      setMessages(prev => [...prev, userMsg, botMsg]);
+    };
+
+    window.addEventListener('explainConcept', handleConceptClick);
+    return () => {
+      window.removeEventListener('explainConcept', handleConceptClick);
+    };
+  }, []);
 
   // שליחת הודעה וסינכרון בזמן אמת ל-Zapier Webhook
   const handleSendMessage = async (textToSend?: string) => {
@@ -69,7 +102,13 @@ export const ZapierChatbot: React.FC = () => {
       let botReply = 'תודה על הפנייה! קיבלנו את הודעתך והיא הועברה ישירות לאוהד ברעם. אנו נחזור אליך בהקדם.';
       
       const lower = messageText.toLowerCase();
-      if (lower.includes('סוכן') || lower.includes('agent') || lower.includes('rag')) {
+      if (lower.includes('rag')) {
+        botReply = 'RAG (Retrieval-Augmented Generation) היא ארכיטקטורה המחברת את מודלי ה-AI למאגרי המידע והמסמכים של הארגון. היא מאפשרת לסוכן להפיק תשובות מדויקות, מבוססות עובדות בלבד, ללא שגיאות וללא דליפת מידע.';
+      } else if (lower.includes('private data') || lower.includes('פרטיות')) {
+        botReply = 'Private Data מבטיח שכל המידע הארגוני והמסמכים מעובדים בסביבה מוצפנת ומבודדת לחלוטין. שום מידע שלכם אינו נחשף לצד ג\' ואינו משמש לאימון מודלים ציבוריים.';
+      } else if (lower.includes('zero retention')) {
+        botReply = 'מדיניות Zero Retention מבטיחה שספקי ה-AI והסוכנים אינם שומרים את השאילתות או התשובות בשרתים שלהם לאחר סיום העיבוד, לרמת דיסקרטיות ואבטחת מידע מרבית.';
+      } else if (lower.includes('סוכן') || lower.includes('agent')) {
         botReply = 'אנו מתמחים בפיתוח סוכני AI אוטונומיים (Custom AI Agents) מחוברים למאגרי המידע וה-CRM של החברה, בפרטיות מלאה. נשמח לתאם פגישת אבחון!';
       } else if (lower.includes('סדנא') || lower.includes('הדרכה') || lower.includes('צוות')) {
         botReply = 'אנו מעבירים סדנאות מעשיות ממוקדות תפקיד (הנהלה, שיווק, תפעול, כספים) עם הנדסת פרומפטים מתקדמת. נשמח לשלוח סילבוס מותאם!';
@@ -190,22 +229,22 @@ export const ZapierChatbot: React.FC = () => {
               {/* הצעות מהירות */}
               <div className="flex gap-2 overflow-x-auto py-2 border-t border-slate-800/80 no-scrollbar">
                 <button
-                  onClick={() => handleSendMessage('אני מעוניין בפיתוח סוכני AI לארגון')}
+                  onClick={() => handleSendMessage('מה זה RAG Architecture?')}
                   className="flex-shrink-0 text-[11px] font-bold px-3 py-1.5 bg-[#0D131F] hover:bg-slate-800 text-slate-300 rounded-xl border border-slate-800"
                 >
-                  🤖 סוכני AI
+                  ⚡ RAG
                 </button>
                 <button
-                  onClick={() => handleSendMessage('אשמח לפרטים על סדנאות והכשרת צוותים')}
+                  onClick={() => handleSendMessage('מה זה Private Data?')}
                   className="flex-shrink-0 text-[11px] font-bold px-3 py-1.5 bg-[#0D131F] hover:bg-slate-800 text-slate-300 rounded-xl border border-slate-800"
                 >
-                  🎓 סדנאות
+                  🔒 Private Data
                 </button>
                 <button
-                  onClick={() => handleSendMessage('תיאום שיחת אבחון עם אוהד ברעם')}
+                  onClick={() => handleSendMessage('מה זה Zero Retention?')}
                   className="flex-shrink-0 text-[11px] font-bold px-3 py-1.5 bg-[#0D131F] hover:bg-slate-800 text-slate-300 rounded-xl border border-slate-800"
                 >
-                  📞 שיחת אבחון
+                  🛡️ Zero Retention
                 </button>
               </div>
 

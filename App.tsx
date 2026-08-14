@@ -54,6 +54,18 @@ const App: React.FC = () => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('הפעולה בוצעה בהצלחה!');
 
+  // פתיחת צ׳אטבוט והצגת הסבר על מושג מקצועי
+  const triggerConceptExplanation = (concept: string, explanation: string) => {
+    window.dispatchEvent(
+      new CustomEvent('explainConcept', {
+        detail: {
+          question: `מה זה ${concept}?`,
+          explanation: explanation
+        }
+      })
+    );
+  };
+
   // --- ניהול טופס לידים ---
   const [leadData, setLeadData] = useState({
     name: '',
@@ -514,9 +526,30 @@ const App: React.FC = () => {
                     </p>
 
                     <div className="flex flex-wrap gap-3 mb-8">
-                      <span className="px-3.5 py-1.5 bg-slate-100 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 text-cyan-600 dark:text-cyan-400 font-mono text-xs font-black rounded-xl">RAG Architecture</span>
-                      <span className="px-3.5 py-1.5 bg-slate-100 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 text-cyan-600 dark:text-cyan-400 font-mono text-xs font-black rounded-xl">Private Data</span>
-                      <span className="px-3.5 py-1.5 bg-slate-100 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 text-cyan-600 dark:text-cyan-400 font-mono text-xs font-black rounded-xl">Zero Retention</span>
+                      <button
+                        onClick={() => triggerConceptExplanation('RAG Architecture', 'RAG (Retrieval-Augmented Generation) היא ארכיטקטורה המחברת את מודל ה-AI למאגרי המידע והמסמכים של הארגון. היא מאפשרת לסוכן להפיק תשובות מדויקות, מבוססות עובדות בלבד, ללא שגיאות וללא דליפת מידע.')}
+                        className="px-3.5 py-1.5 bg-slate-100 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 text-cyan-600 dark:text-cyan-400 font-mono text-xs font-black rounded-xl hover:border-cyan-500 hover:scale-105 transition-all cursor-pointer shadow-sm flex items-center gap-1.5"
+                        title="לחץ לקבלת הסבר מפורט בסוכן ה-AI"
+                      >
+                        <span>RAG Architecture</span>
+                        <span className="text-[10px]">💡</span>
+                      </button>
+                      <button
+                        onClick={() => triggerConceptExplanation('Private Data', 'Private Data מבטיח שכל המידע הארגוני והמסמכים מעובדים בסביבה מוצפנת ומבודדת לחלוטין. שום מידע שלכם אינו נחשף לצד ג\' ואינו משמש לאימון מודלים ציבוריים.')}
+                        className="px-3.5 py-1.5 bg-slate-100 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 text-cyan-600 dark:text-cyan-400 font-mono text-xs font-black rounded-xl hover:border-cyan-500 hover:scale-105 transition-all cursor-pointer shadow-sm flex items-center gap-1.5"
+                        title="לחץ לקבלת הסבר מפורט בסוכן ה-AI"
+                      >
+                        <span>Private Data</span>
+                        <span className="text-[10px]">🔒</span>
+                      </button>
+                      <button
+                        onClick={() => triggerConceptExplanation('Zero Retention', 'מדיניות Zero Retention מבטיחה שספקי ה-AI והסוכנים אינם שומרים את השאילתות או התשובות בשרתים שלהם לאחר סיום העיבוד, לרמת דיסקרטיות ואבטחת מידע מרבית.')}
+                        className="px-3.5 py-1.5 bg-slate-100 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 text-cyan-600 dark:text-cyan-400 font-mono text-xs font-black rounded-xl hover:border-cyan-500 hover:scale-105 transition-all cursor-pointer shadow-sm flex items-center gap-1.5"
+                        title="לחץ לקבלת הסבר מפורט בסוכן ה-AI"
+                      >
+                        <span>Zero Retention</span>
+                        <span className="text-[10px]">🛡️</span>
+                      </button>
                     </div>
                   </div>
 
@@ -602,9 +635,14 @@ const App: React.FC = () => {
                       התאמת פתרונות העומדים בדרישות אבטחת מידע מחמירות, שמבטיחות שהדאטה הרגיש של הארגון אינו משמש לאימון מודלים ציבוריים.
                     </p>
 
-                    <div className="p-4 bg-[#070A10] rounded-2xl border border-slate-800 text-xs font-bold text-cyan-300 mb-6">
-                      🛡️ אפשרות לפריסת מודלים מקומיים (Local LLMs)
-                    </div>
+                    <button
+                      onClick={() => triggerConceptExplanation('Local LLMs', 'מודלים מקומיים (Local LLMs) פועלים ישירות על גבי תשתיות המחשוב או הענן הפרטי של הארגון. הפתרון מאפשר עצמאות מוחלטת, עבודה ללא אינטרנט ועמידה בתקני אבטחה מחמירים ביותר.')}
+                      className="w-full text-right p-4 bg-slate-100 dark:bg-[#070A10] rounded-2xl border border-slate-200 dark:border-slate-800 text-xs font-bold text-cyan-600 dark:text-cyan-300 mb-6 hover:border-cyan-500 hover:scale-[1.01] transition-all cursor-pointer flex items-center justify-between shadow-sm"
+                      title="לחץ לקבלת הסבר מפורט בסוכן ה-AI"
+                    >
+                      <span>🛡️ אפשרות לפריסת מודלים מקומיים (Local LLMs)</span>
+                      <span className="text-[11px] bg-cyan-500/20 px-2.5 py-1 rounded-lg text-cyan-600 dark:text-cyan-400 font-black">לחץ להסבר הבוט 💡</span>
+                    </button>
                   </div>
 
                   <button onClick={() => prefillServiceAndScroll('product')} className="w-full py-4 rounded-2xl bg-slate-800 text-slate-200 hover:bg-cyan-500 hover:text-black font-black text-xs transition-all text-center">
