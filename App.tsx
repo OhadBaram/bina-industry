@@ -227,18 +227,63 @@ const App: React.FC = () => {
     }, 150);
   };
 
-  // סינון פרומפטים עסקיים
+  // מעבר לתצוגת מאגר הפרומפטים וגלילה לראש העמוד
+  const goToPromptsView = () => {
+    setMainView('prompts');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // איחוד כל 1,000 הפרומפטים מכל הקטגוריות
+  const fullPromptPool = useMemo(() => {
+    const combined: B2BPrompt[] = [...B2B_PROMPTS];
+    
+    Object.entries(ALL_PROMPTS).forEach(([catKey, promptList]) => {
+      promptList.forEach((p) => {
+        combined.push({
+          id: p.id,
+          category: catKey,
+          subCategory: p.subCategory || 'כללי',
+          title: p.title,
+          explanation: p.explanation,
+          text: p.text,
+          isPremium: false,
+          createdAt: p.createdAt || Date.now()
+        });
+      });
+    });
+
+    return combined;
+  }, []);
+
+  // איחוד כל הקטגוריות
+  const combinedCategories = useMemo(() => {
+    const map = new Map<string, { id: string; name: string; icon: string }>();
+    B2B_PROMPT_CATEGORIES.forEach(c => map.set(c.id, { id: c.id, name: c.name, icon: c.icon }));
+    CATEGORIES.forEach(c => {
+      if (!map.has(c.id)) {
+        map.set(c.id, { id: c.id, name: c.name, icon: c.icon });
+      }
+    });
+    return Array.from(map.values());
+  }, []);
+
+  // סינון 1,000 פרומפטים עסקיים
   const filteredB2BPrompts = useMemo(() => {
-    let pool = B2B_PROMPTS;
+    let pool = fullPromptPool;
     if (activeB2BCategory !== 'all') {
       pool = pool.filter(p => p.category === activeB2BCategory);
     }
     if (searchTerm) {
       const low = searchTerm.toLowerCase();
-      pool = pool.filter(p => p.title.toLowerCase().includes(low) || p.text.toLowerCase().includes(low) || p.explanation.toLowerCase().includes(low));
+      pool = pool.filter(p => 
+        p.title.toLowerCase().includes(low) || 
+        p.text.toLowerCase().includes(low) || 
+        p.explanation.toLowerCase().includes(low) ||
+        p.subCategory.toLowerCase().includes(low)
+      );
     }
     return pool;
-  }, [activeB2BCategory, searchTerm]);
+  }, [fullPromptPool, activeB2BCategory, searchTerm]);
 
   const combinedIdentityValue = leadData.company.trim() ? `${leadData.name.trim()} (${leadData.company.trim()})` : leadData.name.trim();
 
@@ -398,7 +443,7 @@ const App: React.FC = () => {
           <nav className="hidden lg:flex items-center gap-1 bg-slate-100 dark:bg-slate-900/90 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-800">
             <button onClick={scrollToCapabilities} className="px-5 py-2.5 rounded-xl font-black text-xs md:text-sm text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all">השירותים</button>
             <button onClick={scrollToMethodology} className="px-5 py-2.5 rounded-xl font-black text-xs md:text-sm text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all">תהליך האפיון</button>
-            <button onClick={() => setMainView('prompts')} className={`px-5 py-2.5 rounded-xl font-black text-xs md:text-sm transition-all ${mainView === 'prompts' ? 'bg-cyan-500/20 text-cyan-600 dark:text-cyan-300 border border-cyan-500/40' : 'text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400'}`}>מאגר הפרומפטים</button>
+            <button onClick={goToPromptsView} className={`px-5 py-2.5 rounded-xl font-black text-xs md:text-sm transition-all ${mainView === 'prompts' ? 'bg-cyan-500/20 text-cyan-600 dark:text-cyan-300 border border-cyan-500/40' : 'text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400'}`}>מאגר הפרומפטים</button>
             <button onClick={scrollToAbout} className="px-5 py-2.5 rounded-xl font-black text-xs md:text-sm text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all">אודות</button>
           </nav>
 
@@ -421,7 +466,7 @@ const App: React.FC = () => {
         <div className="flex lg:hidden items-center justify-center gap-2 mt-3 pt-3 border-t border-slate-200 dark:border-slate-800 overflow-x-auto no-scrollbar">
           <button onClick={scrollToCapabilities} className="px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">השירותים</button>
           <button onClick={scrollToMethodology} className="px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">תהליך האפיון</button>
-          <button onClick={() => setMainView('prompts')} className={`px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 ${mainView === 'prompts' ? 'bg-cyan-500/20 text-cyan-600 dark:text-cyan-300 border border-cyan-500/40' : 'bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800'}`}>מאגר הפרומפטים</button>
+          <button onClick={goToPromptsView} className={`px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 ${mainView === 'prompts' ? 'bg-cyan-500/20 text-cyan-600 dark:text-cyan-300 border border-cyan-500/40' : 'bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800'}`}>מאגר הפרומפטים</button>
           <button onClick={scrollToAbout} className="px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">אודות</button>
         </div>
       </header>
@@ -691,7 +736,7 @@ const App: React.FC = () => {
                   </div>
 
                   <div className="flex flex-wrap gap-4 pt-4">
-                    <button onClick={() => setMainView('prompts')} className="px-6 py-3.5 bg-cyan-500 text-white font-black rounded-2xl text-xs hover:bg-cyan-400 transition-all shadow-md flex items-center gap-2">
+                    <button onClick={goToPromptsView} className="px-6 py-3.5 bg-cyan-500 text-white font-black rounded-2xl text-xs hover:bg-cyan-400 transition-all shadow-md flex items-center gap-2">
                       <span>מאגר הפרומפטים והתבניות לעסקים</span>
                       <span>📚</span>
                     </button>
@@ -794,11 +839,13 @@ const App: React.FC = () => {
         {/* === VIEW 2: B2B PROMPT LIBRARY (/prompts) === */}
         {mainView === 'prompts' && (
           <section className="animate-fadeIn space-y-10">
-            <div className="bg-[#0D131F] rounded-[3rem] p-8 md:p-12 border border-slate-800 text-center">
-              <span className="px-4 py-1.5 bg-cyan-500/10 text-cyan-400 rounded-full text-xs font-bold mb-4 inline-block">מאגר ידע חופשי</span>
-              <h2 className="text-4xl md:text-6xl font-black text-white mb-4">מאגר הפרומפטים המקצועי של "מדברים בינה"</h2>
-              <p className="text-slate-400 font-bold text-base md:text-lg max-w-3xl mx-auto">
-                חלק קטן מתוך ארגז הכלים שאנחנו מביאים לארגונים. סננו לפי נושא, העתיקו והתנסו בעצמכם.
+            <div className="bg-white dark:bg-[#0D131F] rounded-[3rem] p-8 md:p-12 border border-slate-200 dark:border-slate-800 text-center shadow-xl dark:shadow-none">
+              <span className="px-4 py-1.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 rounded-full text-xs font-black mb-4 inline-block border border-cyan-500/30">
+                ספריית 1,000+ התבניות והפרומפטים לעסקים ולמנהלים
+              </span>
+              <h2 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white mb-4">מאגר הפרומפטים המקצועי של "מדברים בינה"</h2>
+              <p className="text-slate-600 dark:text-slate-400 font-bold text-base md:text-lg max-w-3xl mx-auto">
+                חלק מתוך ארגז הכלים שאנחנו מביאים לארגונים. סננו לפי נושא, העתיקו והתנסו בעצמכם.
               </p>
             </div>
 
@@ -809,23 +856,23 @@ const App: React.FC = () => {
                 onChange={(e) => setSearchInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && setSearchTerm(searchInput)}
                 placeholder="חפשו תבנית עבודה עסקית..."
-                className="flex-grow px-8 py-5 rounded-2xl bg-[#0D131F] border border-slate-800 focus:border-cyan-500 outline-none text-right text-white font-medium"
+                className="flex-grow px-8 py-5 rounded-2xl bg-white dark:bg-[#0D131F] border border-slate-200 dark:border-slate-800 focus:border-cyan-500 outline-none text-right text-slate-900 dark:text-white font-medium shadow-sm"
               />
-              <button onClick={() => setSearchTerm(searchInput)} className="px-8 py-5 bg-cyan-500 text-black font-black rounded-2xl hover:bg-cyan-400 transition-all">חפש</button>
+              <button onClick={() => setSearchTerm(searchInput)} className="px-8 py-5 bg-cyan-500 text-white font-black rounded-2xl hover:bg-cyan-400 transition-all shadow-md">חפש</button>
             </div>
 
-            <div className="flex gap-3 overflow-x-auto pb-4 no-scrollbar justify-center">
+            <div className="flex gap-3 overflow-x-auto pb-4 no-scrollbar justify-start md:justify-center">
               <button
                 onClick={() => { setActiveB2BCategory('all'); setSearchTerm(''); }}
-                className={`flex-shrink-0 px-6 py-3.5 rounded-2xl font-black border transition-all ${activeB2BCategory === 'all' ? 'bg-cyan-500 text-black border-cyan-500 shadow-lg scale-105' : 'bg-[#0D131F] border-slate-800 text-slate-300 hover:border-cyan-500/50'}`}
+                className={`flex-shrink-0 px-6 py-3.5 rounded-2xl font-black border transition-all ${activeB2BCategory === 'all' ? 'bg-cyan-500 text-white border-cyan-500 shadow-lg scale-105' : 'bg-white dark:bg-[#0D131F] border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-300 hover:border-cyan-500/50'}`}
               >
-                🌐 כל התבניות העסקיות
+                🌐 כל התבניות ({fullPromptPool.length})
               </button>
-              {B2B_PROMPT_CATEGORIES.map(cat => (
+              {combinedCategories.map(cat => (
                 <button
                   key={cat.id}
                   onClick={() => { setActiveB2BCategory(cat.id); setSearchTerm(''); }}
-                  className={`flex-shrink-0 px-6 py-3.5 rounded-2xl font-black border transition-all ${activeB2BCategory === cat.id ? 'bg-cyan-500 text-black border-cyan-500 shadow-lg scale-105' : 'bg-[#0D131F] border-slate-800 text-slate-300 hover:border-cyan-500/50'}`}
+                  className={`flex-shrink-0 px-6 py-3.5 rounded-2xl font-black border transition-all ${activeB2BCategory === cat.id ? 'bg-cyan-500 text-white border-cyan-500 shadow-lg scale-105' : 'bg-white dark:bg-[#0D131F] border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-300 hover:border-cyan-500/50'}`}
                 >
                   {cat.icon} {cat.name}
                 </button>
