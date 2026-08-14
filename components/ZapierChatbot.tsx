@@ -167,7 +167,7 @@ export const ZapierChatbot: React.FC = () => {
       {/* 2. CHATBOT DRAWER CONTAINER - POSITIONED SAFELY ON ALL SCREEN SIZES */}
       {isOpen && (
         <div
-          className={`fixed bottom-24 right-3 sm:right-6 w-[min(440px,calc(100vw-24px))] h-[min(600px,80vh)] bg-[#0D131F] rounded-3xl shadow-2xl border-2 transition-all duration-300 animate-fadeIn flex flex-col justify-between overflow-hidden z-[999999] ${
+          className={`fixed bottom-24 right-3 sm:right-6 w-[min(440px,calc(100vw-24px))] lg:w-[520px] h-[min(600px,85vh)] lg:h-[750px] bg-[#0D131F] rounded-3xl shadow-2xl border-2 transition-all duration-300 animate-fadeIn flex flex-col justify-between overflow-hidden z-[999999] ${
             highlightPulse ? 'border-cyan-400 ring-4 ring-cyan-500/50 scale-[1.01]' : 'border-cyan-500/40'
           }`}
           dir="rtl"
