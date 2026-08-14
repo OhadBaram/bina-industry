@@ -3,6 +3,8 @@ import { CATEGORIES, ALL_PROMPTS } from './data/prompts';
 import { B2B_SERVICES, PAIN_POINTS, USE_CASES, B2B_PROMPT_CATEGORIES, B2B_PROMPTS, CAPABILITIES, METHODOLOGY_STEPS } from './data/b2bData';
 import { B2BPrompt } from './types';
 import { PrivacyPolicyModal } from './components/PrivacyPolicyModal';
+import { TermsOfServiceModal } from './components/TermsOfServiceModal';
+import { AccessibilityStatementModal } from './components/AccessibilityStatementModal';
 import { CookieBanner } from './components/CookieBanner';
 import { AccessibilityToolbar } from './components/AccessibilityToolbar';
 import { ZapierChatbot } from './components/ZapierChatbot';
@@ -30,6 +32,8 @@ const App: React.FC = () => {
   const [mainView, setMainView] = useState<'home' | 'prompts'>('home');
   const [activeB2BCategory, setActiveB2BCategory] = useState<string>('all');
   const [isPrivacyPolicyOpen, setIsPrivacyPolicyOpen] = useState(false);
+  const [isTermsOfServiceOpen, setIsTermsOfServiceOpen] = useState(false);
+  const [isAccessibilityStatementOpen, setIsAccessibilityStatementOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
 
   useEffect(() => {
@@ -330,7 +334,7 @@ const App: React.FC = () => {
         </div>
         <h3 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-3 tracking-tight">בואו נבדוק התאמה לארגון שלכם</h3>
         <p className="text-slate-600 dark:text-slate-400 font-bold text-base md:text-lg max-w-2xl mx-auto">
-          השאירו פרטים, ספרו לי בקצרה מה האתגר, ואחזור אליך לשיחת אפיון ראשונית ללא עלות.
+          השאר פרטים, ספר לי בקצרה מה האתגר, ואחזור אליך לשיחת אפיון ראשונית ללא עלות.
         </p>
       </div>
 
@@ -445,6 +449,18 @@ const App: React.FC = () => {
             />
           </div>
 
+          <div className="flex items-center gap-3 text-right">
+            <input
+              id="spam_consent_contact"
+              type="checkbox"
+              name="marketing_consent"
+              className="w-5 h-5 rounded border-slate-300 text-cyan-600 focus:ring-cyan-500 cursor-pointer"
+            />
+            <label htmlFor="spam_consent_contact" className="text-xs font-bold text-slate-600 dark:text-slate-400 cursor-pointer">
+              אני מאשר קבלת תוכן שיווקי ודברי פרסומת במייל/SMS
+            </label>
+          </div>
+
           <button
             type="submit"
             disabled={isSubmittingLead}
@@ -523,7 +539,27 @@ const App: React.FC = () => {
               </h1>
 
               <p className={`text-lg md:text-2xl font-medium max-w-4xl mx-auto leading-relaxed mb-12 ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
-                פתרונות מדף לא עובדים בתעשייה מורכבת. אני מאבחן את צווארי הבקבוק בעסק שלכם, מכשיר את הצוותים לעבודה עצמאית עם כלי AI, ומפתח סוכנים ואוטומציות שמייצרים תוצאות בשטח.
+                <button
+                  onClick={() => triggerConceptExplanation('פתרונות מדף', 'מוצרי מדף גנריים שלא מותאמים לצרכים, למערכות או לאבטחת המידע של הארגון, ואינם פותרים בעיות מורכבות בצורה מדויקת.')}
+                  className="underline decoration-cyan-500/60 decoration-2 underline-offset-4 hover:text-cyan-500 font-bold transition-all cursor-pointer"
+                  title="העתק מושג לצ׳אטבוט 📋"
+                >
+                  פתרונות מדף
+                </button> לא עובדים בתעשייה מורכבת. אני מאבחן את{' '}
+                <button
+                  onClick={() => triggerConceptExplanation('צווארי הבקבוק', 'נקודות התורפה ותהליכי העבודה הידניים המייגעים בארגון שמעכבים את העבודה ופוגעים בפרודוקטיביות.')}
+                  className="underline decoration-cyan-500/60 decoration-2 underline-offset-4 hover:text-cyan-500 font-bold transition-all cursor-pointer"
+                  title="העתק מושג לצ׳אטבוט 📋"
+                >
+                  צווארי הבקבוק
+                </button> בעסק שלכם, מכשיר את הצוותים ל-{' '}
+                <button
+                  onClick={() => triggerConceptExplanation('עבודה עצמאית עם כלי AI', 'הקניית מיומנויות הנדסת פרומפטים מתקדמת לצוותים כדי שיוכלו להשתמש בצורה יומיומית ויעילה במודלים השונים.')}
+                  className="underline decoration-cyan-500/60 decoration-2 underline-offset-4 hover:text-cyan-500 font-bold transition-all cursor-pointer"
+                  title="העתק מושג לצ׳אטבוט 📋"
+                >
+                  עבודה עצמאית עם כלי AI
+                </button>, ומפתח סוכנים ואוטומציות שמייצרים תוצאות בשטח.
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-5 max-w-xl mx-auto">
@@ -553,9 +589,14 @@ const App: React.FC = () => {
               <div className="grid md:grid-cols-2 gap-8">
                 {/* הבעיה */}
                 <div className="bg-slate-50 dark:bg-[#070A10] p-8 md:p-10 rounded-[2.5rem] border border-red-500/20 space-y-4">
-                  <div className="inline-flex items-center px-4 py-1.5 bg-red-500/10 text-red-600 dark:text-red-400 rounded-full text-xs font-black border border-red-500/30">
-                    ⚠️ הבעיה השכיחה
-                  </div>
+                  <button
+                    onClick={() => triggerConceptExplanation('הבעיה השכיחה ביוזמות AI', 'רכישת מנויים וכלים ללא התאמה מעשית לתהליכי העבודה וללא ליווי והכשרה אנושית, מה שגורם לעובדים לא להשתמש בהם בפועל.')}
+                    className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-red-500/10 text-red-600 dark:text-red-400 rounded-full text-xs font-black border border-red-500/30 hover:border-red-500 hover:scale-105 transition-all cursor-pointer shadow-sm text-right"
+                    title="העתק מושג לצ׳אטבוט 📋"
+                  >
+                    <span>⚠️ הבעיה השכיחה</span>
+                    <span className="text-[10px]">📋</span>
+                  </button>
                   <h3 className="text-2xl font-black text-slate-900 dark:text-white">רכישת כלים ללא חיבור לתהליכים</h3>
                   <p className="text-slate-600 dark:text-slate-300 text-base md:text-lg font-medium leading-relaxed">
                     חברות קונות מנויים למודלי AI (כמו ChatGPT) או מחברות תוספים בסיסיים, אבל העובדים לא משתמשים, התהליכים לא מתחברים, וההשקעה יורדת לטמיון.
@@ -564,9 +605,14 @@ const App: React.FC = () => {
 
                 {/* הפתרון של בינה לתעשייה */}
                 <div className="bg-slate-50 dark:bg-[#070A10] p-8 md:p-10 rounded-[2.5rem] border border-cyan-500/30 space-y-4">
-                  <div className="inline-flex items-center px-4 py-1.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 rounded-full text-xs font-black border border-cyan-500/30">
-                    ✓ הפתרון של בינה לתעשייה
-                  </div>
+                  <button
+                    onClick={() => triggerConceptExplanation('✓ הפתרון של בינה לתעשייה', 'שילוב הוליסטי המשלב הכשרה מעשית של העובדים יחד עם תכנון וארכיטקטורה יציבה ומאובטחת המבוססת על צרכי החברה ומערכותיה.')}
+                    className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 rounded-full text-xs font-black border border-cyan-500/30 hover:border-cyan-500 hover:scale-105 transition-all cursor-pointer shadow-sm text-right"
+                    title="העתק מושג לצ׳אטבוט 📋"
+                  >
+                    <span>✓ הפתרון של בינה לתעשייה</span>
+                    <span className="text-[10px]">📋</span>
+                  </button>
                   <h3 className="text-2xl font-black text-slate-900 dark:text-white">הכשרה אנושית + תשתיות יציבות</h3>
                   <p className="text-slate-600 dark:text-slate-300 text-base md:text-lg font-medium leading-relaxed">
                     שילוב בין הכשרה אנושית עמוקה לבין ארכיטקטורת מערכות יציבה. אני לא עוזב עד שהכלים עובדים בחיי היום-יום של הצוות.
@@ -701,15 +747,57 @@ const App: React.FC = () => {
                     <div className="space-y-3 mb-6 bg-slate-50 dark:bg-[#070A10] p-4 rounded-2xl border border-slate-200 dark:border-slate-800 text-xs text-slate-700 dark:text-slate-300">
                       <div className="flex items-start gap-2">
                         <span className="text-cyan-500 font-bold">⚬</span>
-                        <p><strong className="text-slate-900 dark:text-white font-bold">אינטגרציית APIs ישירה:</strong> חיבור דו-כיווני מאובטח בין מודלי שפה, מערכות ERP, מסדי נתונים ו-CRMs, ללא תלות בכלים מוגבלים.</p>
+                        <p>
+                          <button
+                            onClick={() => triggerConceptExplanation('אינטגרציית APIs ישירה', 'חיבור ישיר ומאובטח בין מודלי השפה למערכות הליבה של הארגון ללא שימוש בפלטפורמות תיווך חיצוניות שבירות.')}
+                            className="underline decoration-cyan-500/60 hover:text-cyan-500 font-black text-slate-900 dark:text-white transition-all cursor-pointer text-right"
+                            title="העתק מושג לצ׳אטבוט 📋"
+                          >
+                            אינטגרציית APIs ישירה:
+                          </button>{' '}
+                          חיבור דו-כיווני מאובטח בין מודלי שפה, מערכות ERP, מסדי נתונים ו-CRMs, ללא תלות בכלים מוגבלים.
+                        </p>
                       </div>
                       <div className="flex items-start gap-2">
                         <span className="text-cyan-500 font-bold">⚬</span>
-                        <p><strong className="text-slate-900 dark:text-white font-bold">חסינות תקלות (Fault Tolerance):</strong> תכנון מלא של מנגנוני טיפול בשגיאות (Error Handling), אימות קלטים (Schema Validation) וניטור רציף.</p>
+                        <p>
+                          <button
+                            onClick={() => triggerConceptExplanation('חסינות תקלות (Fault Tolerance)', 'מנגנונים המבטיחים יציבות של מערכות ה-AI וטיפול אוטומטי בכשלים או שגיאות של מודלי שפה.')}
+                            className="underline decoration-cyan-500/60 hover:text-cyan-500 font-black text-slate-900 dark:text-white transition-all cursor-pointer text-right"
+                            title="העתק מושג לצ׳אטבוט 📋"
+                          >
+                            חסינות תקלות (Fault Tolerance):
+                          </button>{' '}
+                          תכנון מלא של מנגנוני טיפול בשגיאות (Error Handling), אימות קלטים (Schema Validation) וניטור רציף.
+                        </p>
                       </div>
                       <div className="flex items-start gap-2">
                         <span className="text-cyan-500 font-bold">⚬</span>
-                        <p><strong className="text-slate-900 dark:text-white font-bold">אבטחה בסטנדרט ארגוני:</strong> עבודה בסביבות מבודדות, מודלים מקומיים (Local/Private VPC) ומדיניות מוחלטת של אי-שמירת היסטוריה (Zero Data Retention).</p>
+                        <p>
+                          <button
+                            onClick={() => triggerConceptExplanation('אבטחה בסטנדרט ארגוני', 'מערכת הגנה מקיפה המונעת דליפת מידע וכוללת שימוש בסביבות ענן פרטיות ומבודדות.')}
+                            className="underline decoration-cyan-500/60 hover:text-cyan-500 font-black text-slate-900 dark:text-white transition-all cursor-pointer text-right"
+                            title="העתק מושג לצ׳אטבוט 📋"
+                          >
+                            אבטחה בסטנדרט ארגוני:
+                          </button>{' '}
+                          עבודה בסביבות מבודדות,{' '}
+                          <button
+                            onClick={() => triggerConceptExplanation('מודלים מקומיים (Local/Private VPC)', 'פריסת מודלים של בינה מלאכותית על גבי ענן פרטי או תשתיות מקומיות של הארגון ללא צורך בחיבור חיצוני.')}
+                            className="underline decoration-cyan-500/60 hover:text-cyan-500 font-bold transition-all cursor-pointer"
+                            title="העתק מושג לצ׳אטבוט 📋"
+                          >
+                            מודלים מקומיים (Local/Private VPC)
+                          </button>{' '}
+                          ומדיניות מוחלטת של{' '}
+                          <button
+                            onClick={() => triggerConceptExplanation('אי-שמירת היסטוריה (Zero Data Retention)', 'מדיניות אבטחה המונעת מספקי ה-AI לשמור את הנתונים והשיחות שלכם בשרתים שלהם.')}
+                            className="underline decoration-cyan-500/60 hover:text-cyan-500 font-bold transition-all cursor-pointer"
+                            title="העתק מושג לצ׳אטבוט 📋"
+                          >
+                            אי-שמירת היסטוריה (Zero Data Retention).
+                          </button>
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -762,7 +850,14 @@ const App: React.FC = () => {
             {/* 4. METHODOLOGY (מתודולוגיית העבודה - 4 השלבים) */}
             <section ref={methodologyRef} className="bg-white dark:bg-[#0D131F] text-slate-900 dark:text-white rounded-[3rem] p-8 md:p-14 border border-slate-200 dark:border-slate-800 shadow-2xl dark:shadow-none">
               <div className="text-center mb-14">
-                <span className="text-cyan-600 dark:text-cyan-400 text-xs font-bold uppercase tracking-wider block mb-2">תהליך העבודה</span>
+                <button
+                  onClick={() => triggerConceptExplanation('תהליך העבודה', 'מתודולוגיית העבודה המלאה משלב האבחון, אפיון הארכיטקטורה ומפת הדרכים, דרך הכשרת הצוותים ועד להטמעה ובקרה שוטפת בשטח לקבלת ROI מקסימלי.')}
+                  className="inline-flex items-center gap-1.5 px-3 py-1 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 rounded-lg text-xs font-bold border border-cyan-500/30 transition-all cursor-pointer shadow-sm mb-2"
+                  title="העתק מושג לצ׳אטבוט 📋"
+                >
+                  <span>תהליך העבודה</span>
+                  <span className="text-[10px]">📋</span>
+                </button>
                 <h2 className="text-3xl md:text-5xl font-black mb-4">מאבחון ועד להטמעה מלאה</h2>
               </div>
 
@@ -774,7 +869,16 @@ const App: React.FC = () => {
                         <span className="w-8 h-8 rounded-full bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center font-bold text-sm border border-cyan-500/30">{st.stepNum}</span>
                         <span className="text-3xl group-hover:scale-110 transition-transform">{st.icon}</span>
                       </div>
-                      <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2">{st.title}</h3>
+                      <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2 flex items-center justify-between gap-2">
+                        <span>{st.title}</span>
+                        <button
+                          onClick={() => triggerConceptExplanation(st.title.includes('Blueprint') ? 'System Blueprint' : st.title, st.details)}
+                          className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-900 hover:bg-cyan-500/10 text-slate-400 hover:text-cyan-500 transition-all border border-slate-200 dark:border-slate-800 cursor-pointer"
+                          title="העתק מושג לצ׳אטבוט 📋"
+                        >
+                          <span className="text-[10px]">📋</span>
+                        </button>
+                      </h3>
                       <p className="text-xs font-bold text-cyan-600 dark:text-cyan-400 mb-4">{st.shortDesc}</p>
                       <p className="text-xs text-slate-600 dark:text-slate-300 font-medium leading-relaxed">{st.details}</p>
                     </div>
@@ -811,7 +915,16 @@ const App: React.FC = () => {
 
                 <div className="lg:col-span-4 bg-slate-50 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 p-8 rounded-[2.5rem] shadow-inner text-center space-y-4">
                   <div className="w-16 h-16 rounded-2xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 flex items-center justify-center text-3xl mx-auto">🚀</div>
-                  <h3 className="text-2xl font-black text-slate-900 dark:text-white">אוטוריטה וחדשנות</h3>
+                  <h3 className="text-2xl font-black text-slate-900 dark:text-white flex items-center justify-center gap-2">
+                    <span>אוטוריטה וחדשנות</span>
+                    <button
+                      onClick={() => triggerConceptExplanation('אוטוריטה וחדשנות', 'הובלת קהילת הידע והפרומפטים הגדולה בישראל (מדברים בינה) מאפשרת לנו להביא את התובנות, השיטות והמגמות העדכניות ביותר ישירות אליכם.')}
+                      className="p-1.5 rounded-lg bg-slate-100 dark:bg-[#070A10] hover:bg-cyan-500/10 text-slate-400 hover:text-cyan-500 transition-all border border-slate-200 dark:border-slate-800 cursor-pointer animate-pulse"
+                      title="העתק מושג לצ׳אטבוט 📋"
+                    >
+                      <span className="text-[10px]">📋</span>
+                    </button>
+                  </h3>
                   <p className="text-xs text-slate-600 dark:text-slate-300 font-medium leading-relaxed">
                     תובנות מעודכנות, מתודולוגיות עבודה מוכחות וגישה ישירה למאגר הידע המוביל בתחום.
                   </p>
@@ -923,7 +1036,15 @@ const App: React.FC = () => {
                     <div className="p-5 bg-red-500/10 border border-red-500/30 rounded-2xl">
                       <span className="text-xs font-black text-red-600 dark:text-red-400 block mb-1.5">🛑 בשוק הרגיל</span>
                       <p className="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 leading-relaxed">
-                        בונים תהליכי No-Code בסיסיים שנשברים בכל שינוי קטן, ללא תיעוד וללא טיפול בשגיאות.
+                        בונים{' '}
+                        <button
+                          onClick={() => triggerConceptExplanation('תהליכי No-Code', 'בניית אוטומציות וחיבורים באמצעות פלטפורמות חיצוניות ללא קוד (כמו Make או Zapier). פתרונות אלו עלולים להיות שבירים, מוגבלים בכמות המידע וחשופים לתקלות רבות ללא ניהול שגיאות קפדני.')}
+                          className="underline decoration-cyan-500/60 hover:text-cyan-500 font-bold transition-all cursor-pointer"
+                          title="העתק מושג לצ׳אטבוט 📋"
+                        >
+                          תהליכי No-Code
+                        </button>{' '}
+                        בסיסיים שנשברים בכל שינוי קטן, ללא תיעוד וללא טיפול בשגיאות.
                       </p>
                     </div>
                     <div className="p-5 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl">
@@ -941,7 +1062,15 @@ const App: React.FC = () => {
                     <div className="p-5 bg-red-500/10 border border-red-500/30 rounded-2xl">
                       <span className="text-xs font-black text-red-600 dark:text-red-400 block mb-1.5">🛑 בשוק הרגיל</span>
                       <p className="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 leading-relaxed">
-                        זורקים רישיונות למודלי AI לעובדים (כמו ChatGPT או Claude) ומקווים שהם "יסתדרו לבד".
+                        זורקים{' '}
+                        <button
+                          onClick={() => triggerConceptExplanation('רישיונות למודלי AI', 'רכישה וחלוקה של מנויים לכלים ציבוריים (כמו ChatGPT Plus או Claude Pro) לעובדי הארגון, ללא הדרכה מובנית וללא התאמה לתהליכים המקצועיים.')}
+                          className="underline decoration-cyan-500/60 hover:text-cyan-500 font-bold transition-all cursor-pointer"
+                          title="העתק מושג לצ׳אטבוט 📋"
+                        >
+                          רישיונות למודלי AI
+                        </button>{' '}
+                        לעובדים (כמו ChatGPT או Claude) ומקווים שהם "יסתדרו לבד".
                       </p>
                     </div>
                     <div className="p-5 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl">
@@ -959,7 +1088,14 @@ const App: React.FC = () => {
                     <div className="p-5 bg-red-500/10 border border-red-500/30 rounded-2xl">
                       <span className="text-xs font-black text-red-600 dark:text-red-400 block mb-1.5">🛑 בשוק הרגיל</span>
                       <p className="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 leading-relaxed">
-                        פתרונות מדף גנריים שלא מתחשבים באבטחת מידע או רגולציה.
+                        <button
+                          onClick={() => triggerConceptExplanation('פתרונות מדף גנריים', 'מוצרים מובנים מראש שאינם ניתנים להתאמה אישית, חסרים חיבור ל-APIs של הארגון ועלולים שלא לעמוד בתקני אבטחת מידע ורגולציה מחמירים.')}
+                          className="underline decoration-cyan-500/60 hover:text-cyan-500 font-bold transition-all cursor-pointer"
+                          title="העתק מושג לצ׳אטבוט 📋"
+                        >
+                          פתרונות מדף גנריים
+                        </button>{' '}
+                        שלא מתחשבים באבטחת מידע או רגולציה.
                       </p>
                     </div>
                     <div className="p-5 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl">
@@ -1152,6 +1288,18 @@ const App: React.FC = () => {
                 </div>
               </div>
 
+              <div className="flex items-center gap-3 text-right">
+                <input
+                  id="spam_consent_gate"
+                  type="checkbox"
+                  name="marketing_consent"
+                  className="w-4 h-4 rounded border-slate-300 text-cyan-600 focus:ring-cyan-500 cursor-pointer"
+                />
+                <label htmlFor="spam_consent_gate" className="text-xs font-bold text-slate-600 dark:text-slate-400 cursor-pointer">
+                  אני מאשר קבלת תוכן שיווקי ודברי פרסומת במייל/SMS
+                </label>
+              </div>
+
               <button
                 type="submit"
                 disabled={isSubmittingLead}
@@ -1167,18 +1315,26 @@ const App: React.FC = () => {
       {/* Footer */}
       <footer className="py-12 px-6 text-center border-t border-slate-200 dark:border-slate-800 mt-20 space-y-4">
         <p className="text-sm font-black text-slate-600 dark:text-slate-400 uppercase tracking-wider text-center">
-          © 2026 בינה לתעשייה | ENTERPRISE AI
+          © 2026 בינה לתעשייה. כל הזכויות שמורות.
         </p>
         
-        <div className="flex flex-wrap justify-center items-center gap-6 text-xs font-bold text-slate-600 dark:text-slate-400">
-          <a href="https://www.linkedin.com/in/ohad-baram-58a22632a" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">אוהד ברעם ב-LinkedIn 🔗</a>
-          <button onClick={() => setIsPrivacyPolicyOpen(true)} className="hover:text-cyan-600 dark:hover:text-cyan-400 underline transition-colors">מדיניות פרטיות 📜</button>
+        <div className="flex flex-wrap justify-center items-center gap-4 text-xs font-bold text-slate-600 dark:text-slate-400">
+          <button onClick={() => setIsTermsOfServiceOpen(true)} className="hover:text-cyan-600 dark:hover:text-cyan-400 underline transition-colors">תנאי שימוש</button>
+          <span>|</span>
+          <button onClick={() => setIsPrivacyPolicyOpen(true)} className="hover:text-cyan-600 dark:hover:text-cyan-400 underline transition-colors">מדיניות פרטיות</button>
+          <span>|</span>
+          <button onClick={() => setIsAccessibilityStatementOpen(true)} className="hover:text-cyan-600 dark:hover:text-cyan-400 underline transition-colors">הצהרת נגישות</button>
+          <span>|</span>
+          <a href="https://www.linkedin.com/in/ohad-baram-58a22632a" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">LinkedIn 🔗</a>
+          <span>|</span>
           <button onClick={() => localStorage.removeItem('b2b_cookie_consent')} className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">ניהול עוגיות 🍪</button>
         </div>
       </footer>
 
       <CookieBanner onOpenPrivacyPolicy={() => setIsPrivacyPolicyOpen(true)} />
       <PrivacyPolicyModal isOpen={isPrivacyPolicyOpen} onClose={() => setIsPrivacyPolicyOpen(false)} />
+      <TermsOfServiceModal isOpen={isTermsOfServiceOpen} onClose={() => setIsTermsOfServiceOpen(false)} />
+      <AccessibilityStatementModal isOpen={isAccessibilityStatementOpen} onClose={() => setIsAccessibilityStatementOpen(false)} />
       <AccessibilityToolbar />
       <ZapierChatbot />
       <Toast message={toastMessage} show={showToast} />

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { AccessibilityStatementModal } from './AccessibilityStatementModal';
 
 export const AccessibilityToolbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -167,59 +168,7 @@ export const AccessibilityToolbar: React.FC = () => {
         )}
       </div>
 
-      {/* מודל הצהרת נגישות */}
-      {showStatement && (
-        <div className="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md flex items-center justify-center p-4 md:p-6 animate-fadeIn">
-          <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] p-6 md:p-10 max-w-2xl w-full max-h-[85vh] overflow-y-auto text-right shadow-2xl border border-slate-200 dark:border-slate-800 relative space-y-6" dir="rtl">
-            <button
-              onClick={() => setShowStatement(false)}
-              className="sticky top-0 left-0 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-600 dark:text-slate-300 w-10 h-10 rounded-full flex items-center justify-center font-black text-lg transition-all shadow-md float-left z-10"
-            >
-              ✕
-            </button>
-
-            <div className="border-b border-slate-200 dark:border-slate-800 pb-4">
-              <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 rounded-full text-xs font-black mb-2 inline-block">
-                ♿ רמה AA לפי תקן 5568
-              </span>
-              <h2 className="text-2xl md:text-3xl font-black dark:text-white">הצהרת נגישות – בינה לעסקים</h2>
-              <p className="text-xs text-slate-500 dark:text-slate-400 font-bold mt-1">עומד בדרישות תקנות שוויון זכויות לאנשים עם מוגבלות</p>
-            </div>
-
-            <div className="space-y-4 text-slate-700 dark:text-slate-300 text-xs md:text-sm font-medium leading-relaxed">
-              <p>
-                באתר "בינה לעסקים" אנו רואים בחשיבות עליונה את הנגשת האתר והשירותים לכלל האוכלוסייה, כולל אנשים עם מוגבלויות, מתוך אמונה כי לכל אדם מגיעה הזדמנות שווה ונגישות מלאה למידע ולטכנולוגיה.
-              </p>
-
-              <h4 className="font-black text-sm dark:text-white text-blue-600">התאמות הנגישות שבוצעו באתר:</h4>
-              <ul className="list-disc list-inside space-y-1 font-bold">
-                <li>האתר נבנה בהתאם להנחיות הנגישות בדרגה AA (WCAG 2.1) ותקן ישראלי ת"י 5568.</li>
-                <li>תמיכה מלאה בטכנולוגיות מסייעות וסריקת מקלדת (Tab / Shift+Tab).</li>
-                <li>סרגל נגישות צף הכולל הגדלת גופן, ניגודיות גבוהה, גווני אפור, הדגשת קישורים וביטול הנפשות.</li>
-                <li>התאמה מלאה למכשירים ניידים ולמסכים בגדלים שונים.</li>
-              </ul>
-
-              <h4 className="font-black text-sm dark:text-white text-blue-600">פניות בנושאי נגישות:</h4>
-              <p>
-                אם נתקלת ברכיב שאינו נגיש מספיק או בקושי כלשהו בגלישה, נשמח לקבל ממך משוב כדי שנוכל לתקן ולפרסם עדכון בהקדם:
-              </p>
-              <p className="font-bold border-r-4 border-blue-500 pr-3 my-2">
-                רכז נגישות: אוהד ברעם<br />
-                פנייה ישירה: דרך טופס יצירת הקשר באתר
-              </p>
-            </div>
-
-            <div className="pt-4 border-t border-slate-200 dark:border-slate-800 text-center">
-              <button
-                onClick={() => setShowStatement(false)}
-                className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-black rounded-2xl text-xs shadow-lg transition-all"
-              >
-                סגירה ✅
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <AccessibilityStatementModal isOpen={showStatement} onClose={() => setShowStatement(false)} />
     </>
   );
 };
