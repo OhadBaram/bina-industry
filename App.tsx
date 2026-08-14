@@ -232,24 +232,24 @@ const App: React.FC = () => {
 
   // רכיב סקשן יצירת קשר ללא שינוי בשדות
   const renderLeadForm = () => (
-    <div id="contact" ref={contactFormRef} className="bg-[#0D131F] rounded-[3rem] p-8 md:p-14 shadow-2xl border border-slate-800 text-right max-w-4xl mx-auto animate-fadeIn relative overflow-hidden">
+    <div id="contact" ref={contactFormRef} className="bg-white dark:bg-[#0D131F] rounded-[3rem] p-8 md:p-14 border border-slate-200 dark:border-slate-800 shadow-2xl dark:shadow-none text-right animate-fadeIn">
       <div className="absolute top-0 right-0 left-0 h-1.5 bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500"></div>
       
       <div className="text-center mb-10">
-        <div className="inline-flex items-center justify-center px-4 py-1.5 bg-cyan-500/10 text-cyan-400 rounded-full text-xs font-bold mb-4 border border-cyan-500/30 uppercase tracking-wider">
+        <div className="inline-flex items-center justify-center px-4 py-1.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 rounded-full text-xs font-bold mb-4 border border-cyan-500/30 uppercase tracking-wider">
           פנייה מקצועית לארגונים
         </div>
-        <h3 className="text-3xl md:text-5xl font-black text-white mb-3 tracking-tight">בואו נבדוק התאמה לארגון שלכם</h3>
-        <p className="text-slate-400 font-bold text-base md:text-lg max-w-2xl mx-auto">
+        <h3 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-3 tracking-tight">בואו נבדוק התאמה לארגון שלכם</h3>
+        <p className="text-slate-600 dark:text-slate-400 font-bold text-base md:text-lg max-w-2xl mx-auto">
           השאירו פרטים, ספרו לנו בקצרה מה האתגר, ונחזור אליכם לשיחת אפיון ראשונית ללא עלות.
         </p>
       </div>
 
       {leadSubmitted ? (
-        <div className="bg-emerald-950/60 border-2 border-emerald-500/50 p-10 rounded-3xl text-center animate-fadeIn">
+        <div className="bg-emerald-50 dark:bg-emerald-950/60 border-2 border-emerald-500/50 p-10 rounded-3xl text-center animate-fadeIn">
           <div className="text-6xl mb-4">🎉</div>
-          <h4 className="text-3xl font-black text-emerald-200 mb-3">תודה רבה! הפנייה התקבלה בהצלחה</h4>
-          <p className="text-emerald-300 font-bold text-base md:text-lg max-w-xl mx-auto mb-6">
+          <h4 className="text-3xl font-black text-emerald-900 dark:text-emerald-200 mb-3">תודה רבה! הפנייה התקבלה בהצלחה</h4>
+          <p className="text-emerald-800 dark:text-emerald-300 font-bold text-base md:text-lg max-w-xl mx-auto mb-6">
             קיבלנו את פרטי הארגון שלך. אנו נחזור אליך בהקדם לשיחת אבחון ואפיון ראשונית.
           </p>
           <button
@@ -283,7 +283,7 @@ const App: React.FC = () => {
 
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <label htmlFor="user_name" className="block text-xs font-black text-slate-300 mb-2">שם מלא *</label>
+              <label htmlFor="user_name" className="block text-xs font-black text-slate-700 dark:text-slate-300 mb-2">שם מלא *</label>
               <input
                 id="user_name"
                 type="text"
@@ -292,12 +292,12 @@ const App: React.FC = () => {
                 value={leadData.name}
                 onChange={(e) => setLeadData({ ...leadData, name: e.target.value })}
                 placeholder="ישראל ישראלי"
-                className="w-full px-5 py-4 rounded-2xl bg-[#070A10] border border-slate-800 focus:border-cyan-500 outline-none text-right text-white font-medium transition-all"
+                className="w-full px-5 py-4 rounded-2xl bg-slate-100 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 focus:border-cyan-500 outline-none text-right text-slate-900 dark:text-white font-medium transition-all"
               />
             </div>
 
             <div>
-              <label htmlFor="company_name" className="block text-xs font-black text-slate-300 mb-2">שם החברה / ארגון</label>
+              <label htmlFor="company_name" className="block text-xs font-black text-slate-700 dark:text-slate-300 mb-2">שם החברה / ארגון</label>
               <input
                 id="company_name"
                 type="text"
@@ -305,14 +305,14 @@ const App: React.FC = () => {
                 value={leadData.company}
                 onChange={(e) => setLeadData({ ...leadData, company: e.target.value })}
                 placeholder="שם החברה (לא חובה)"
-                className="w-full px-5 py-4 rounded-2xl bg-[#070A10] border border-slate-800 focus:border-cyan-500 outline-none text-right text-white font-medium transition-all"
+                className="w-full px-5 py-4 rounded-2xl bg-slate-100 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 focus:border-cyan-500 outline-none text-right text-slate-900 dark:text-white font-medium transition-all"
               />
             </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <label htmlFor="phone" className="block text-xs font-black text-slate-300 mb-2">מספר טלפון *</label>
+              <label htmlFor="phone" className="block text-xs font-black text-slate-700 dark:text-slate-300 mb-2">מספר טלפון *</label>
               <input
                 id="phone"
                 type="tel"
@@ -321,13 +321,13 @@ const App: React.FC = () => {
                 value={leadData.phone}
                 onChange={(e) => setLeadData({ ...leadData, phone: e.target.value })}
                 placeholder="050-0000000"
-                className="w-full px-5 py-4 rounded-2xl bg-[#070A10] border border-slate-800 focus:border-cyan-500 outline-none text-right text-white font-medium transition-all"
+                className="w-full px-5 py-4 rounded-2xl bg-slate-100 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 focus:border-cyan-500 outline-none text-right text-slate-900 dark:text-white font-medium transition-all"
                 dir="ltr"
               />
             </div>
 
             <div>
-              <label htmlFor="user_email" className="block text-xs font-black text-slate-300 mb-2">דוא״ל לחזרה *</label>
+              <label htmlFor="user_email" className="block text-xs font-black text-slate-700 dark:text-slate-300 mb-2">דוא״ל לחזרה *</label>
               <input
                 id="user_email"
                 type="email"
@@ -336,7 +336,7 @@ const App: React.FC = () => {
                 value={leadData.email}
                 onChange={(e) => setLeadData({ ...leadData, email: e.target.value })}
                 placeholder="you@company.com"
-                className="w-full px-5 py-4 rounded-2xl bg-[#070A10] border border-slate-800 focus:border-cyan-500 outline-none text-right text-white font-medium transition-all"
+                className="w-full px-5 py-4 rounded-2xl bg-slate-100 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 focus:border-cyan-500 outline-none text-right text-slate-900 dark:text-white font-medium transition-all"
                 dir="ltr"
               />
             </div>
@@ -377,24 +377,24 @@ const App: React.FC = () => {
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => setMainView('home')}>
             <div className="w-10 h-10 bg-cyan-500/10 border border-cyan-500/30 rounded-xl flex items-center justify-center text-cyan-400 text-xl font-black shadow-lg">🤖</div>
             <div className="text-right">
-              <h1 className="text-xl md:text-2xl font-black text-white leading-none tracking-tight">
-                בינה לתעשייה <span className="text-xs font-bold text-cyan-400 tracking-wider">ENTERPRISE AI</span>
+              <h1 className={`text-xl md:text-2xl font-black leading-none tracking-tight ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
+                בינה לתעשייה <span className="text-xs font-bold text-cyan-500 tracking-wider">ENTERPRISE AI</span>
               </h1>
             </div>
           </div>
           
-          <nav className="hidden lg:flex items-center gap-1 bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800">
-            <button onClick={scrollToCapabilities} className="px-5 py-2.5 rounded-xl font-black text-xs md:text-sm text-slate-300 hover:text-cyan-400 transition-all">השירותים</button>
-            <button onClick={scrollToMethodology} className="px-5 py-2.5 rounded-xl font-black text-xs md:text-sm text-slate-300 hover:text-cyan-400 transition-all">תהליך האפיון</button>
-            <button onClick={() => setMainView('prompts')} className={`px-5 py-2.5 rounded-xl font-black text-xs md:text-sm transition-all ${mainView === 'prompts' ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40' : 'text-slate-300 hover:text-cyan-400'}`}>מאגר הפרומפטים</button>
-            <button onClick={scrollToAbout} className="px-5 py-2.5 rounded-xl font-black text-xs md:text-sm text-slate-300 hover:text-cyan-400 transition-all">אודות</button>
+          <nav className="hidden lg:flex items-center gap-1 bg-slate-100 dark:bg-slate-900/90 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-800">
+            <button onClick={scrollToCapabilities} className="px-5 py-2.5 rounded-xl font-black text-xs md:text-sm text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all">השירותים</button>
+            <button onClick={scrollToMethodology} className="px-5 py-2.5 rounded-xl font-black text-xs md:text-sm text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all">תהליך האפיון</button>
+            <button onClick={() => setMainView('prompts')} className={`px-5 py-2.5 rounded-xl font-black text-xs md:text-sm transition-all ${mainView === 'prompts' ? 'bg-cyan-500/20 text-cyan-600 dark:text-cyan-300 border border-cyan-500/40' : 'text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400'}`}>מאגר הפרומפטים</button>
+            <button onClick={scrollToAbout} className="px-5 py-2.5 rounded-xl font-black text-xs md:text-sm text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all">אודות</button>
           </nav>
 
           <div className="flex items-center gap-3">
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
               title={isDarkMode ? "מעבר למצב בהיר ☀️" : "מעבר למצב כהה 🌙"}
-              className="p-3 bg-slate-900 border border-slate-800 text-cyan-400 hover:text-white rounded-xl transition-all font-black text-sm flex items-center justify-center cursor-pointer shadow-md"
+              className="p-3 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-cyan-600 dark:text-cyan-400 hover:text-cyan-500 rounded-xl transition-all font-black text-sm flex items-center justify-center cursor-pointer shadow-md"
             >
               {isDarkMode ? '☀️' : '🌙'}
             </button>
@@ -406,11 +406,11 @@ const App: React.FC = () => {
         </div>
 
         {/* Mobile Nav */}
-        <div className="flex lg:hidden items-center justify-center gap-2 mt-3 pt-3 border-t border-slate-800 overflow-x-auto no-scrollbar">
-          <button onClick={scrollToCapabilities} className="px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 bg-slate-900 text-slate-300 border border-slate-800">השירותים</button>
-          <button onClick={scrollToMethodology} className="px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 bg-slate-900 text-slate-300 border border-slate-800">תהליך האפיון</button>
-          <button onClick={() => setMainView('prompts')} className={`px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 ${mainView === 'prompts' ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40' : 'bg-slate-900 text-slate-300 border border-slate-800'}`}>מאגר הפרומפטים</button>
-          <button onClick={scrollToAbout} className="px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 bg-slate-900 text-slate-300 border border-slate-800">אודות</button>
+        <div className="flex lg:hidden items-center justify-center gap-2 mt-3 pt-3 border-t border-slate-200 dark:border-slate-800 overflow-x-auto no-scrollbar">
+          <button onClick={scrollToCapabilities} className="px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">השירותים</button>
+          <button onClick={scrollToMethodology} className="px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">תהליך האפיון</button>
+          <button onClick={() => setMainView('prompts')} className={`px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 ${mainView === 'prompts' ? 'bg-cyan-500/20 text-cyan-600 dark:text-cyan-300 border border-cyan-500/40' : 'bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800'}`}>מאגר הפרומפטים</button>
+          <button onClick={scrollToAbout} className="px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">אודות</button>
         </div>
       </header>
 
@@ -422,18 +422,18 @@ const App: React.FC = () => {
             
             {/* 1. HERO SECTION */}
             <section className="text-center py-12 md:py-24 relative">
-              <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-cyan-500/10 text-cyan-400 rounded-full text-xs md:text-sm font-bold mb-8 border border-cyan-500/30 shadow-sm">
+              <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 rounded-full text-xs md:text-sm font-bold mb-8 border border-cyan-500/30 shadow-sm">
                 <span>אפיון, הדרכה והטמעה מותאמת לארגונים</span>
               </div>
               
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white tracking-tighter leading-[1.05] max-w-5xl mx-auto mb-8">
+              <h1 className={`text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[1.05] max-w-5xl mx-auto mb-8 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
                 מפסיקים לנסות.<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-400">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-500 dark:from-cyan-400 dark:via-blue-500 dark:to-indigo-400">
                   מטמיעים AI בארגון.
                 </span>
               </h1>
 
-              <p className="text-slate-300 text-lg md:text-2xl font-medium max-w-4xl mx-auto leading-relaxed mb-12">
+              <p className={`text-lg md:text-2xl font-medium max-w-4xl mx-auto leading-relaxed mb-12 ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
                 פתרונות מדף לא עובדים בתעשייה מורכבת. אנחנו מאבחנים את צווארי הבקבוק בעסק שלכם, מכשירים את הצוותים לעבודה עצמאית עם כלי AI, ומפתחים סוכנים ואוטומציות שמייצרים תוצאות בשטח.
               </p>
 
@@ -447,7 +447,7 @@ const App: React.FC = () => {
                 </button>
                 <button
                   onClick={scrollToMethodology}
-                  className="w-full sm:w-auto px-8 py-5 bg-[#0D131F] border border-slate-800 text-slate-200 hover:border-cyan-500/50 font-black text-lg rounded-2xl transition-all flex items-center justify-center gap-2"
+                  className={`w-full sm:w-auto px-8 py-5 border font-black text-lg rounded-2xl transition-all flex items-center justify-center gap-2 ${isDarkMode ? 'bg-[#0D131F] border-slate-800 text-slate-200 hover:border-cyan-500/50' : 'bg-white border-slate-300 text-slate-800 hover:border-cyan-500 shadow-md'}`}
                 >
                   <span>איך התהליך עובד? ↓</span>
                 </button>
@@ -455,31 +455,31 @@ const App: React.FC = () => {
             </section>
 
             {/* 2. WHY CUSTOM AI SECTION (המציאות בשטח) */}
-            <section className="bg-[#0D131F] rounded-[3rem] p-8 md:p-14 border border-slate-800 shadow-2xl">
+            <section className="bg-white dark:bg-[#0D131F] rounded-[3rem] p-8 md:p-14 border border-slate-200 dark:border-slate-800 shadow-2xl dark:shadow-none">
               <div className="text-center mb-12">
-                <span className="text-cyan-400 text-xs font-bold uppercase tracking-wider block mb-2">המציאות בשטח</span>
-                <h2 className="text-3xl md:text-5xl font-black text-white mb-4">למה רוב יוזמות ה-AI בארגונים נתקעות?</h2>
+                <span className="text-cyan-600 dark:text-cyan-400 text-xs font-bold uppercase tracking-wider block mb-2">המציאות בשטח</span>
+                <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">למה רוב יוזמות ה-AI בארגונים נתקעות?</h2>
               </div>
 
               <div className="grid md:grid-cols-2 gap-8">
                 {/* הבעיה */}
-                <div className="bg-[#070A10] p-8 md:p-10 rounded-[2.5rem] border border-red-500/20 space-y-4">
-                  <div className="inline-flex items-center px-4 py-1.5 bg-red-500/10 text-red-400 rounded-full text-xs font-black border border-red-500/30">
+                <div className="bg-slate-50 dark:bg-[#070A10] p-8 md:p-10 rounded-[2.5rem] border border-red-500/20 space-y-4">
+                  <div className="inline-flex items-center px-4 py-1.5 bg-red-500/10 text-red-600 dark:text-red-400 rounded-full text-xs font-black border border-red-500/30">
                     ⚠️ הבעיה השכיחה
                   </div>
-                  <h3 className="text-2xl font-black text-white">רכישת כלים ללא חיבור לתהליכים</h3>
-                  <p className="text-slate-300 text-base md:text-lg font-medium leading-relaxed">
+                  <h3 className="text-2xl font-black text-slate-900 dark:text-white">רכישת כלים ללא חיבור לתהליכים</h3>
+                  <p className="text-slate-600 dark:text-slate-300 text-base md:text-lg font-medium leading-relaxed">
                     חברות קונות מנויים ל-ChatGPT או מחברות תוספים בסיסיים, אבל העובדים לא משתמשים, התהליכים לא מתחברים, וההשקעה יורדת לטמיון.
                   </p>
                 </div>
 
                 {/* הפתרון של בינה לתעשייה */}
-                <div className="bg-[#070A10] p-8 md:p-10 rounded-[2.5rem] border border-cyan-500/30 space-y-4">
-                  <div className="inline-flex items-center px-4 py-1.5 bg-cyan-500/10 text-cyan-400 rounded-full text-xs font-black border border-cyan-500/30">
+                <div className="bg-slate-50 dark:bg-[#070A10] p-8 md:p-10 rounded-[2.5rem] border border-cyan-500/30 space-y-4">
+                  <div className="inline-flex items-center px-4 py-1.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 rounded-full text-xs font-black border border-cyan-500/30">
                     ✓ הפתרון של בינה לתעשייה
                   </div>
-                  <h3 className="text-2xl font-black text-white">הכשרה אנושית + תשתיות יציבות</h3>
-                  <p className="text-slate-300 text-base md:text-lg font-medium leading-relaxed">
+                  <h3 className="text-2xl font-black text-slate-900 dark:text-white">הכשרה אנושית + תשתיות יציבות</h3>
+                  <p className="text-slate-600 dark:text-slate-300 text-base md:text-lg font-medium leading-relaxed">
                     שילוב בין הכשרה אנושית עמוקה לבין ארכיטקטורת מערכות יציבה. אנחנו לא עוזבים עד שהכלים עובדים בחיי היום-יום של הצוות.
                   </p>
                 </div>
@@ -489,91 +489,91 @@ const App: React.FC = () => {
             {/* 3. CORE SERVICES (גריד Bento נקי ואלגנטי) */}
             <section ref={capabilitiesRef} className="py-6 space-y-12">
               <div className="text-center">
-                <span className="text-cyan-400 text-xs font-bold uppercase tracking-wider block mb-2">שירותי הליבה</span>
-                <h2 className="text-3xl md:text-5xl font-black text-white mb-4">ארכיטקטורת הפתרונות לארגונים</h2>
+                <span className="text-cyan-600 dark:text-cyan-400 text-xs font-bold uppercase tracking-wider block mb-2">שירותי הליבה</span>
+                <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">ארכיטקטורת הפתרונות לארגונים</h2>
               </div>
 
               <div className="grid md:grid-cols-12 gap-8">
                 {/* קובייה 01 (גדולה ומרכזית) */}
-                <div className="md:col-span-8 bg-[#0D131F] rounded-[3rem] p-8 md:p-12 border border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between group shadow-xl">
+                <div className="md:col-span-8 bg-white dark:bg-[#0D131F] rounded-[3rem] p-8 md:p-12 border border-slate-200 dark:border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between group shadow-xl dark:shadow-none">
                   <div>
                     <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
-                      <span className="w-9 h-9 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center font-bold text-sm border border-cyan-500/30">01</span>
-                      <span className="text-xs font-bold px-3 py-1.5 bg-cyan-500/10 text-cyan-400 rounded-xl border border-cyan-500/30">
+                      <span className="w-9 h-9 rounded-xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center font-bold text-sm border border-cyan-500/30">01</span>
+                      <span className="text-xs font-bold px-3 py-1.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 rounded-xl border border-cyan-500/30">
                         CUSTOM AI AGENTS
                       </span>
                     </div>
 
-                    <span className="text-xs font-bold text-slate-400 block mb-1">סוכני AI מותאמים אישית</span>
-                    <h3 className="text-2xl md:text-4xl font-black text-white mb-4 leading-tight">
+                    <span className="text-xs font-bold text-slate-500 dark:text-slate-400 block mb-1">סוכני AI מותאמים אישית</span>
+                    <h3 className="text-2xl md:text-4xl font-black text-slate-900 dark:text-white mb-4 leading-tight">
                       אפיון ופיתוח סוכנים חכמים על בסיס הידע הארגוני
                     </h3>
 
-                    <p className="text-slate-300 text-base md:text-lg font-medium leading-relaxed mb-8">
+                    <p className="text-slate-600 dark:text-slate-300 text-base md:text-lg font-medium leading-relaxed mb-8">
                       פיתוח סוכנים אוטונומיים שמחוברים ישירות למסמכי החברה, מאגרי המידע וה-CRM. הסוכנים מייצרים ניתוחי דאטה, סיכומי דוחות, מחקרים ומענה מדויק ללא שגיאות וללא דליפת מידע.
                     </p>
 
                     <div className="flex flex-wrap gap-3 mb-8">
-                      <span className="px-3.5 py-1.5 bg-[#070A10] border border-slate-800 text-cyan-400 font-mono text-xs font-black rounded-xl">RAG Architecture</span>
-                      <span className="px-3.5 py-1.5 bg-[#070A10] border border-slate-800 text-cyan-400 font-mono text-xs font-black rounded-xl">Private Data</span>
-                      <span className="px-3.5 py-1.5 bg-[#070A10] border border-slate-800 text-cyan-400 font-mono text-xs font-black rounded-xl">Zero Retention</span>
+                      <span className="px-3.5 py-1.5 bg-slate-100 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 text-cyan-600 dark:text-cyan-400 font-mono text-xs font-black rounded-xl">RAG Architecture</span>
+                      <span className="px-3.5 py-1.5 bg-slate-100 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 text-cyan-600 dark:text-cyan-400 font-mono text-xs font-black rounded-xl">Private Data</span>
+                      <span className="px-3.5 py-1.5 bg-slate-100 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 text-cyan-600 dark:text-cyan-400 font-mono text-xs font-black rounded-xl">Zero Retention</span>
                     </div>
                   </div>
 
-                  <button onClick={() => prefillServiceAndScroll('ai')} className="w-full py-4 rounded-2xl bg-cyan-500/10 hover:bg-cyan-500 text-cyan-400 hover:text-black font-black text-sm border border-cyan-500/30 transition-all text-center">
+                  <button onClick={() => prefillServiceAndScroll('ai')} className="w-full py-4 rounded-2xl bg-cyan-500/10 hover:bg-cyan-500 text-cyan-600 dark:text-cyan-400 hover:text-white font-black text-sm border border-cyan-500/30 transition-all text-center">
                     לתיאום פגישת אבחון בנושא סוכני AI ➔
                   </button>
                 </div>
 
                 {/* קובייה 02 */}
-                <div className="md:col-span-4 bg-[#0D131F] rounded-[3rem] p-8 md:p-10 border border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between group shadow-xl">
+                <div className="md:col-span-4 bg-white dark:bg-[#0D131F] rounded-[3rem] p-8 md:p-10 border border-slate-200 dark:border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between group shadow-xl dark:shadow-none">
                   <div>
                     <div className="flex items-center justify-between mb-6">
-                      <span className="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center font-bold text-sm border border-blue-500/30">02</span>
-                      <span className="text-[11px] font-bold px-3 py-1.5 bg-blue-500/10 text-blue-400 rounded-xl border border-blue-500/30">
+                      <span className="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-sm border border-blue-500/30">02</span>
+                      <span className="text-[11px] font-bold px-3 py-1.5 bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-xl border border-blue-500/30">
                         WORKSHOPS
                       </span>
                     </div>
 
-                    <span className="text-xs font-bold text-slate-400 block mb-1">הדרכות עומק וסדנאות Hands-on</span>
-                    <h3 className="text-2xl font-black text-white mb-3 leading-tight">
+                    <span className="text-xs font-bold text-slate-500 dark:text-slate-400 block mb-1">הדרכות עומק וסדנאות Hands-on</span>
+                    <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-3 leading-tight">
                       הכשרת מנהלים וצוותים לעבודה יומיומית עם AI
                     </h3>
 
-                    <p className="text-slate-300 text-sm font-medium leading-relaxed mb-6">
+                    <p className="text-slate-600 dark:text-slate-300 text-sm font-medium leading-relaxed mb-6">
                       סדנאות מעשיות ממוקדות תפקיד (הנהלה, שיווק, תפעול, כספים). לומדים הנדסת פרומפטים מתקדמת, עבודה עם Claude, ChatGPT ו-Gemini, ותרגול ישיר על משימות אמיתיות מהעסק.
                     </p>
 
-                    <div className="p-4 bg-[#070A10] rounded-2xl border border-slate-800 text-xs font-bold text-cyan-300 mb-6">
+                    <div className="p-4 bg-slate-100 dark:bg-[#070A10] rounded-2xl border border-slate-200 dark:border-slate-800 text-xs font-bold text-cyan-600 dark:text-cyan-300 mb-6">
                       🎯 סילבוס ייעודי לפי מחלקות החברה
                     </div>
                   </div>
 
-                  <button onClick={() => prefillServiceAndScroll('workshops')} className="w-full py-4 rounded-2xl bg-slate-800 text-slate-200 hover:bg-cyan-500 hover:text-black font-black text-xs transition-all text-center">
+                  <button onClick={() => prefillServiceAndScroll('workshops')} className="w-full py-4 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-cyan-500 hover:text-white font-black text-xs transition-all text-center">
                     לפרטים על סדנאות והכשרות ➔
                   </button>
                 </div>
 
                 {/* קובייה 03 */}
-                <div className="md:col-span-6 bg-[#0D131F] rounded-[3rem] p-8 md:p-10 border border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between group shadow-xl">
+                <div className="md:col-span-6 bg-white dark:bg-[#0D131F] rounded-[3rem] p-8 md:p-10 border border-slate-200 dark:border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between group shadow-xl dark:shadow-none">
                   <div>
                     <div className="flex items-center justify-between mb-6">
-                      <span className="w-9 h-9 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center font-bold text-sm border border-indigo-500/30">03</span>
-                      <span className="text-[11px] font-bold px-3 py-1.5 bg-indigo-500/10 text-indigo-400 rounded-xl border border-indigo-500/30">
+                      <span className="w-9 h-9 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold text-sm border border-indigo-500/30">03</span>
+                      <span className="text-[11px] font-bold px-3 py-1.5 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 rounded-xl border border-indigo-500/30">
                         AUTOMATION
                       </span>
                     </div>
 
-                    <span className="text-xs font-bold text-slate-400 block mb-1">אוטומציות ואינטגרציות תפעוליות</span>
-                    <h3 className="text-2xl font-black text-white mb-3 leading-tight">
+                    <span className="text-xs font-bold text-slate-500 dark:text-slate-400 block mb-1">אוטומציות ואינטגרציות תפעוליות</span>
+                    <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-3 leading-tight">
                       חיבור שרשרת התפעול ללא מגע יד אדם
                     </h3>
 
-                    <p className="text-slate-300 text-sm font-medium leading-relaxed mb-6">
+                    <p className="text-slate-600 dark:text-slate-300 text-sm font-medium leading-relaxed mb-6">
                       יצירת זרימות עבודה חכמות בין מערכות הליבה: קליטת לידים וניתובם, הפקת הצעות מחיר, סנכרון מסמכים ועדכון מערכות ERP ו-CRM באמינות מלאה.
                     </p>
 
-                    <div className="p-4 bg-[#070A10] rounded-2xl border border-slate-800 text-xs font-bold text-cyan-300 mb-6">
+                    <div className="p-4 bg-slate-100 dark:bg-[#070A10] rounded-2xl border border-slate-200 dark:border-slate-800 text-xs font-bold text-cyan-600 dark:text-cyan-300 mb-6">
                       ⚡ אפס תקלות — אוטומציה עמידה בעומסים
                     </div>
                   </div>
@@ -615,23 +615,23 @@ const App: React.FC = () => {
             </section>
 
             {/* 4. METHODOLOGY (מתודולוגיית העבודה - 4 השלבים) */}
-            <section ref={methodologyRef} className="bg-[#0D131F] text-white rounded-[3rem] p-8 md:p-14 border border-slate-800 shadow-2xl">
+            <section ref={methodologyRef} className="bg-white dark:bg-[#0D131F] text-slate-900 dark:text-white rounded-[3rem] p-8 md:p-14 border border-slate-200 dark:border-slate-800 shadow-2xl dark:shadow-none">
               <div className="text-center mb-14">
-                <span className="text-cyan-400 text-xs font-bold uppercase tracking-wider block mb-2">תהליך העבודה</span>
+                <span className="text-cyan-600 dark:text-cyan-400 text-xs font-bold uppercase tracking-wider block mb-2">תהליך העבודה</span>
                 <h2 className="text-3xl md:text-5xl font-black mb-4">מאבחון ועד להטמעה מלאה</h2>
               </div>
 
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 {METHODOLOGY_STEPS.map(st => (
-                  <div key={st.stepNum} className="bg-[#070A10] border border-slate-800 rounded-3xl p-8 relative flex flex-col justify-between hover:border-cyan-500/50 transition-all group">
+                  <div key={st.stepNum} className="bg-slate-50 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 rounded-3xl p-8 relative flex flex-col justify-between hover:border-cyan-500/50 transition-all group">
                     <div>
                       <div className="flex items-center justify-between mb-6">
-                        <span className="w-8 h-8 rounded-full bg-cyan-500/10 text-cyan-400 flex items-center justify-center font-bold text-sm border border-cyan-500/30">{st.stepNum}</span>
+                        <span className="w-8 h-8 rounded-full bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center font-bold text-sm border border-cyan-500/30">{st.stepNum}</span>
                         <span className="text-3xl group-hover:scale-110 transition-transform">{st.icon}</span>
                       </div>
-                      <h3 className="text-xl font-black text-white mb-2">{st.title}</h3>
-                      <p className="text-xs font-bold text-cyan-400 mb-4">{st.shortDesc}</p>
-                      <p className="text-xs text-slate-300 font-medium leading-relaxed">{st.details}</p>
+                      <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2">{st.title}</h3>
+                      <p className="text-xs font-bold text-cyan-600 dark:text-cyan-400 mb-4">{st.shortDesc}</p>
+                      <p className="text-xs text-slate-600 dark:text-slate-300 font-medium leading-relaxed">{st.details}</p>
                     </div>
                   </div>
                 ))}
@@ -639,21 +639,21 @@ const App: React.FC = () => {
             </section>
 
             {/* 5. PROMPT LIBRARY SECTION */}
-            <section ref={communityRef} className="bg-[#0D131F] rounded-[3rem] p-8 md:p-14 border border-slate-800 shadow-xl text-right">
+            <section ref={communityRef} className="bg-white dark:bg-[#0D131F] rounded-[3rem] p-8 md:p-14 border border-slate-200 dark:border-slate-800 shadow-xl dark:shadow-none text-right">
               <div className="grid lg:grid-cols-12 gap-10 items-center">
                 <div className="lg:col-span-8 space-y-6">
                   <div>
-                    <span className="px-4 py-1.5 bg-cyan-500/10 text-cyan-400 rounded-full text-xs font-bold mb-4 inline-block border border-cyan-500/30">
+                    <span className="px-4 py-1.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 rounded-full text-xs font-bold mb-4 inline-block border border-cyan-500/30">
                       מאגר הידע והפרומפטים
                     </span>
-                    <h2 className="text-3xl md:text-5xl font-black text-white mb-4">מאגר הפרומפטים המקצועי של "מדברים בינה"</h2>
-                    <p className="text-slate-300 text-base md:text-xl font-medium leading-relaxed">
+                    <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">מאגר הפרומפטים המקצועי של "מדברים בינה"</h2>
+                    <p className="text-slate-600 dark:text-slate-300 text-base md:text-xl font-medium leading-relaxed">
                       חלק קטן מתוך ארגז הכלים שאנחנו מביאים לארגונים. סננו לפי נושא, העתיקו והתנסו בעצמכם.
                     </p>
                   </div>
 
                   <div className="flex flex-wrap gap-4 pt-4">
-                    <button onClick={() => setMainView('prompts')} className="px-6 py-3.5 bg-cyan-500 text-black font-black rounded-2xl text-xs hover:bg-cyan-400 transition-all shadow-md flex items-center gap-2">
+                    <button onClick={() => setMainView('prompts')} className="px-6 py-3.5 bg-cyan-500 text-white font-black rounded-2xl text-xs hover:bg-cyan-400 transition-all shadow-md flex items-center gap-2">
                       <span>מאגר הפרומפטים והתבניות לעסקים</span>
                       <span>📚</span>
                     </button>
@@ -666,7 +666,7 @@ const App: React.FC = () => {
 
                 <div className="lg:col-span-4 bg-gradient-to-br from-cyan-600 via-blue-700 to-indigo-800 text-white p-8 rounded-[2.5rem] shadow-2xl text-center space-y-4">
                   <div className="text-5xl mb-2">🚀</div>
-                  <h3 className="text-2xl font-black">אוטוריטה וחדשנות</h3>
+                  <h3 className="text-2xl font-black text-white">אוטוריטה וחדשנות</h3>
                   <p className="text-xs text-blue-100 font-medium leading-relaxed">
                     תובנות מעודכנות, מתודולוגיות עבודה מוכחות וגישה ישירה למאגר הידע המוביל בתחום.
                   </p>
@@ -675,20 +675,20 @@ const App: React.FC = () => {
             </section>
 
             {/* 6. ABOUT (מי מוביל את התהליך) */}
-            <section ref={aboutRef} className="bg-[#0D131F] rounded-[3rem] p-8 md:p-14 border border-slate-800 text-right animate-fadeIn">
+            <section ref={aboutRef} className="bg-white dark:bg-[#0D131F] rounded-[3rem] p-8 md:p-14 border border-slate-200 dark:border-slate-800 text-right animate-fadeIn shadow-2xl dark:shadow-none">
               <div className="grid lg:grid-cols-12 gap-10 items-center">
                 
                 {/* Left Column: Avatar & LinkedIn */}
-                <div className="lg:col-span-4 flex flex-col items-center text-center bg-[#070A10] p-8 rounded-[2.5rem] border border-slate-800 shadow-inner">
-                  <div className="w-64 h-64 md:w-72 md:h-72 rounded-3xl overflow-hidden shadow-2xl mb-6 border-4 border-slate-800 ring-4 ring-cyan-500/20 bg-[#070A10] flex items-center justify-center p-2">
+                <div className="lg:col-span-4 flex flex-col items-center text-center bg-slate-50 dark:bg-[#070A10] p-8 rounded-[2.5rem] border border-slate-200 dark:border-slate-800 shadow-inner">
+                  <div className="w-64 h-64 md:w-72 md:h-72 rounded-3xl overflow-hidden shadow-2xl mb-6 border-4 border-slate-200 dark:border-slate-800 ring-4 ring-cyan-500/20 bg-slate-100 dark:bg-[#070A10] flex items-center justify-center p-2">
                     <img
                       src="/ohad.jpeg"
                       alt="אוהד ברעם - מנהל מוצר ומוביל טרנספורמציה"
                       className="w-full h-full object-contain rounded-2xl"
                     />
                   </div>
-                  <h3 className="text-2xl font-black text-white mb-1">אוהד ברעם</h3>
-                  <p className="text-xs font-bold text-cyan-400 mb-6">מנהל מוצר ומוביל טרנספורמציה דיגיטלית בכיר</p>
+                  <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-1">אוהד ברעם</h3>
+                  <p className="text-xs font-bold text-cyan-600 dark:text-cyan-400 mb-6">מנהל מוצר ומוביל טרנספורמציה דיגיטלית בכיר</p>
                   
                   <a
                     href="https://www.linkedin.com/in/ohad-baram-58a22632a"
@@ -704,14 +704,14 @@ const App: React.FC = () => {
                 {/* Right Column: Bio */}
                 <div className="lg:col-span-8 space-y-6">
                   <div>
-                    <span className="text-cyan-400 text-xs font-bold uppercase tracking-wider block mb-2">מי מוביל את התהליך</span>
-                    <h2 className="text-3xl md:text-5xl font-black text-white mb-6 leading-tight">
+                    <span className="text-cyan-600 dark:text-cyan-400 text-xs font-bold uppercase tracking-wider block mb-2">מי מוביל את התהליך</span>
+                    <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-6 leading-tight">
                       החיבור בין ניתוח תהליכים עסקיים, ניהול מוצר והנדסת AI מעשית
                     </h2>
                     
-                    <div className="space-y-4 text-slate-300 text-base md:text-lg font-medium leading-relaxed">
+                    <div className="space-y-4 text-slate-600 dark:text-slate-300 text-base md:text-lg font-medium leading-relaxed">
                       <p>
-                        <strong className="text-white font-black text-xl block mb-2">נעים להכיר, שמי אוהד ברעם.</strong>
+                        <strong className="text-slate-900 dark:text-white font-black text-xl block mb-2">נעים להכיר, שמי אוהד ברעם.</strong>
                       </p>
                       <p>
                         אני מנהל מוצר ומוביל טרנספורמציה דיגיטלית בכיר, עם ניסיון עשיר בליווי והובלה של מערכות מורכבות, ארכיטקטורות ענן ופלטפורמות מתקדמות. ברקע האקדמי אני בעל תואר שני בניהול ארגוני שירות בהצטיינות, יחד עם הסמכה בניהול מוצר.
@@ -722,25 +722,25 @@ const App: React.FC = () => {
                       <p>
                         בנוסף, אני מביא חיבור עמוק וראייה הוליסטית של עולמות הבינה המלאכותית, האוטומציה ותהליכי העבודה המתקדמים. אני מוביל קהילה מקצועית גדולה בתחום, ומתמקד בשילוב מעשי של יכולות AI וטכנולוגיות חדשות כחלק מובנה מתוך תהליכי העבודה של הארגון.
                       </p>
-                      <p className="text-cyan-400 font-bold border-r-4 border-cyan-500 pr-4 my-2">
+                      <p className="text-cyan-600 dark:text-cyan-400 font-bold border-r-4 border-cyan-500 pr-4 my-2">
                         המטרה שלי היא להביא את הראייה המערכתית, היכולת לגשר בין הצרכים המקצועיים לטכנולוגיה, ולהוביל תהליכי חדשנות ומודרניזציה שמייצרים ערך אמיתי ומתמשך.
                       </p>
                     </div>
                   </div>
 
                   {/* 3 Bullets */}
-                  <div className="grid sm:grid-cols-3 gap-4 pt-6 border-t border-slate-800">
-                    <div className="bg-[#070A10] p-5 rounded-2xl border border-slate-800">
-                      <div className="text-cyan-400 font-black text-sm mb-1">🎯 ראייה תהליכית מקיפה</div>
-                      <div className="text-xs font-bold text-slate-400">אפיון זרימת מידע בארגון ומניעת כפילויות עבודה.</div>
+                  <div className="grid sm:grid-cols-3 gap-4 pt-6 border-t border-slate-200 dark:border-slate-800">
+                    <div className="bg-slate-50 dark:bg-[#070A10] p-5 rounded-2xl border border-slate-200 dark:border-slate-800">
+                      <div className="text-cyan-600 dark:text-cyan-400 font-black text-sm mb-1">🎯 ראייה תהליכית מקיפה</div>
+                      <div className="text-xs font-bold text-slate-500 dark:text-slate-400">אפיון זרימת מידע בארגון ומניעת כפילויות עבודה.</div>
                     </div>
-                    <div className="bg-[#070A10] p-5 rounded-2xl border border-slate-800">
-                      <div className="text-blue-400 font-black text-sm mb-1">🤖 מומחיות ב-AI מתקדם</div>
-                      <div className="text-xs font-bold text-slate-400">בניית סוכנים חכמים, חיבורי API וצ'אטבוטים מבוססי ידע.</div>
+                    <div className="bg-slate-50 dark:bg-[#070A10] p-5 rounded-2xl border border-slate-200 dark:border-slate-800">
+                      <div className="text-blue-600 dark:text-blue-400 font-black text-sm mb-1">🤖 מומחיות ב-AI מתקדם</div>
+                      <div className="text-xs font-bold text-slate-500 dark:text-slate-400">בניית סוכנים חכמים, חיבורי API וצ'אטבוטים מבוססי ידע.</div>
                     </div>
-                    <div className="bg-[#070A10] p-5 rounded-2xl border border-slate-800">
-                      <div className="text-emerald-400 font-black text-sm mb-1">📈 מחויבות לתוצאות (ROI)</div>
-                      <div className="text-xs font-bold text-slate-400">פתרונות מותאמים אישית ללא תלות בכלים מיותרים.</div>
+                    <div className="bg-slate-50 dark:bg-[#070A10] p-5 rounded-2xl border border-slate-200 dark:border-slate-800">
+                      <div className="text-emerald-600 dark:text-emerald-400 font-black text-sm mb-1">📈 מחויבות לתוצאות (ROI)</div>
+                      <div className="text-xs font-bold text-slate-500 dark:text-slate-400">פתרונות מותאמים אישית ללא תלות בכלים מיותרים.</div>
                     </div>
                   </div>
                 </div>

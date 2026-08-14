@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply font-['Assistant'] antialiased scroll-smooth selection:bg-blue-500 selection:text-white;
+    @apply font-['Assistant'] antialiased scroll-smooth bg-slate-50 text-slate-900 dark:bg-[#070A10] dark:text-slate-100 transition-colors duration-300 selection:bg-cyan-500 selection:text-black;
   }
 }
 
@@ -52,61 +52,6 @@
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
-}
-
-/* Light Mode Color & Contrast System */
-html:not(.dark), body:not(.dark) {
-  background-color: #f8fafc !important;
-  color: #0f172a !important;
-}
-
-html:not(.dark) .text-white,
-body:not(.dark) .text-white {
-  color: #0f172a !important;
-}
-
-html:not(.dark) .text-slate-100,
-body:not(.dark) .text-slate-100 {
-  color: #1e293b !important;
-}
-
-html:not(.dark) .text-slate-200,
-body:not(.dark) .text-slate-200 {
-  color: #334155 !important;
-}
-
-html:not(.dark) .text-slate-300,
-body:not(.dark) .text-slate-300 {
-  color: #475569 !important;
-}
-
-html:not(.dark) .text-slate-400,
-body:not(.dark) .text-slate-400 {
-  color: #64748b !important;
-}
-
-html:not(.dark) .bg-\[\#0D131F\],
-body:not(.dark) .bg-\[\#0D131F\] {
-  background-color: #ffffff !important;
-  border-color: #cbd5e1 !important;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05) !important;
-}
-
-html:not(.dark) .bg-\[\#070A10\],
-body:not(.dark) .bg-\[\#070A10\] {
-  background-color: #f1f5f9 !important;
-  border-color: #cbd5e1 !important;
-}
-
-html:not(.dark) .bg-slate-900,
-body:not(.dark) .bg-slate-900 {
-  background-color: #e2e8f0 !important;
-  color: #0f172a !important;
-}
-
-html:not(.dark) .border-slate-800,
-body:not(.dark) .border-slate-800 {
-  border-color: #cbd5e1 !important;
 }
 
 /* Zapier Interfaces Chatbot RTL Alignment */
