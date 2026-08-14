@@ -110,3 +110,17 @@ body.acc-highlight-links a, body.acc-highlight-links button {
   text-decoration: underline !important;
   color: #ffff00 !important;
 }
+
+/* Touch and tablet device hover resets (e.g. iPad) */
+.is-touch-device .hover\:scale-105:hover,
+.is-touch-device .hover\:scale-110:hover,
+.is-touch-device .hover\:scale-\[1\.05\]:hover,
+.is-touch-device .hover\:scale-\[1\.02\]:hover,
+.is-touch-device .hover\:scale-\[0\.99\]:hover,
+.is-touch-device .hover\:-translate-y-1:hover {
+  transform: none !important;
+}
+
+.is-touch-device .group:hover .group-hover\:scale-110 {
+  transform: none !important;
+}

@@ -49,6 +49,14 @@ const App: React.FC = () => {
     }
   }, [isDarkMode]);
 
+  // זיהוי מכשירי מגע וטאבלטים (כמו אייפד) לשיפור וחלקות התצוגה
+  useEffect(() => {
+    const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+    if (isTouch) {
+      document.documentElement.classList.add('is-touch-device');
+    }
+  }, []);
+
   // --- ניהול מנעול פרומפטים פרימיום (Gating) ---
   const [unlockedPremium, setUnlockedPremium] = useState<boolean>(() => {
     return localStorage.getItem('b2b_leads_unlocked') === 'true';
