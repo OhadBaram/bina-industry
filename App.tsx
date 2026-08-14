@@ -47,11 +47,11 @@ const App: React.FC = () => {
   const [activeWordIndex, setActiveWordIndex] = useState(-1);
   const [shouldPulseCTA, setShouldPulseCTA] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const sloganWords = [
-    "מפסיקים", "לשחק", "עם", "AI.", 
-    "מטמיעים", "תשתית", "סוכנים", "ואוטומציה", "שמייצרת", "תוצאות.", 
-    "בינה", "לתעשייה;", "שמים", "את", "הבינה", "בעשייה.", 
-    "תתאמו", "שיחת", "אבחון", "והבנת", "צרכים", "עוד", "היום."
+  const sloganLines = [
+    ["מפסיקים", "לשחק", "עם", "AI."],
+    ["מטמיעים", "תשתית", "סוכנים", "ואוטומציה", "שמייצרת", "תוצאות."],
+    ["בינה", "לתעשייה;", "שמים", "את", "הבינה", "בעשייה."],
+    ["תתאמו", "שיחת", "אבחון", "והבנת", "צרכים", "עוד", "היום."]
   ];
 
   useEffect(() => {
@@ -88,7 +88,7 @@ const App: React.FC = () => {
     const handleTimeUpdate = () => {
       if (!audio.duration) return;
       const progress = audio.currentTime / audio.duration;
-      const totalWords = sloganWords.length;
+      const totalWords = sloganLines.reduce((acc, line) => acc + line.length, 0);
       const activeIdx = Math.min(totalWords - 1, Math.floor(progress * totalWords));
       setActiveWordIndex(activeIdx);
     };
@@ -1456,22 +1456,43 @@ const App: React.FC = () => {
       {/* חלונית סלוגן קריוקי צפה - מוצגת רק בעת ניגון מוזיקת הרקע */}
       {showSloganPanel && (
         <div 
-          className="fixed bottom-24 left-6 z-[99999] bg-slate-950/95 dark:bg-slate-900/95 border border-slate-700/60 rounded-3xl p-6 md:p-8 shadow-2xl animate-fadeIn space-y-2 text-right dir-rtl"
+          className="fixed bottom-24 left-6 z-[99999] bg-slate-950/95 dark:bg-slate-900/95 border border-slate-700/60 rounded-3xl p-6 md:p-8 shadow-2xl animate-fadeIn space-y-4 text-right dir-rtl"
           style={{ width: window.innerWidth < 640 ? 'calc(100vw - 32px)' : '420px', position: 'fixed', bottom: '96px', left: window.innerWidth < 640 ? '16px' : '24px', zIndex: 99999, direction: 'rtl' }}
         >
-          <div className="flex flex-wrap gap-x-2.5 gap-y-3.5 text-lg md:text-xl font-black leading-relaxed justify-start">
-            {sloganWords.map((word, idx) => (
-              <span
-                key={idx}
-                className={`transition-all duration-300 px-1.5 py-0.5 rounded-lg ${
-                  activeWordIndex === idx 
-                    ? 'text-cyan-400 bg-cyan-500/20 scale-110 shadow border border-cyan-500/30' 
-                    : 'text-slate-400 dark:text-slate-500'
-                }`}
-              >
-                {word}
-              </span>
-            ))}
+          <div className="space-y-4 text-lg md:text-xl font-black leading-relaxed text-right">
+            {sloganLines.map((line, lineIdx) => {
+              // נחשב את האינדקס ההתחלתי של השורה הנוכחית במערך המילים הכולל
+              let startIdx = 0;
+              for (let i = 0; i < lineIdx; i++) {
+                startIdx += sloganLines[i].length;
+              }
+
+              return (
+                <div key={lineIdx} className="flex flex-wrap gap-x-2.5 justify-start">
+                  {line.map((word, wordIdx) => {
+                    const absoluteIdx = startIdx + wordIdx;
+                    const isActive = activeWordIndex === absoluteIdx;
+                    return (
+                      <span
+                        key={wordIdx}
+                        className="transition-all duration-300 px-1.5 py-0.5 rounded-lg inline-block"
+                        style={{
+                          transform: isActive ? 'scale(1.25)' : 'scale(1)',
+                          color: isActive ? '#22d3ee' : '#64748b', // ציאן מודגש לעומת אפור רקע
+                          backgroundColor: isActive ? 'rgba(6, 182, 212, 0.2)' : 'transparent',
+                          boxShadow: isActive ? '0 0 12px rgba(6, 182, 212, 0.5)' : 'none',
+                          border: isActive ? '1px solid rgba(6, 182, 212, 0.3)' : 'none',
+                          fontWeight: isActive ? 900 : 700,
+                          fontSize: isActive ? '1.18em' : '1em' // הגדלה של לפחות 18 אחוז מהגודל המקורי
+                        }}
+                      >
+                        {word}
+                      </span>
+                    );
+                  })}
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
