@@ -41,6 +41,55 @@ const App: React.FC = () => {
   });
   const [isDarkMode, setIsDarkMode] = useState(true);
 
+  // --- ניהול מוזיקת רקע ---
+  const [isPlayingMusic, setIsPlayingMusic] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    const audio = new Audio('/מוזיקת רקע.mp4');
+    audio.loop = true;
+    audio.volume = 0.2; // עוצמת שמע רקע נעימה
+    audioRef.current = audio;
+
+    let hasStarted = false;
+
+    const handleInitialClick = (e: MouseEvent) => {
+      if (hasStarted) return;
+
+      const target = e.target as HTMLElement;
+      const isInteractive = target.closest('button') || target.closest('a') || target.closest('.cursor-pointer') || target.tagName === 'BUTTON';
+
+      if (isInteractive) {
+        audio.play().then(() => {
+          hasStarted = true;
+          setIsPlayingMusic(true);
+          document.removeEventListener('click', handleInitialClick);
+        }).catch(err => {
+          console.log('Audio playback failed or blocked:', err);
+        });
+      }
+    };
+
+    document.addEventListener('click', handleInitialClick);
+
+    return () => {
+      document.removeEventListener('click', handleInitialClick);
+      audio.pause();
+    };
+  }, []);
+
+  const toggleMusic = () => {
+    if (!audioRef.current) return;
+    if (isPlayingMusic) {
+      audioRef.current.pause();
+      setIsPlayingMusic(false);
+    } else {
+      audioRef.current.play().then(() => {
+        setIsPlayingMusic(true);
+      }).catch(err => console.log('Audio playback failed:', err));
+    }
+  };
+
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
@@ -509,6 +558,13 @@ const App: React.FC = () => {
           </nav>
 
           <div className="flex items-center gap-3">
+            <button
+              onClick={toggleMusic}
+              title={isPlayingMusic ? "השתק מוזיקת רקע 🔈" : "הפעל מוזיקת רקע 🔊"}
+              className="p-3 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-cyan-600 dark:text-cyan-400 hover:text-cyan-500 rounded-xl transition-all font-black text-sm flex items-center justify-center cursor-pointer shadow-md"
+            >
+              {isPlayingMusic ? '🔊' : '🔈'}
+            </button>
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
               title={isDarkMode ? "מעבר למצב בהיר ☀️" : "מעבר למצב כהה 🌙"}
