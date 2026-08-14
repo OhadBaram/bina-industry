@@ -3,8 +3,31 @@ import { AccessibilityStatementModal } from './AccessibilityStatementModal';
 
 export const AccessibilityToolbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMenuShrinking, setIsMenuShrinking] = useState(false);
+  const [isMenuExploding, setIsMenuExploding] = useState(false);
+  const [shouldRenderMenu, setShouldRenderMenu] = useState(false);
   const [showStatement, setShowStatement] = useState(false);
   const [fontSizeMultiplier, setFontSizeMultiplier] = useState(1);
+
+  const toggleMenu = () => {
+    if (isOpen) {
+      closeMenu();
+    } else {
+      setIsMenuExploding(true);
+      setIsOpen(true);
+      setShouldRenderMenu(true);
+      setTimeout(() => setIsMenuExploding(false), 400);
+    }
+  };
+
+  const closeMenu = () => {
+    setIsMenuShrinking(true);
+    setTimeout(() => {
+      setIsOpen(false);
+      setShouldRenderMenu(false);
+      setIsMenuShrinking(false);
+    }, 380);
+  };
 
   const accAction = (action: 'font-up' | 'font-down' | 'contrast' | 'grayscale' | 'highlight-links' | 'reset') => {
     const body = document.body;
@@ -47,7 +70,7 @@ export const AccessibilityToolbar: React.FC = () => {
       >
         <button
           id="acc-toggle-btn"
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={toggleMenu}
           aria-label="פתח תפריט נגישות"
           className="w-12 h-12 bg-cyan-500 hover:bg-cyan-400 text-slate-950 rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-cyan-300"
           style={{ width: '48px', height: '48px', cursor: 'pointer' }}
@@ -58,17 +81,19 @@ export const AccessibilityToolbar: React.FC = () => {
         </button>
 
         {/* תפריט נגישות */}
-        {isOpen && (
+        {shouldRenderMenu && (
           <div 
             id="acc-menu" 
-            className="absolute bottom-16 left-0 w-72 bg-slate-900 border border-slate-700 rounded-xl p-5 shadow-2xl text-slate-200 text-sm dir-rtl" 
+            className={`absolute bottom-16 left-0 w-72 bg-slate-900 border border-slate-700 rounded-xl p-5 shadow-2xl text-slate-200 text-sm dir-rtl ${
+              isMenuShrinking ? 'animate-implode-left' : isMenuExploding ? 'animate-explode-left' : 'animate-fadeIn'
+            }`} 
             style={{ direction: 'rtl', textAlign: 'right', position: 'absolute', bottom: '64px', left: '0px', width: '288px' }}
           >
             <div className="flex justify-between items-center pb-3 border-b border-slate-800 mb-4">
               <h3 className="font-bold text-white text-base">התאמת נגישות</h3>
               <button
                 id="acc-close-btn"
-                onClick={() => setIsOpen(false)}
+                onClick={closeMenu}
                 className="text-slate-400 hover:text-white text-lg"
                 style={{ cursor: 'pointer' }}
               >

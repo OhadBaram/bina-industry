@@ -706,21 +706,21 @@ const App: React.FC = () => {
                 <button
                   onClick={() => triggerConceptExplanation('פתרונות מדף', 'מוצרי מדף גנריים שלא מותאמים לצרכים, למערכות או לאבטחת המידע של הארגון, ואינם פותרים בעיות מורכבות בצורה מדויקת.')}
                   className="underline decoration-cyan-500/60 decoration-2 underline-offset-4 hover:text-cyan-500 font-bold transition-all cursor-pointer"
-                  title="העתק מושג לצ׳אטבוט 📋"
+                  title="הדבק מושג לצ׳אטבוט 📋"
                 >
                   פתרונות מדף
                 </button> לא עובדים בתעשייה מורכבת. אני מאבחן את{' '}
                 <button
                   onClick={() => triggerConceptExplanation('צווארי הבקבוק', 'נקודות התורפה ותהליכי העבודה הידניים המייגעים בארגון שמעכבים את העבודה ופוגעים בפרודוקטיביות.')}
                   className="underline decoration-cyan-500/60 decoration-2 underline-offset-4 hover:text-cyan-500 font-bold transition-all cursor-pointer"
-                  title="העתק מושג לצ׳אטבוט 📋"
+                  title="הדבק מושג לצ׳אטבוט 📋"
                 >
                   צווארי הבקבוק
                 </button> בעסק שלכם, מכשיר את הצוותים ל-{' '}
                 <button
                   onClick={() => triggerConceptExplanation('עבודה עצמאית עם כלי AI', 'הקניית מיומנויות הנדסת פרומפטים מתקדמת לצוותים כדי שיוכלו להשתמש בצורה יומיומית ויעילה במודלים השונים.')}
                   className="underline decoration-cyan-500/60 decoration-2 underline-offset-4 hover:text-cyan-500 font-bold transition-all cursor-pointer"
-                  title="העתק מושג לצ׳אטבוט 📋"
+                  title="הדבק מושג לצ׳אטבוט 📋"
                 >
                   עבודה עצמאית עם כלי AI
                 </button>, ומפתח סוכנים ואוטומציות שמייצרים תוצאות בשטח.

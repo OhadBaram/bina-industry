@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface TermsOfServiceModalProps {
   isOpen: boolean;
@@ -6,11 +6,35 @@ interface TermsOfServiceModalProps {
 }
 
 export const TermsOfServiceModal: React.FC<TermsOfServiceModalProps> = ({ isOpen, onClose }) => {
-  if (!isOpen) return null;
+  const [shouldRender, setShouldRender] = useState(isOpen);
+  const [isAnimatingIn, setIsAnimatingIn] = useState(false);
+  const [isAnimatingOut, setIsAnimatingOut] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setShouldRender(true);
+      setIsAnimatingIn(true);
+      const timer = setTimeout(() => setIsAnimatingIn(false), 400);
+      return () => clearTimeout(timer);
+    } else {
+      setIsAnimatingOut(true);
+      const timer = setTimeout(() => {
+        setShouldRender(false);
+        setIsAnimatingOut(false);
+      }, 380);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
+
+  if (!shouldRender) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md flex items-center justify-center p-4 md:p-6 animate-fadeIn">
-      <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] p-6 md:p-10 max-w-3xl w-full max-h-[85vh] overflow-y-auto text-right shadow-2xl border border-slate-200 dark:border-slate-800 relative space-y-6" dir="rtl">
+    <div className={`fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md flex items-center justify-center p-4 md:p-6 transition-opacity duration-300 ${
+      isAnimatingOut ? 'opacity-0' : 'opacity-100'
+    }`}>
+      <div className={`bg-white dark:bg-slate-900 rounded-[2.5rem] p-6 md:p-10 max-w-3xl w-full max-h-[85vh] overflow-y-auto text-right shadow-2xl border border-slate-200 dark:border-slate-800 relative space-y-6 ${
+        isAnimatingOut ? 'animate-implode-left' : isAnimatingIn ? 'animate-explode-left' : 'animate-fadeIn'
+      }`} dir="rtl">
         
         <button
           onClick={onClose}

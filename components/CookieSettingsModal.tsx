@@ -7,6 +7,9 @@ interface CookieSettingsModalProps {
 
 export const CookieSettingsModal: React.FC<CookieSettingsModalProps> = ({ isOpen, onClose }) => {
   const [analyticsConsent, setAnalyticsConsent] = useState(true);
+  const [shouldRender, setShouldRender] = useState(isOpen);
+  const [isAnimatingIn, setIsAnimatingIn] = useState(false);
+  const [isAnimatingOut, setIsAnimatingOut] = useState(false);
 
   useEffect(() => {
     const consent = localStorage.getItem('b2b_cookie_consent');
@@ -15,9 +18,23 @@ export const CookieSettingsModal: React.FC<CookieSettingsModalProps> = ({ isOpen
     } else {
       setAnalyticsConsent(true);
     }
+
+    if (isOpen) {
+      setShouldRender(true);
+      setIsAnimatingIn(true);
+      const timer = setTimeout(() => setIsAnimatingIn(false), 400);
+      return () => clearTimeout(timer);
+    } else {
+      setIsAnimatingOut(true);
+      const timer = setTimeout(() => {
+        setShouldRender(false);
+        setIsAnimatingOut(false);
+      }, 380);
+      return () => clearTimeout(timer);
+    }
   }, [isOpen]);
 
-  if (!isOpen) return null;
+  if (!shouldRender) return null;
 
   const handleSaveSettings = () => {
     localStorage.setItem('b2b_cookie_consent', analyticsConsent ? 'all' : 'necessary');
@@ -30,8 +47,12 @@ export const CookieSettingsModal: React.FC<CookieSettingsModalProps> = ({ isOpen
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md flex items-center justify-center p-4 md:p-6 animate-fadeIn">
-      <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] p-6 md:p-10 max-w-2xl w-full max-h-[85vh] overflow-y-auto text-right shadow-2xl border border-slate-200 dark:border-slate-800 relative space-y-6" dir="rtl">
+    <div className={`fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md flex items-center justify-center p-4 md:p-6 transition-opacity duration-300 ${
+      isAnimatingOut ? 'opacity-0' : 'opacity-100'
+    }`}>
+      <div className={`bg-white dark:bg-slate-900 rounded-[2.5rem] p-6 md:p-10 max-w-xl w-full max-h-[85vh] overflow-y-auto text-right shadow-2xl border border-slate-200 dark:border-slate-800 relative space-y-6 ${
+        isAnimatingOut ? 'animate-implode-left' : isAnimatingIn ? 'animate-explode-left' : 'animate-fadeIn'
+      }`} dir="rtl">
         
         <button
           onClick={onClose}

@@ -114,9 +114,9 @@ export const ZapierChatbot: React.FC = () => {
               <button
                 onClick={handlePasteClick}
                 className="text-[11px] font-black px-2.5 py-1.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 rounded-xl transition-all cursor-pointer shadow-md flex items-center justify-center min-w-[95px]"
-                title="העתק את המושג האחרון ללוח להדבקה פשוטה בצ'אט"
+                title="הדבק את המושג האחרון מהלוח לצ׳אט"
               >
-                {pasteStatus || 'העתק מושג 📋'}
+                {pasteStatus || 'הדבק מושג 📋'}
               </button>
               <button
                 onClick={handleCloseClick}
