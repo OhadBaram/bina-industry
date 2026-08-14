@@ -657,7 +657,7 @@ const App: React.FC = () => {
                     </div>
                   </div>
 
-                  <button onClick={() => prefillServiceAndScroll('transformation')} className="w-full py-4 rounded-2xl bg-slate-800 text-slate-200 hover:bg-cyan-500 hover:text-black font-black text-xs transition-all text-center">
+                  <button onClick={() => prefillServiceAndScroll('transformation')} className="w-full py-4 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-cyan-500 hover:text-white font-black text-xs transition-all text-center border border-slate-200 dark:border-slate-700 shadow-sm">
                     לייעוץ בנושאי אוטומציה תפעולית ➔
                   </button>
                 </div>
@@ -862,10 +862,10 @@ const App: React.FC = () => {
               <button onClick={() => setSearchTerm(searchInput)} className="px-8 py-5 bg-cyan-500 text-white font-black rounded-2xl hover:bg-cyan-400 transition-all shadow-md">חפש</button>
             </div>
 
-            <div className="flex gap-3 overflow-x-auto pb-4 no-scrollbar justify-start md:justify-center">
+            <div className="flex flex-wrap items-center justify-center gap-2.5 max-w-6xl mx-auto py-2">
               <button
                 onClick={() => { setActiveB2BCategory('all'); setSearchTerm(''); }}
-                className={`flex-shrink-0 px-6 py-3.5 rounded-2xl font-black border transition-all ${activeB2BCategory === 'all' ? 'bg-cyan-500 text-white border-cyan-500 shadow-lg scale-105' : 'bg-white dark:bg-[#0D131F] border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-300 hover:border-cyan-500/50'}`}
+                className={`px-5 py-3 rounded-2xl font-black text-xs md:text-sm border transition-all ${activeB2BCategory === 'all' ? 'bg-cyan-500 text-white border-cyan-500 shadow-lg scale-105' : 'bg-white dark:bg-[#0D131F] border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-cyan-500/50 shadow-sm'}`}
               >
                 🌐 כל התבניות ({fullPromptPool.length})
               </button>
@@ -873,7 +873,7 @@ const App: React.FC = () => {
                 <button
                   key={cat.id}
                   onClick={() => { setActiveB2BCategory(cat.id); setSearchTerm(''); }}
-                  className={`flex-shrink-0 px-6 py-3.5 rounded-2xl font-black border transition-all ${activeB2BCategory === cat.id ? 'bg-cyan-500 text-white border-cyan-500 shadow-lg scale-105' : 'bg-white dark:bg-[#0D131F] border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-300 hover:border-cyan-500/50'}`}
+                  className={`px-5 py-3 rounded-2xl font-black text-xs md:text-sm border transition-all ${activeB2BCategory === cat.id ? 'bg-cyan-500 text-white border-cyan-500 shadow-lg scale-105' : 'bg-white dark:bg-[#0D131F] border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-cyan-500/50 shadow-sm'}`}
                 >
                   {cat.icon} {cat.name}
                 </button>
@@ -883,20 +883,20 @@ const App: React.FC = () => {
             {/* Prompts Grid */}
             <div className="grid md:grid-cols-2 gap-8">
               {filteredB2BPrompts.map((p) => (
-                <div key={p.id} className="bg-[#0D131F] rounded-[2.5rem] p-8 border border-slate-800 flex flex-col justify-between relative hover:border-cyan-500/50 transition-all group">
+                <div key={p.id} className="bg-white dark:bg-[#0D131F] rounded-[2.5rem] p-8 border border-slate-200 dark:border-slate-800 flex flex-col justify-between relative hover:border-cyan-500/50 transition-all group shadow-xl dark:shadow-none">
                   <div className="text-right">
                     <div className="flex items-center justify-between mb-4">
-                      <span className="text-xs font-black uppercase text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-xl border border-cyan-500/20">{p.subCategory}</span>
+                      <span className="text-xs font-black uppercase text-cyan-600 dark:text-cyan-400 bg-cyan-500/10 px-3 py-1 rounded-xl border border-cyan-500/20">{p.subCategory}</span>
                       {p.isPremium && (
-                        <span className={`text-[10px] font-black px-3 py-1 rounded-xl flex items-center gap-1 ${unlockedPremium ? 'bg-emerald-950 text-emerald-300 border border-emerald-700' : 'bg-amber-950 text-amber-300 border border-amber-700'}`}>
+                        <span className={`text-[10px] font-black px-3 py-1 rounded-xl flex items-center gap-1 ${unlockedPremium ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700' : 'bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700'}`}>
                           {unlockedPremium ? '🔓 פתוח לשימוש' : '🔒 פרימיום לארגונים'}
                         </span>
                       )}
                     </div>
-                    <h3 className="text-2xl font-black mb-3 text-white leading-tight">{p.title}</h3>
-                    <p className="text-slate-400 text-xs md:text-sm font-bold mb-6">{p.explanation}</p>
+                    <h3 className="text-2xl font-black mb-3 text-slate-900 dark:text-white leading-tight">{p.title}</h3>
+                    <p className="text-slate-600 dark:text-slate-400 text-xs md:text-sm font-bold mb-6">{p.explanation}</p>
 
-                    <div className="bg-[#070A10] p-6 rounded-3xl mb-6 font-mono text-xs leading-relaxed text-slate-300 border border-slate-900 text-right relative" dir="rtl">
+                    <div className="bg-slate-50 dark:bg-[#070A10] p-6 rounded-3xl mb-6 text-xs md:text-sm leading-relaxed text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-800 text-right relative shadow-inner overflow-x-auto whitespace-pre-wrap font-medium" dir="rtl">
                       {p.isPremium && !unlockedPremium ? (
                         <div className="filter blur-xs select-none opacity-40">
                           {p.text}
@@ -906,22 +906,22 @@ const App: React.FC = () => {
                       )}
 
                       {p.isPremium && !unlockedPremium && (
-                        <div className="absolute inset-0 bg-[#070A10]/90 backdrop-blur-sm rounded-3xl flex flex-col items-center justify-center p-6 text-center text-white">
+                        <div className="absolute inset-0 bg-white/90 dark:bg-[#070A10]/90 backdrop-blur-sm rounded-3xl flex flex-col items-center justify-center p-6 text-center text-slate-900 dark:text-white">
                           <span className="text-3xl mb-2">🔒</span>
                           <h4 className="font-black text-base mb-1">תבנית עסקית מתקדמת</h4>
-                          <p className="text-xs text-slate-300 font-bold mb-4">השאירו פרטים קצרים לפתיחת כל התבניות העסקיות</p>
-                          <button onClick={() => handleB2BPromptClick(p)} className="px-6 py-2.5 bg-cyan-500 text-black font-black text-xs rounded-xl shadow-lg hover:scale-105 transition-all">
+                          <p className="text-xs text-slate-600 dark:text-slate-300 font-bold mb-4">השאירו פרטים קצרים לפתיחת כל התבניות העסקיות</p>
+                          <button onClick={() => handleB2BPromptClick(p)} className="px-6 py-2.5 bg-cyan-500 text-white font-black text-xs rounded-xl shadow-lg hover:scale-105 transition-all">
                             פתיחה מהירה ללא עלות 🔑
                           </button>
                         </div>
                       )}
                     </div>
 
-                    <div className="bg-[#070A10] border border-slate-800 p-4 rounded-2xl mb-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-right">
-                      <span className="text-xs font-bold text-slate-300">
+                    <div className="bg-slate-50 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 p-4 rounded-2xl mb-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-right">
+                      <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
                         רוצים להפוך את הפרומפט הזה לפתרון AI אוטומטי בארגון?
                       </span>
-                      <button onClick={openContactView} className="px-4 py-2 bg-cyan-500 text-black font-black text-xs rounded-xl transition-all shadow-md whitespace-nowrap hover:bg-cyan-400">
+                      <button onClick={openContactView} className="px-4 py-2 bg-cyan-500 text-white font-black text-xs rounded-xl transition-all shadow-md whitespace-nowrap hover:bg-cyan-400">
                         [תיאום שיחת אבחון] 📞
                       </button>
                     </div>
@@ -929,7 +929,7 @@ const App: React.FC = () => {
 
                   <button
                     onClick={() => handleB2BPromptClick(p)}
-                    className={`w-full py-5 rounded-2xl font-black text-lg transition-all flex items-center justify-center gap-3 ${p.isPremium && !unlockedPremium ? 'bg-amber-500 text-black hover:bg-amber-400' : copiedId === p.id ? 'bg-emerald-600 text-white' : 'bg-cyan-500 text-black hover:bg-cyan-400'}`}
+                    className={`w-full py-5 rounded-2xl font-black text-lg transition-all flex items-center justify-center gap-3 ${p.isPremium && !unlockedPremium ? 'bg-amber-500 text-white hover:bg-amber-400' : copiedId === p.id ? 'bg-emerald-600 text-white' : 'bg-cyan-500 text-white hover:bg-cyan-400 shadow-md'}`}
                   >
                     {p.isPremium && !unlockedPremium ? 'פתיחת תבנית מתקדמת 🔑' : copiedId === p.id ? 'הועתק בהצלחה! ✅' : 'העתקת תבנית עסקית 📋'}
                   </button>
