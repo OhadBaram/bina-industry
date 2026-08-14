@@ -54,17 +54,25 @@ const App: React.FC = () => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('הפעולה בוצעה בהצלחה!');
 
-  // פתיחת צ׳אטבוט והצגת הסבר על מושג מקצועי
-  const triggerConceptExplanation = (concept: string, explanation: string) => {
-    const question = `מה זה ${concept}?`;
-    if (typeof (window as any).triggerChatbotConcept === 'function') {
-      (window as any).triggerChatbotConcept(question, explanation);
-    }
-    window.dispatchEvent(
-      new CustomEvent('explainConcept', {
-        detail: { question, explanation }
-      })
-    );
+  // העתקת מושג מקצועי והצגת טוסט הסבר
+  const triggerConceptExplanation = (concept: string, explanation?: string) => {
+    navigator.clipboard.writeText(concept).then(() => {
+      setToastMessage('המושג הועתק! 📋 ניתן להדביק בצ׳אטבוט בפינה להסבר.');
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 4500);
+    }).catch(() => {
+      const el = document.createElement('textarea');
+      el.value = concept;
+      el.style.position = 'fixed';
+      document.body.appendChild(el);
+      el.focus();
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+      setToastMessage('המושג הועתק! 📋 ניתן להדביק בצ׳אטבוט בפינה להסבר.');
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 4500);
+    });
   };
 
   // --- ניהול טופס לידים ---
@@ -84,7 +92,7 @@ const App: React.FC = () => {
   const communityRef = useRef<HTMLDivElement>(null);
   const aboutRef = useRef<HTMLDivElement>(null);
 
-  // בדיקת ניתוב URL ושתילת פרמטר service בטופס במידה וקיים
+  // בדיקת ניתוב URL ושתילת פרמטר service בטופס במידה וקיים וכן פתיחה אוטומטית של הצ'אטבוט
   useEffect(() => {
     const path = window.location.pathname;
     if (path.includes('/prompts')) {
@@ -98,6 +106,29 @@ const App: React.FC = () => {
         contactFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }, 500);
     }
+
+    // פתיחה אוטומטית של הצ'אטבוט של Zapier
+    const openZapierBot = () => {
+      const zapierBot = document.querySelector('zapier-interfaces-chatbot-embed');
+      if (zapierBot) {
+        zapierBot.setAttribute('open', 'true');
+        zapierBot.setAttribute('is-open', 'true');
+        try {
+          const button = zapierBot.shadowRoot?.querySelector('button') || zapierBot.shadowRoot?.querySelector('[role="button"]');
+          button?.click();
+        } catch(e) {}
+      }
+    };
+
+    const timer1 = setTimeout(openZapierBot, 1000);
+    const timer2 = setTimeout(openZapierBot, 2500);
+    const timer3 = setTimeout(openZapierBot, 5000);
+
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(timer3);
+    };
   }, []);
 
   // פונקציית שתילת טקסט וגלילה לטופס בלחיצה על כפתור שירות
@@ -614,9 +645,14 @@ const App: React.FC = () => {
                   <div>
                     <div className="flex items-center justify-between mb-6">
                       <span className="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-sm border border-blue-500/30">02</span>
-                      <span className="text-[11px] font-bold px-3 py-1.5 bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-xl border border-blue-500/30">
-                        WORKSHOPS
-                      </span>
+                      <button
+                        onClick={() => triggerConceptExplanation('WORKSHOPS')}
+                        className="text-[11px] font-bold px-3 py-1.5 bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-xl border border-blue-500/30 hover:border-blue-500 hover:scale-105 transition-all cursor-pointer flex items-center gap-1"
+                        title="העתק מושג לצ׳אטבוט 📋"
+                      >
+                        <span>WORKSHOPS</span>
+                        <span>📋</span>
+                      </button>
                     </div>
 
                     <span className="text-xs font-bold text-slate-500 dark:text-slate-400 block mb-1">הדרכות עומק וסדנאות Hands-on</span>
@@ -643,9 +679,14 @@ const App: React.FC = () => {
                   <div>
                     <div className="flex items-center justify-between mb-6">
                       <span className="w-9 h-9 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold text-sm border border-indigo-500/30">03</span>
-                      <span className="text-[11px] font-bold px-3 py-1.5 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 rounded-xl border border-indigo-500/30 font-mono">
-                        03 // ENTERPRISE DATA & APIS
-                      </span>
+                      <button
+                        onClick={() => triggerConceptExplanation('ENTERPRISE DATA & APIS')}
+                        className="text-[11px] font-bold px-3 py-1.5 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 rounded-xl border border-indigo-500/30 hover:border-indigo-500 hover:scale-105 transition-all cursor-pointer flex items-center gap-1 font-mono"
+                        title="העתק מושג לצ׳אטבוט 📋"
+                      >
+                        <span>03 // ENTERPRISE DATA & APIS</span>
+                        <span>📋</span>
+                      </button>
                     </div>
 
                     <span className="text-xs font-bold text-cyan-600 dark:text-cyan-400 block mb-1">ארכיטקטורת נתונים, סוכנים ואינטגרציות עומק</span>
@@ -683,9 +724,14 @@ const App: React.FC = () => {
                   <div>
                     <div className="flex items-center justify-between mb-6">
                       <span className="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-sm border border-emerald-500/30">04</span>
-                      <span className="text-[11px] font-bold px-3 py-1.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-xl border border-emerald-500/30">
-                        SECURITY FIRST
-                      </span>
+                      <button
+                        onClick={() => triggerConceptExplanation('SECURITY FIRST')}
+                        className="text-[11px] font-bold px-3 py-1.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-xl border border-emerald-500/30 hover:border-emerald-500 hover:scale-105 transition-all cursor-pointer flex items-center gap-1"
+                        title="העתק מושג לצ׳אטבוט 📋"
+                      >
+                        <span>SECURITY FIRST</span>
+                        <span>📋</span>
+                      </button>
                     </div>
 
                     <span className="text-xs font-bold text-slate-500 dark:text-slate-400 block mb-1">אבטחת מידע ופרטיות</span>
