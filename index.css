@@ -124,3 +124,69 @@ body.acc-highlight-links a, body.acc-highlight-links button {
 .is-touch-device .group:hover .group-hover\:scale-110 {
   transform: none !important;
 }
+
+/* Implode/Explode transitions for Slogan Panel (Bottom-Left) */
+@keyframes implodeToLeft {
+  0% {
+    opacity: 1;
+    transform: scale(1) translate(0, 0);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.1) translate(-150px, 100px);
+    filter: blur(5px);
+  }
+}
+.animate-implode-left {
+  animation: implodeToLeft 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes explodeFromLeft {
+  0% {
+    opacity: 0;
+    transform: scale(0.1) translate(-150px, 100px);
+    filter: blur(5px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translate(0, 0);
+    filter: blur(0);
+  }
+}
+.animate-explode-left {
+  animation: explodeFromLeft 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+/* Implode/Explode transitions for Chatbot Drawer (Bottom-Right) */
+@keyframes implodeToRight {
+  0% {
+    opacity: 1;
+    transform: scale(1) translate(0, 0);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.1) translate(180px, 120px);
+    filter: blur(5px);
+  }
+}
+.animate-implode-right {
+  animation: implodeToRight 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes explodeFromRight {
+  0% {
+    opacity: 0;
+    transform: scale(0.1) translate(180px, 120px);
+    filter: blur(5px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translate(0, 0);
+    filter: blur(0);
+  }
+}
+.animate-explode-right {
+  animation: explodeFromRight 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}

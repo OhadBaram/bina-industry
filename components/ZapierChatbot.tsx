@@ -6,8 +6,8 @@ export const ZapierChatbot: React.FC = () => {
   // בניידים הצאטבוט יהיה סגור כברירת מחדל
   const [isOpen, setIsOpen] = useState(window.innerWidth >= 768);
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 1024);
-  const [iframeUrl, setIframeUrl] = useState(ZAPIER_CHATBOT_IFRAME);
-  const [iframeKey, setIframeKey] = useState(0);
+  const [isShrinking, setIsShrinking] = useState(false);
+  const [isExploding, setIsExploding] = useState(false);
 
   // זיהוי שינוי גודל מסך
   useEffect(() => {
@@ -16,12 +16,33 @@ export const ZapierChatbot: React.FC = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const handleOpenClick = () => {
+    if (isOpen) {
+      handleCloseClick();
+    } else {
+      setIsExploding(true);
+      setIsOpen(true);
+      setTimeout(() => setIsExploding(false), 400);
+    }
+  };
+
+  const handleCloseClick = () => {
+    setIsShrinking(true);
+    setTimeout(() => {
+      setIsOpen(false);
+      setIsShrinking(false);
+    }, 380);
+  };
+
   const handlePasteClick = () => {
     const lastCopied = localStorage.getItem('last_copied_concept');
     if (lastCopied) {
-      // טעינה מחדש של ה-iframe עם השאילתה כפרמטר pre-fill
-      setIframeKey(prev => prev + 1);
-      setIframeUrl(`${ZAPIER_CHATBOT_IFRAME}?message=${encodeURIComponent(lastCopied)}&q=${encodeURIComponent(lastCopied)}&query=${encodeURIComponent(lastCopied)}`);
+      // במקום לאתחל את הצ'אטבוט מחדש, אנו מעתיקים שוב ללוח ומדריכים את המשתמש להדביק
+      navigator.clipboard.writeText(lastCopied).then(() => {
+        alert(`המונח "${lastCopied}" מוכן להדבקה! 📋\n\nלחצו קליק ימני (או לחיצה ארוכה בנייד) בתוך תיבת השיחה של הצ'אטבוט, ובחרו "הדבק" (או לחצו Ctrl+V).`);
+      }).catch(() => {
+        alert(`המונח להסבר הוא: "${lastCopied}"\n\nפשוט בצעו הדבקה (Ctrl+V או קליק ימני) בתיבת השיחה של הצ'אטבוט למטה.`);
+      });
     } else {
       alert('טרם הועתק מושג מהאתר. לחצו על אחד המושגים המודגשים באתר תחילה!');
     }
@@ -40,7 +61,7 @@ export const ZapierChatbot: React.FC = () => {
           </span>
         )}
         <button
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={handleOpenClick}
           aria-label="סוכן AI צ׳אטבוט מחובר ל-Zapier"
           className="w-16 h-16 bg-gradient-to-tr from-cyan-400 via-blue-500 to-indigo-600 hover:from-cyan-300 hover:to-indigo-500 text-white font-black rounded-full flex items-center justify-center text-3xl shadow-2xl transition-all duration-300 transform hover:scale-110 border-2 border-slate-900 ring-4 ring-cyan-500/40 relative cursor-pointer"
           style={{ width: '64px', height: '64px', cursor: 'pointer' }}
@@ -53,7 +74,9 @@ export const ZapierChatbot: React.FC = () => {
       {/* 2. CHATBOT DRAWER CONTAINER - POSITIONED SAFELY ON ALL SCREEN SIZES */}
       {isOpen && (
         <div
-          className="bg-[#0D131F] rounded-3xl shadow-2xl border-2 border-cyan-500/40 transition-all duration-300 animate-fadeIn overflow-hidden"
+          className={`bg-[#0D131F] rounded-3xl shadow-2xl border-2 border-cyan-500/40 overflow-hidden ${
+            isShrinking ? 'animate-implode-right' : isExploding ? 'animate-explode-right' : 'animate-fadeIn'
+          }`}
           dir="rtl"
           style={{ 
             direction: 'rtl', 
@@ -93,7 +116,7 @@ export const ZapierChatbot: React.FC = () => {
                 הדבק מושג 📋
               </button>
               <button
-                onClick={() => setIsOpen(false)}
+                onClick={handleCloseClick}
                 className="text-slate-400 hover:text-white font-black text-base p-1 cursor-pointer"
               >
                 ✕
@@ -104,8 +127,7 @@ export const ZapierChatbot: React.FC = () => {
           {/* Official Zapier Interfaces Embed Iframe */}
           <div className="flex-1 w-full h-full bg-[#070A10] relative" dir="rtl" style={{ direction: 'rtl', textAlign: 'right' }}>
             <iframe
-              key={iframeKey}
-              src={iframeUrl}
+              src={ZAPIER_CHATBOT_IFRAME}
               height="100%"
               width="100%"
               allow="clipboard-write *"

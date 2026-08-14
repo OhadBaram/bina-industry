@@ -44,6 +44,8 @@ const App: React.FC = () => {
   // --- ניהול מוזיקת רקע וקריוקי סלוגן ---
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
   const [sloganPanelState, setSloganPanelState] = useState<'hidden' | 'expanded' | 'collapsed'>('collapsed');
+  const [isSloganShrinking, setIsSloganShrinking] = useState(false);
+  const [isSloganExploding, setIsSloganExploding] = useState(false);
   const [activeWordIndex, setActiveWordIndex] = useState(-1);
   const [shouldPulseCTA, setShouldPulseCTA] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -122,12 +124,46 @@ const App: React.FC = () => {
 
   const playMusicFromMicrophone = () => {
     if (!audioRef.current) return;
-    audioRef.current.currentTime = 0; // ניגון מההתחלה
+    
+    // אם המוזיקה כבר מנגנת ברקע, רק נפתח מחדש את חלונית המילים עם אפקט
+    if (isPlayingMusic) {
+      setIsSloganExploding(true);
+      setSloganPanelState('expanded');
+      setTimeout(() => setIsSloganExploding(false), 400);
+      return;
+    }
+
+    // אחרת, נפעיל מחדש מההתחלה
+    audioRef.current.currentTime = 0;
     audioRef.current.play().then(() => {
       setIsPlayingMusic(true);
+      setIsSloganExploding(true);
       setSloganPanelState('expanded');
-      setShouldPulseCTA(false); // הפסקת ההבהוב בעת ניגון חוזר
+      setShouldPulseCTA(false);
+      setTimeout(() => setIsSloganExploding(false), 400);
     }).catch(err => console.log('Audio playback failed from microphone:', err));
+  };
+
+  const collapseSlogan = () => {
+    setIsSloganShrinking(true);
+    setTimeout(() => {
+      setSloganPanelState('collapsed');
+      setIsSloganShrinking(false);
+    }, 380);
+  };
+
+  const closeSloganAndStopMusic = () => {
+    setIsSloganShrinking(true);
+    setTimeout(() => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+      setIsPlayingMusic(false);
+      setSloganPanelState('collapsed');
+      setIsSloganShrinking(false);
+      setShouldPulseCTA(false);
+    }, 380);
   };
 
   const toggleMusic = () => {
@@ -1470,10 +1506,32 @@ const App: React.FC = () => {
       {/* חלונית סלוגן קריוקי צפה - במצב מורחב */}
       {sloganPanelState === 'expanded' && (
         <div 
-          className="fixed bottom-24 left-6 z-[99999] bg-slate-950/95 dark:bg-slate-900/95 border border-slate-700/60 rounded-3xl p-6 md:p-8 shadow-2xl animate-fadeIn space-y-4 text-right dir-rtl"
+          className={`fixed bottom-24 left-6 z-[99999] bg-slate-950/95 dark:bg-slate-900/95 border border-slate-700/60 rounded-3xl p-6 md:p-8 shadow-2xl space-y-4 text-right dir-rtl relative ${
+            isSloganShrinking ? 'animate-implode-left' : isSloganExploding ? 'animate-explode-left' : 'animate-fadeIn'
+          }`}
           style={{ width: window.innerWidth < 640 ? 'calc(100vw - 32px)' : '420px', position: 'fixed', bottom: '96px', left: window.innerWidth < 640 ? '16px' : '24px', zIndex: 99999, direction: 'rtl', fontFamily: '"Frank Ruhl Libre", Georgia, serif' }}
         >
-          <div className="space-y-4 text-lg md:text-xl font-black leading-relaxed text-right">
+          {/* כפתורי בקרה עליונים לחלונית */}
+          <div className="absolute top-4 left-4 flex items-center gap-3 z-10 font-sans" style={{ direction: 'ltr' }}>
+            <button 
+              onClick={collapseSlogan}
+              className="text-slate-400 hover:text-cyan-400 hover:bg-slate-800/60 transition-colors rounded-full w-6 h-6 flex items-center justify-center text-lg font-black"
+              title="כווץ למיקרופון (המוזיקה תמשיך ברקע)"
+              style={{ cursor: 'pointer' }}
+            >
+              −
+            </button>
+            <button 
+              onClick={closeSloganAndStopMusic}
+              className="text-slate-400 hover:text-red-400 hover:bg-slate-800/60 transition-colors rounded-full w-6 h-6 flex items-center justify-center text-sm font-black"
+              title="סגור חלונית וכבה מוזיקה"
+              style={{ cursor: 'pointer' }}
+            >
+              ✕
+            </button>
+          </div>
+
+          <div className="space-y-4 text-lg md:text-xl font-black leading-relaxed text-right pt-2">
             {sloganLines.map((line, lineIdx) => {
               // נחשב את האינדקס ההתחלתי של השורה הנוכחית במערך המילים הכולל
               let startIdx = 0;
@@ -1514,7 +1572,7 @@ const App: React.FC = () => {
       {sloganPanelState === 'collapsed' && (
         <button
           onClick={playMusicFromMicrophone}
-          className="fixed bottom-24 left-6 z-[99999] bg-cyan-500 hover:bg-cyan-400 text-slate-950 rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-105"
+          className="fixed bottom-24 left-6 z-[99999] bg-cyan-500 hover:bg-cyan-400 text-slate-950 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 animate-explode-left"
           style={{ position: 'fixed', bottom: '96px', left: '24px', zIndex: 99999, width: '48px', height: '48px', cursor: 'pointer' }}
           title="שמע את הסלוגן 🎙️"
         >
