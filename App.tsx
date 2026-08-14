@@ -32,6 +32,14 @@ const App: React.FC = () => {
   const [isPrivacyPolicyOpen, setIsPrivacyPolicyOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
 
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
+
   // --- ניהול מנעול פרומפטים פרימיום (Gating) ---
   const [unlockedPremium, setUnlockedPremium] = useState<boolean>(() => {
     return localStorage.getItem('b2b_leads_unlocked') === 'true';
@@ -672,11 +680,11 @@ const App: React.FC = () => {
                 
                 {/* Left Column: Avatar & LinkedIn */}
                 <div className="lg:col-span-4 flex flex-col items-center text-center bg-[#070A10] p-8 rounded-[2.5rem] border border-slate-800 shadow-inner">
-                  <div className="w-40 h-40 rounded-full overflow-hidden shadow-2xl mb-4 border-4 border-slate-800 ring-4 ring-cyan-500/20 bg-[#070A10]">
+                  <div className="w-64 h-64 md:w-72 md:h-72 rounded-3xl overflow-hidden shadow-2xl mb-6 border-4 border-slate-800 ring-4 ring-cyan-500/20 bg-[#070A10] flex items-center justify-center p-2">
                     <img
                       src="/ohad.jpeg"
                       alt="אוהד ברעם - מנהל מוצר ומוביל טרנספורמציה"
-                      className="w-full h-full object-cover object-top"
+                      className="w-full h-full object-contain rounded-2xl"
                     />
                   </div>
                   <h3 className="text-2xl font-black text-white mb-1">אוהד ברעם</h3>
