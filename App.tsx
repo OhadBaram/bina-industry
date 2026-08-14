@@ -45,6 +45,7 @@ const App: React.FC = () => {
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
   const [showSloganPanel, setShowSloganPanel] = useState(false);
   const [activeWordIndex, setActiveWordIndex] = useState(-1);
+  const [shouldPulseCTA, setShouldPulseCTA] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const sloganWords = ["מפסיקים", "לנסות.", "מטמיעים", "AI", "בארגון."];
 
@@ -92,6 +93,7 @@ const App: React.FC = () => {
     const handleEnded = () => {
       setShowSloganPanel(false);
       setIsPlayingMusic(false);
+      setShouldPulseCTA(true);
     };
 
     audio.addEventListener('timeupdate', handleTimeUpdate);
@@ -602,7 +604,17 @@ const App: React.FC = () => {
             >
               {isDarkMode ? '☀️' : '🌙'}
             </button>
-            <button onClick={openContactView} className="px-6 py-3 bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white rounded-xl font-black text-xs md:text-sm transition-all shadow-lg hover:shadow-cyan-500/20 active:scale-95 flex items-center gap-2">
+            <button 
+              onClick={() => {
+                openContactView();
+                setShouldPulseCTA(false); // הפסקת ההבהוב בלחיצה
+              }} 
+              className={`px-6 py-3 bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white rounded-xl font-black text-xs md:text-sm transition-all shadow-lg active:scale-95 flex items-center gap-2 ${
+                shouldPulseCTA 
+                  ? 'animate-pulse ring-4 ring-cyan-400 shadow-[0_0_35px_rgba(34,211,238,0.95)] border border-cyan-300 scale-105' 
+                  : 'hover:shadow-cyan-500/20'
+              }`}
+            >
               <span>תיאום שיחת אבחון</span>
               <span>📞</span>
             </button>
@@ -1444,7 +1456,6 @@ const App: React.FC = () => {
           className="fixed bottom-24 left-6 z-[99999] bg-slate-950/90 dark:bg-slate-900/90 border border-slate-700/60 rounded-2xl p-5 shadow-2xl animate-fadeIn space-y-2 text-right dir-rtl"
           style={{ width: '280px', position: 'fixed', bottom: '96px', left: '24px', zIndex: 99999, direction: 'rtl' }}
         >
-          <span className="text-[10px] font-black text-cyan-400 tracking-wider block mb-1">🎙️ סלוגן הארגון</span>
           <div className="flex flex-wrap gap-2 text-lg font-black leading-relaxed justify-start">
             {sloganWords.map((word, idx) => (
               <span
