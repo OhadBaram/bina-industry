@@ -11,19 +11,22 @@ const ZAPIER_WEBHOOK_URL = 'https://hooks.zapier.com/hooks/standard/28540433/239
 const ZAPIER_CHATBOT_IFRAME = 'https://interfaces.zapier.com/embed/chatbot/cmssrqyy2002hq5yg3j99toye';
 
 export const ZapierChatbot: React.FC = () => {
+  // הצ׳אטבוט מופיע פתוח כברירת מחדל עם טעינת האתר
   const [isOpen, setIsOpen] = useState(true);
   const [activeTab, setActiveTab] = useState<'zapier_embed' | 'ai'>('ai');
+  const [highlightPulse, setHighlightPulse] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
       sender: 'bot',
-      text: 'שלום! אני סוכן ה-AI של בינה לתעשייה. לחצו על כל מושג באתר (כמו RAG, Private Data, Zero Retention או Local LLMs) ואציג לכם הסבר מקיף!',
+      text: 'שלום! אני סוכן ה-AI של בינה לתעשייה. לחצו על כל מושג באתר (כמו RAG Architecture, Private Data, Zero Retention או Local LLMs) ואציג לכם הסבר מקיף!',
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isSending, setIsSending] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatbotRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -35,11 +38,13 @@ export const ZapierChatbot: React.FC = () => {
     }
   }, [messages, isOpen, activeTab]);
 
-  // האזנה לאירועי לחיצה על מושגים וחשיפת פונקציה גלובלית
+  // מניפולציה וטיפול בלחיצות על מושגים מכל מקום באתר
   useEffect(() => {
     const handleTriggerConcept = (question: string, explanation: string) => {
       setIsOpen(true);
       setActiveTab('ai');
+      setHighlightPulse(true);
+      setTimeout(() => setHighlightPulse(false), 2000);
 
       const userMsg: Message = {
         id: Date.now().toString(),
@@ -62,7 +67,7 @@ export const ZapierChatbot: React.FC = () => {
       }, 100);
     };
 
-    // חשיפת פונקציה גלובלית בחלון
+    // חשיפת הפונקציה הגלובלית בחלון
     (window as any).triggerChatbotConcept = handleTriggerConcept;
 
     const handleConceptClick = (event: Event) => {
@@ -141,7 +146,7 @@ export const ZapierChatbot: React.FC = () => {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-[9999]">
+    <div ref={chatbotRef} className="fixed bottom-6 right-6 z-[99999]">
       {/* כפתור הפעלה צף בפינה עם תגית בולטת לעין */}
       <div className="flex items-center gap-3">
         {!isOpen && (
@@ -161,7 +166,13 @@ export const ZapierChatbot: React.FC = () => {
 
       {/* חלון צ׳אטבוט צף נפתח בפינה */}
       {isOpen && (
-        <div className="absolute bottom-20 right-0 w-[92vw] max-w-[420px] h-[580px] bg-[#0D131F] rounded-3xl shadow-2xl border-2 border-cyan-500/40 animate-fadeIn flex flex-col justify-between overflow-hidden" dir="rtl" style={{ direction: 'rtl', textAlign: 'right' }}>
+        <div
+          className={`absolute bottom-20 right-0 w-[92vw] max-w-[420px] h-[580px] bg-[#0D131F] rounded-3xl shadow-2xl border-2 transition-all duration-300 animate-fadeIn flex flex-col justify-between overflow-hidden ${
+            highlightPulse ? 'border-cyan-400 ring-4 ring-cyan-500/50 scale-[1.02]' : 'border-cyan-500/40'
+          }`}
+          dir="rtl"
+          style={{ direction: 'rtl', textAlign: 'right' }}
+        >
           
           {/* Header */}
           <div className="bg-[#070A10] px-5 py-4 border-b border-slate-800 flex items-center justify-between">

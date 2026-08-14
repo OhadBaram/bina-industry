@@ -350,7 +350,7 @@ const App: React.FC = () => {
                 value={leadData.name}
                 onChange={(e) => setLeadData({ ...leadData, name: e.target.value })}
                 placeholder="ישראל ישראלי"
-                className="w-full px-5 py-4 rounded-2xl bg-slate-100 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 focus:border-cyan-500 outline-none text-right text-slate-900 dark:text-white font-medium transition-all"
+                className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 focus:border-cyan-500 outline-none text-right text-slate-900 dark:text-white font-medium transition-all shadow-sm"
               />
             </div>
 
@@ -363,7 +363,7 @@ const App: React.FC = () => {
                 value={leadData.company}
                 onChange={(e) => setLeadData({ ...leadData, company: e.target.value })}
                 placeholder="שם החברה (לא חובה)"
-                className="w-full px-5 py-4 rounded-2xl bg-slate-100 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 focus:border-cyan-500 outline-none text-right text-slate-900 dark:text-white font-medium transition-all"
+                className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 focus:border-cyan-500 outline-none text-right text-slate-900 dark:text-white font-medium transition-all shadow-sm"
               />
             </div>
           </div>
@@ -379,7 +379,7 @@ const App: React.FC = () => {
                 value={leadData.phone}
                 onChange={(e) => setLeadData({ ...leadData, phone: e.target.value })}
                 placeholder="050-0000000"
-                className="w-full px-5 py-4 rounded-2xl bg-slate-100 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 focus:border-cyan-500 outline-none text-right text-slate-900 dark:text-white font-medium transition-all"
+                className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 focus:border-cyan-500 outline-none text-right text-slate-900 dark:text-white font-medium transition-all shadow-sm"
                 dir="ltr"
               />
             </div>
@@ -394,14 +394,14 @@ const App: React.FC = () => {
                 value={leadData.email}
                 onChange={(e) => setLeadData({ ...leadData, email: e.target.value })}
                 placeholder="you@company.com"
-                className="w-full px-5 py-4 rounded-2xl bg-slate-100 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 focus:border-cyan-500 outline-none text-right text-slate-900 dark:text-white font-medium transition-all"
+                className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 focus:border-cyan-500 outline-none text-right text-slate-900 dark:text-white font-medium transition-all shadow-sm"
                 dir="ltr"
               />
             </div>
           </div>
 
           <div>
-            <label htmlFor="message" className="block text-xs font-black text-slate-300 mb-2">פרטי הפנייה (ניתן לעריכה) *</label>
+            <label htmlFor="message" className="block text-xs font-black text-slate-700 dark:text-slate-300 mb-2">פרטי הפנייה (ניתן לעריכה) *</label>
             <textarea
               id="message"
               name="message"
@@ -410,7 +410,7 @@ const App: React.FC = () => {
               value={leadData.message}
               onChange={(e) => setLeadData({ ...leadData, message: e.target.value })}
               placeholder="ספרו בקצרה על הצורך או האתגר שלכם..."
-              className="w-full px-5 py-4 rounded-2xl bg-[#070A10] border border-slate-800 focus:border-cyan-500 outline-none text-right text-white font-medium transition-all resize-none"
+              className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 focus:border-cyan-500 outline-none text-right text-slate-900 dark:text-white font-medium transition-all resize-none shadow-sm"
             />
           </div>
 
@@ -748,10 +748,10 @@ const App: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="lg:col-span-4 bg-gradient-to-br from-cyan-600 via-blue-700 to-indigo-800 text-white p-8 rounded-[2.5rem] shadow-2xl text-center space-y-4">
-                  <div className="text-5xl mb-2">🚀</div>
-                  <h3 className="text-2xl font-black text-white">אוטוריטה וחדשנות</h3>
-                  <p className="text-xs text-blue-100 font-medium leading-relaxed">
+                <div className="lg:col-span-4 bg-slate-50 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 p-8 rounded-[2.5rem] shadow-inner text-center space-y-4">
+                  <div className="w-16 h-16 rounded-2xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 flex items-center justify-center text-3xl mx-auto">🚀</div>
+                  <h3 className="text-2xl font-black text-slate-900 dark:text-white">אוטוריטה וחדשנות</h3>
+                  <p className="text-xs text-slate-600 dark:text-slate-300 font-medium leading-relaxed">
                     תובנות מעודכנות, מתודולוגיות עבודה מוכחות וגישה ישירה למאגר הידע המוביל בתחום.
                   </p>
                 </div>
@@ -814,17 +814,26 @@ const App: React.FC = () => {
 
                   {/* 3 Bullets */}
                   <div className="grid sm:grid-cols-3 gap-4 pt-6 border-t border-slate-200 dark:border-slate-800">
-                    <div className="bg-slate-50 dark:bg-[#070A10] p-5 rounded-2xl border border-slate-200 dark:border-slate-800">
-                      <div className="text-cyan-600 dark:text-cyan-400 font-black text-sm mb-1">🎯 ראייה תהליכית מקיפה</div>
-                      <div className="text-xs font-bold text-slate-500 dark:text-slate-400">אפיון זרימת מידע בארגון ומניעת כפילויות עבודה.</div>
+                    <div className="bg-white dark:bg-[#070A10] p-5 rounded-2xl border border-cyan-500/30 dark:border-slate-800 shadow-sm hover:shadow-md transition-all">
+                      <div className="text-cyan-700 dark:text-cyan-400 font-black text-sm md:text-base mb-1.5 flex items-center gap-1.5">
+                        <span>🎯</span>
+                        <span>ראייה תהליכית מקיפה</span>
+                      </div>
+                      <div className="text-xs font-medium text-slate-700 dark:text-slate-300 leading-relaxed">אפיון זרימת מידע בארגון ומניעת כפילויות עבודה.</div>
                     </div>
-                    <div className="bg-slate-50 dark:bg-[#070A10] p-5 rounded-2xl border border-slate-200 dark:border-slate-800">
-                      <div className="text-blue-600 dark:text-blue-400 font-black text-sm mb-1">🤖 מומחיות ב-AI מתקדם</div>
-                      <div className="text-xs font-bold text-slate-500 dark:text-slate-400">בניית סוכנים חכמים, חיבורי API וצ'אטבוטים מבוססי ידע.</div>
+                    <div className="bg-white dark:bg-[#070A10] p-5 rounded-2xl border border-blue-500/30 dark:border-slate-800 shadow-sm hover:shadow-md transition-all">
+                      <div className="text-blue-700 dark:text-blue-400 font-black text-sm md:text-base mb-1.5 flex items-center gap-1.5">
+                        <span>🤖</span>
+                        <span>מומחיות ב-AI מתקדם</span>
+                      </div>
+                      <div className="text-xs font-medium text-slate-700 dark:text-slate-300 leading-relaxed">בניית סוכנים חכמים, חיבורי API וצ'אטבוטים מבוססי ידע.</div>
                     </div>
-                    <div className="bg-slate-50 dark:bg-[#070A10] p-5 rounded-2xl border border-slate-200 dark:border-slate-800">
-                      <div className="text-emerald-600 dark:text-emerald-400 font-black text-sm mb-1">📈 מחויבות לתוצאות (ROI)</div>
-                      <div className="text-xs font-bold text-slate-500 dark:text-slate-400">פתרונות מותאמים אישית ללא תלות בכלים מיותרים.</div>
+                    <div className="bg-white dark:bg-[#070A10] p-5 rounded-2xl border border-emerald-500/30 dark:border-slate-800 shadow-sm hover:shadow-md transition-all">
+                      <div className="text-emerald-700 dark:text-emerald-400 font-black text-sm md:text-base mb-1.5 flex items-center gap-1.5">
+                        <span>📈</span>
+                        <span>מחויבות לתוצאות (ROI)</span>
+                      </div>
+                      <div className="text-xs font-medium text-slate-700 dark:text-slate-300 leading-relaxed">פתרונות מותאמים אישית ללא תלות בכלים מיותרים.</div>
                     </div>
                   </div>
                 </div>
