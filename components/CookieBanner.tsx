@@ -1,36 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 interface CookieBannerProps {
   onOpenPrivacyPolicy: () => void;
-  isOpen: boolean;
   onClose: () => void;
 }
 
-export const CookieBanner: React.FC<CookieBannerProps> = ({ onOpenPrivacyPolicy, isOpen, onClose }) => {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const consent = localStorage.getItem('b2b_cookie_consent');
-    if (!consent || isOpen) {
-      setIsVisible(true);
-    } else {
-      setIsVisible(false);
-    }
-  }, [isOpen]);
-
+export const CookieBanner: React.FC<CookieBannerProps> = ({ onOpenPrivacyPolicy, onClose }) => {
   const handleAcceptAll = () => {
     localStorage.setItem('b2b_cookie_consent', 'all');
-    setIsVisible(false);
     onClose();
   };
 
   const handleNecessaryOnly = () => {
     localStorage.setItem('b2b_cookie_consent', 'necessary');
-    setIsVisible(false);
     onClose();
   };
-
-  if (!isVisible) return null;
 
   return (
     <div className="fixed bottom-0 right-0 left-0 z-40 p-4 md:p-6 animate-fadeIn">

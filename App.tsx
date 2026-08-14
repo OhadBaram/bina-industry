@@ -34,7 +34,9 @@ const App: React.FC = () => {
   const [isPrivacyPolicyOpen, setIsPrivacyPolicyOpen] = useState(false);
   const [isTermsOfServiceOpen, setIsTermsOfServiceOpen] = useState(false);
   const [isAccessibilityStatementOpen, setIsAccessibilityStatementOpen] = useState(false);
-  const [isCookieBannerOpen, setIsCookieBannerOpen] = useState(false);
+  const [isCookieBannerOpen, setIsCookieBannerOpen] = useState(() => {
+    return !localStorage.getItem('b2b_cookie_consent');
+  });
   const [isDarkMode, setIsDarkMode] = useState(true);
 
   useEffect(() => {
@@ -1332,7 +1334,9 @@ const App: React.FC = () => {
         </div>
       </footer>
 
-      <CookieBanner onOpenPrivacyPolicy={() => setIsPrivacyPolicyOpen(true)} isOpen={isCookieBannerOpen} onClose={() => setIsCookieBannerOpen(false)} />
+      {isCookieBannerOpen && (
+        <CookieBanner onOpenPrivacyPolicy={() => setIsPrivacyPolicyOpen(true)} onClose={() => setIsCookieBannerOpen(false)} />
+      )}
       <PrivacyPolicyModal isOpen={isPrivacyPolicyOpen} onClose={() => setIsPrivacyPolicyOpen(false)} />
       <TermsOfServiceModal isOpen={isTermsOfServiceOpen} onClose={() => setIsTermsOfServiceOpen(false)} />
       <AccessibilityStatementModal isOpen={isAccessibilityStatementOpen} onClose={() => setIsAccessibilityStatementOpen(false)} />

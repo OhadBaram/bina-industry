@@ -40,8 +40,8 @@ export const AccessibilityToolbar: React.FC = () => {
 
   return (
     <>
-      {/* תפריט נגישות צף */}
-      <div id="accessibility-widget" className="fixed bottom-6 right-6 z-50">
+      {/* תפריט נגישות צף - ממוקם בשמאל כדי לא להתנגש עם הצ'אטבוט בימין */}
+      <div id="accessibility-widget" className="fixed bottom-6 left-6 z-50">
         <button
           id="acc-toggle-btn"
           onClick={() => setIsOpen(!isOpen)}
@@ -55,7 +55,7 @@ export const AccessibilityToolbar: React.FC = () => {
 
         {/* תפריט נגישות */}
         {isOpen && (
-          <div id="acc-menu" className="absolute bottom-16 right-0 w-72 bg-slate-900 border border-slate-700 rounded-xl p-5 shadow-2xl text-slate-200 text-sm dir-rtl" style={{ direction: 'rtl' }}>
+          <div id="acc-menu" className="absolute bottom-16 left-0 w-72 bg-slate-900 border border-slate-700 rounded-xl p-5 shadow-2xl text-slate-200 text-sm dir-rtl" style={{ direction: 'rtl' }}>
             <div className="flex justify-between items-center pb-3 border-b border-slate-800 mb-4">
               <h3 className="font-bold text-white text-base">התאמת נגישות</h3>
               <button
