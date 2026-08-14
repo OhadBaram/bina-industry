@@ -11,7 +11,7 @@ const ZAPIER_WEBHOOK_URL = 'https://hooks.zapier.com/hooks/standard/28540433/239
 const ZAPIER_CHATBOT_IFRAME = 'https://interfaces.zapier.com/embed/chatbot/cmssrqyy2002hq5yg3j99toye';
 
 export const ZapierChatbot: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [activeTab, setActiveTab] = useState<'zapier_embed' | 'ai'>('zapier_embed');
   const [messages, setMessages] = useState<Message[]>([
     {
