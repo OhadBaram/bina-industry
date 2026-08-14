@@ -56,12 +56,13 @@ const App: React.FC = () => {
 
   // פתיחת צ׳אטבוט והצגת הסבר על מושג מקצועי
   const triggerConceptExplanation = (concept: string, explanation: string) => {
+    const question = `מה זה ${concept}?`;
+    if (typeof (window as any).triggerChatbotConcept === 'function') {
+      (window as any).triggerChatbotConcept(question, explanation);
+    }
     window.dispatchEvent(
       new CustomEvent('explainConcept', {
-        detail: {
-          question: `מה זה ${concept}?`,
-          explanation: explanation
-        }
+        detail: { question, explanation }
       })
     );
   };
@@ -662,21 +663,21 @@ const App: React.FC = () => {
                 </div>
 
                 {/* קובייה 04 */}
-                <div className="md:col-span-6 bg-[#0D131F] rounded-[3rem] p-8 md:p-10 border border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between group shadow-xl">
+                <div className="md:col-span-6 bg-white dark:bg-[#0D131F] rounded-[3rem] p-8 md:p-10 border border-slate-200 dark:border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between group shadow-xl dark:shadow-none">
                   <div>
                     <div className="flex items-center justify-between mb-6">
-                      <span className="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold text-sm border border-emerald-500/30">04</span>
-                      <span className="text-[11px] font-bold px-3 py-1.5 bg-emerald-500/10 text-emerald-400 rounded-xl border border-emerald-500/30">
+                      <span className="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-sm border border-emerald-500/30">04</span>
+                      <span className="text-[11px] font-bold px-3 py-1.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-xl border border-emerald-500/30">
                         SECURITY FIRST
                       </span>
                     </div>
 
-                    <span className="text-xs font-bold text-slate-400 block mb-1">אבטחת מידע ופרטיות</span>
-                    <h3 className="text-2xl font-black text-white mb-3 leading-tight">
+                    <span className="text-xs font-bold text-slate-500 dark:text-slate-400 block mb-1">אבטחת מידע ופרטיות</span>
+                    <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-3 leading-tight">
                       עבודה בסביבות סגורות ומאובטחות
                     </h3>
 
-                    <p className="text-slate-300 text-sm font-medium leading-relaxed mb-6">
+                    <p className="text-slate-600 dark:text-slate-300 text-sm font-medium leading-relaxed mb-6">
                       התאמת פתרונות העומדים בדרישות אבטחת מידע מחמירות, שמבטיחות שהדאטה הרגיש של הארגון אינו משמש לאימון מודלים ציבוריים.
                     </p>
 
@@ -690,7 +691,7 @@ const App: React.FC = () => {
                     </button>
                   </div>
 
-                  <button onClick={() => prefillServiceAndScroll('product')} className="w-full py-4 rounded-2xl bg-slate-800 text-slate-200 hover:bg-cyan-500 hover:text-black font-black text-xs transition-all text-center">
+                  <button onClick={() => prefillServiceAndScroll('product')} className="w-full py-4 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-cyan-500 hover:text-white font-black text-xs transition-all text-center">
                     לפרטים על אבטחת מידע וסביבות סגורות ➔
                   </button>
                 </div>
@@ -941,14 +942,14 @@ const App: React.FC = () => {
 
       {/* MODAL FOR UNLOCKING PREMIUM B2B PROMPTS */}
       {showUnlockModal && (
-        <div className="fixed inset-0 z-50 bg-[#070A10]/90 backdrop-blur-md flex items-center justify-center p-6 animate-fadeIn">
-          <div className="bg-[#0D131F] rounded-[2.5rem] p-8 md:p-12 max-w-xl w-full text-right shadow-2xl border border-slate-800 relative">
-            <button onClick={() => setShowUnlockModal(false)} className="absolute top-6 left-6 text-slate-400 hover:text-white text-2xl font-black">✕</button>
+        <div className="fixed inset-0 z-50 bg-slate-900/80 dark:bg-[#070A10]/90 backdrop-blur-md flex items-center justify-center p-6 animate-fadeIn">
+          <div className="bg-white dark:bg-[#0D131F] rounded-[2.5rem] p-8 md:p-12 max-w-xl w-full text-right shadow-2xl border border-slate-200 dark:border-slate-800 relative">
+            <button onClick={() => setShowUnlockModal(false)} className="absolute top-6 left-6 text-slate-400 hover:text-slate-900 dark:hover:text-white text-2xl font-black">✕</button>
             
             <div className="text-center mb-6">
               <span className="text-4xl mb-2 inline-block">🔑</span>
-              <h3 className="text-2xl md:text-3xl font-black text-white mb-2">פתיחת תבניות הפרימיום לארגונים</h3>
-              <p className="text-slate-400 text-xs md:text-sm font-bold">
+              <h3 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white mb-2">פתיחת תבניות הפרימיום לארגונים</h3>
+              <p className="text-slate-600 dark:text-slate-300 text-xs md:text-sm font-bold">
                 השאירו פרטים קצרים לפתיחת גישה חופשית לכל תבניות הפרומפטים והאוטומציות!
               </p>
             </div>
@@ -957,7 +958,7 @@ const App: React.FC = () => {
               <input type="hidden" name="form-name" value="contact" />
               
               <div>
-                <label className="block text-xs font-black text-slate-300 mb-1">שם מלא *</label>
+                <label className="block text-xs font-black text-slate-700 dark:text-slate-300 mb-1">שם מלא *</label>
                 <input
                   type="text"
                   name="user_name"
@@ -965,25 +966,25 @@ const App: React.FC = () => {
                   value={leadData.name}
                   onChange={(e) => setLeadData({ ...leadData, name: e.target.value })}
                   placeholder="ישראל ישראלי"
-                  className="w-full px-4 py-3 rounded-xl bg-[#070A10] border border-slate-800 outline-none text-white text-sm"
+                  className="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 outline-none text-slate-900 dark:text-white text-sm"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-black text-slate-300 mb-1">שם החברה / הארגון</label>
+                <label className="block text-xs font-black text-slate-700 dark:text-slate-300 mb-1">שם החברה / הארגון</label>
                 <input
                   type="text"
                   name="company"
                   value={leadData.company}
                   onChange={(e) => setLeadData({ ...leadData, company: e.target.value })}
                   placeholder="שם החברה (לא חובה)"
-                  className="w-full px-4 py-3 rounded-xl bg-[#070A10] border border-slate-800 outline-none text-white text-sm"
+                  className="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 outline-none text-slate-900 dark:text-white text-sm"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-black text-slate-300 mb-1">מספר טלפון *</label>
+                  <label className="block text-xs font-black text-slate-700 dark:text-slate-300 mb-1">מספר טלפון *</label>
                   <input
                     type="tel"
                     name="phone"
@@ -991,12 +992,12 @@ const App: React.FC = () => {
                     value={leadData.phone}
                     onChange={(e) => setLeadData({ ...leadData, phone: e.target.value })}
                     placeholder="050-0000000"
-                    className="w-full px-4 py-3 rounded-xl bg-[#070A10] border border-slate-800 outline-none text-white text-sm"
+                    className="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 outline-none text-slate-900 dark:text-white text-sm"
                     dir="ltr"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-black text-slate-300 mb-1">אימייל *</label>
+                  <label className="block text-xs font-black text-slate-700 dark:text-slate-300 mb-1">אימייל *</label>
                   <input
                     type="email"
                     name="email"
@@ -1004,7 +1005,7 @@ const App: React.FC = () => {
                     value={leadData.email}
                     onChange={(e) => setLeadData({ ...leadData, email: e.target.value })}
                     placeholder="name@company.com"
-                    className="w-full px-4 py-3 rounded-xl bg-[#070A10] border border-slate-800 outline-none text-white text-sm"
+                    className="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 outline-none text-slate-900 dark:text-white text-sm"
                     dir="ltr"
                   />
                 </div>
@@ -1013,7 +1014,7 @@ const App: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSubmittingLead}
-                className="w-full py-4 bg-cyan-500 hover:bg-cyan-400 text-black font-black rounded-xl text-base shadow-lg transition-all disabled:opacity-50 mt-2"
+                className="w-full py-4 bg-cyan-500 hover:bg-cyan-400 text-white font-black rounded-xl text-base shadow-lg transition-all disabled:opacity-50 mt-2"
               >
                 {isSubmittingLead ? 'פותח גישה...' : 'פתיחת כל התבניות העסקיות 🔓'}
               </button>
@@ -1023,15 +1024,15 @@ const App: React.FC = () => {
       )}
 
       {/* Footer */}
-      <footer className="py-12 px-6 text-center border-t border-slate-800 mt-20 space-y-4">
-        <p className="text-sm font-black text-slate-400 uppercase tracking-wider text-center">
+      <footer className="py-12 px-6 text-center border-t border-slate-200 dark:border-slate-800 mt-20 space-y-4">
+        <p className="text-sm font-black text-slate-600 dark:text-slate-400 uppercase tracking-wider text-center">
           © 2026 בינה לתעשייה | ENTERPRISE AI
         </p>
         
-        <div className="flex flex-wrap justify-center items-center gap-6 text-xs font-bold text-slate-400">
-          <a href="https://www.linkedin.com/in/ohad-baram-58a22632a" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-400 transition-colors">אוהד ברעם ב-LinkedIn 🔗</a>
-          <button onClick={() => setIsPrivacyPolicyOpen(true)} className="hover:text-cyan-400 underline transition-colors">מדיניות פרטיות 📜</button>
-          <button onClick={() => localStorage.removeItem('b2b_cookie_consent')} className="hover:text-cyan-400 transition-colors">ניהול עוגיות 🍪</button>
+        <div className="flex flex-wrap justify-center items-center gap-6 text-xs font-bold text-slate-600 dark:text-slate-400">
+          <a href="https://www.linkedin.com/in/ohad-baram-58a22632a" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">אוהד ברעם ב-LinkedIn 🔗</a>
+          <button onClick={() => setIsPrivacyPolicyOpen(true)} className="hover:text-cyan-600 dark:hover:text-cyan-400 underline transition-colors">מדיניות פרטיות 📜</button>
+          <button onClick={() => localStorage.removeItem('b2b_cookie_consent')} className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">ניהול עוגיות 🍪</button>
         </div>
       </footer>
 

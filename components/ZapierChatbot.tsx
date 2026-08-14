@@ -12,12 +12,12 @@ const ZAPIER_CHATBOT_IFRAME = 'https://interfaces.zapier.com/embed/chatbot/cmssr
 
 export const ZapierChatbot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const [activeTab, setActiveTab] = useState<'zapier_embed' | 'ai'>('zapier_embed');
+  const [activeTab, setActiveTab] = useState<'zapier_embed' | 'ai'>('ai');
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
       sender: 'bot',
-      text: 'שלום! אני סוכן ה-AI של בינה לתעשייה. לחצו על כל מושג באתר (כמו RAG, Private Data או Zero Retention) ואציג לכם הסבר מקיף!',
+      text: 'שלום! אני סוכן ה-AI של בינה לתעשייה. לחצו על כל מושג באתר (כמו RAG, Private Data, Zero Retention או Local LLMs) ואציג לכם הסבר מקיף!',
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
   ]);
@@ -35,13 +35,9 @@ export const ZapierChatbot: React.FC = () => {
     }
   }, [messages, isOpen, activeTab]);
 
-  // האזנה לאירוע לחיצה על מושגים ברחבי האתר
+  // האזנה לאירועי לחיצה על מושגים וחשיפת פונקציה גלובלית
   useEffect(() => {
-    const handleConceptClick = (event: Event) => {
-      const customEvt = event as CustomEvent<{ question: string; explanation: string }>;
-      if (!customEvt.detail) return;
-      const { question, explanation } = customEvt.detail;
-
+    const handleTriggerConcept = (question: string, explanation: string) => {
       setIsOpen(true);
       setActiveTab('ai');
 
@@ -60,10 +56,24 @@ export const ZapierChatbot: React.FC = () => {
       };
 
       setMessages(prev => [...prev, userMsg, botMsg]);
+
+      setTimeout(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    };
+
+    // חשיפת פונקציה גלובלית בחלון
+    (window as any).triggerChatbotConcept = handleTriggerConcept;
+
+    const handleConceptClick = (event: Event) => {
+      const customEvt = event as CustomEvent<{ question: string; explanation: string }>;
+      if (!customEvt?.detail) return;
+      handleTriggerConcept(customEvt.detail.question, customEvt.detail.explanation);
     };
 
     window.addEventListener('explainConcept', handleConceptClick);
     return () => {
+      delete (window as any).triggerChatbotConcept;
       window.removeEventListener('explainConcept', handleConceptClick);
     };
   }, []);
@@ -108,6 +118,8 @@ export const ZapierChatbot: React.FC = () => {
         botReply = 'Private Data מבטיח שכל המידע הארגוני והמסמכים מעובדים בסביבה מוצפנת ומבודדת לחלוטין. שום מידע שלכם אינו נחשף לצד ג\' ואינו משמש לאימון מודלים ציבוריים.';
       } else if (lower.includes('zero retention')) {
         botReply = 'מדיניות Zero Retention מבטיחה שספקי ה-AI והסוכנים אינם שומרים את השאילתות או התשובות בשרתים שלהם לאחר סיום העיבוד, לרמת דיסקרטיות ואבטחת מידע מרבית.';
+      } else if (lower.includes('local llms') || lower.includes('מקומיים')) {
+        botReply = 'מודלים מקומיים (Local LLMs) פועלים ישירות על גבי תשתיות המחשוב או הענן הפרטי של הארגון. הפתרון מאפשר עצמאות מוחלטת, עבודה ללא אינטרנט ועמידה בתקני אבטחה מחמירים ביותר.';
       } else if (lower.includes('סוכן') || lower.includes('agent')) {
         botReply = 'אנו מתמחים בפיתוח סוכני AI אוטונומיים (Custom AI Agents) מחוברים למאגרי המידע וה-CRM של החברה, בפרטיות מלאה. נשמח לתאם פגישת אבחון!';
       } else if (lower.includes('סדנא') || lower.includes('הדרכה') || lower.includes('צוות')) {
