@@ -62,10 +62,13 @@ zapier-interfaces-chatbot-embed {
 
 zapier-interfaces-chatbot-embed * {
   direction: rtl !important;
+  text-align: right !important;
 }
 
 iframe[src*="interfaces.zapier.com"] {
   direction: rtl !important;
+  text-align: right !important;
+  unicode-bidi: plaintext !important;
 }
 
 /* Accessibility Filters */

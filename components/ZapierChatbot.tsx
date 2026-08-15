@@ -8,7 +8,6 @@ export const ZapierChatbot: React.FC = () => {
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth > 1024);
   const [isShrinking, setIsShrinking] = useState(false);
   const [isExploding, setIsExploding] = useState(false);
-  const [pasteStatus, setPasteStatus] = useState<string | null>(null);
 
   // זיהוי שינוי גודל מסך
   useEffect(() => {
@@ -33,28 +32,6 @@ export const ZapierChatbot: React.FC = () => {
       setIsOpen(false);
       setIsShrinking(false);
     }, 380);
-  };
-
-  const handlePasteClick = () => {
-    const lastCopied = localStorage.getItem('last_copied_concept');
-    if (lastCopied) {
-      // Write to clipboard as fallback
-      navigator.clipboard.writeText(lastCopied).then(() => {
-        setPasteStatus('הודבק! 📋');
-        setTimeout(() => setPasteStatus(null), 2500);
-      }).catch(() => {
-        setPasteStatus('שגיאה בהדבקה ❌');
-        setTimeout(() => setPasteStatus(null), 2500);
-      });
-      // Attempt to send the concept to the Zapier chatbot iframe via postMessage
-      const iframe = document.querySelector('iframe');
-      if (iframe && iframe.contentWindow) {
-        iframe.contentWindow.postMessage({ type: 'pasteConcept', text: lastCopied }, '*');
-      }
-    } else {
-      setPasteStatus('אין מושג להדבקה ⚠️');
-      setTimeout(() => setPasteStatus(null), 2500);
-    }
   };
 
   return (
@@ -116,17 +93,11 @@ export const ZapierChatbot: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center gap-2.5">
-              <button
-                onClick={handlePasteClick}
-                className="text-[11px] font-black px-2.5 py-1.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 rounded-xl transition-all cursor-pointer shadow-md flex items-center justify-center min-w-[95px]"
-                title="הדבק את המושג האחרון מהלוח לצ׳אט"
-              >
-                {pasteStatus || 'הדבק מושג 📋'}
-              </button>
+            <div className="flex items-center">
               <button
                 onClick={handleCloseClick}
-                className="text-slate-400 hover:text-white font-black text-base p-1 cursor-pointer"
+                aria-label="סגור צ'אטבוט"
+                className="text-slate-400 hover:text-white font-black text-lg p-1.5 rounded-lg hover:bg-slate-800 transition-colors cursor-pointer"
               >
                 ✕
               </button>
@@ -140,7 +111,7 @@ export const ZapierChatbot: React.FC = () => {
               height="100%"
               width="100%"
               allow="clipboard-write *"
-              style={{ border: 'none', direction: 'rtl', textAlign: 'right', width: '100%', height: '100%' }}
+              style={{ border: 'none', direction: 'rtl', textAlign: 'right', width: '100%', height: '100%', unicodeBidi: 'plaintext' }}
               title="Zapier Chatbot Embed"
               dir="rtl"
             />
