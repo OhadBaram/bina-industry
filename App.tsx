@@ -22,10 +22,9 @@ const Toast: React.FC<{ message: string; show: boolean }> = ({ message, show }) 
 
 // מיפוי הטקסטים הראשוניים לפי השירות שנבחר
 const serviceMessages: Record<string, string> = {
-  ai: "היי אוהד,\nאנו מעוניינים לבחון פיתוח סוכני AI מותאמים אישית (Custom AI Agents) וחיבורם למאגרי המידע וה-CRM של החברה. נשמח לתאם פגישת אבחון ראשונית.",
-  workshops: "היי אוהד,\nאנו מעוניינים לבחון סדנאות עומק והכשרת צוותים/מנהלים לעבודה יומיומית עם כלי AI בארגון. נשמח לקבל פרטים וסילבוס מותאם.",
-  transformation: "היי אוהד,\nאנחנו מעוניינים באוטומציה ואינטגרציות תפעוליות לחיבור שרשרת התפעול ומערכות ה-ERP/CRM בארגון. נשמח לתאם שיחת אבחון.",
-  product: "היי אוהד,\nאנו מעוניינים בפתרונות אבטחת מידע, עבודה בסביבות סגורות / Local LLMs ושמירה על סודיות הדאטה הארגוני. נשמח לשוחח."
+  sop: "היי אוהד,\nאנו מעוניינים באפיון תהליכי עבודה ומסמכים (SOPs, הצעות מחיר ומסמכי דרישות) באמצעות כלי AI. נשמח לתאם שיחת אפיון ראשונית.",
+  workshops: "היי אוהד,\nאנו מעוניינים בסדנאות Hands-on מעשיות והכשרת צוותים/הנהלה לעבודה יומיומית עם כלי AI. נשמח לקבל פרטים וסילבוס מותאם.",
+  consulting: "היי אוהד,\nאנו מעוניינים באבחון וייעוץ ממוקד לזיהוי צווארי בקבוק והחזר השקעה (ROI) אמיתי בעסק. נשמח לתאם שיחת אבחון."
 };
 
 const App: React.FC = () => {
@@ -692,38 +691,18 @@ const App: React.FC = () => {
             {/* 1. HERO SECTION */}
             <section className="text-center py-12 md:py-24 relative">
               <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 rounded-full text-xs md:text-sm font-bold mb-8 border border-cyan-500/30 shadow-sm">
-                <span>אפיון, הדרכה והטמעה מותאמת לארגונים</span>
+                <span>אפיון תהליכים • סדנאות Hands-on • אוטומציה מעשית</span>
               </div>
               
-              <h1 className={`text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[1.05] max-w-5xl mx-auto mb-8 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
-                מפסיקים לנסות.<br />
+              <h1 className={`text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[1.1] max-w-5xl mx-auto mb-8 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
+                מטמיעים AI בעבודה האמיתית,<br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-500 dark:from-cyan-400 dark:via-blue-500 dark:to-indigo-400">
-                  מטמיעים AI בארגון.
+                  לא במצגות.
                 </span>
               </h1>
 
-              <p className={`text-lg md:text-2xl font-medium max-w-4xl mx-auto leading-relaxed mb-12 ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
-                <button
-                  onClick={() => triggerConceptExplanation('פתרונות מדף', 'מוצרי מדף גנריים שלא מותאמים לצרכים, למערכות או לאבטחת המידע של הארגון, ואינם פותרים בעיות מורכבות בצורה מדויקת.')}
-                  className="underline decoration-cyan-500/60 decoration-2 underline-offset-4 hover:text-cyan-500 font-bold transition-all cursor-pointer"
-                  title="הדבק מושג לצ׳אטבוט 📋"
-                >
-                  פתרונות מדף
-                </button> לא עובדים בתעשייה מורכבת. אני מאבחן את{' '}
-                <button
-                  onClick={() => triggerConceptExplanation('צווארי הבקבוק', 'נקודות התורפה ותהליכי העבודה הידניים המייגעים בארגון שמעכבים את העבודה ופוגעים בפרודוקטיביות.')}
-                  className="underline decoration-cyan-500/60 decoration-2 underline-offset-4 hover:text-cyan-500 font-bold transition-all cursor-pointer"
-                  title="הדבק מושג לצ׳אטבוט 📋"
-                >
-                  צווארי הבקבוק
-                </button> בעסק שלכם, מכשיר את הצוותים ל-{' '}
-                <button
-                  onClick={() => triggerConceptExplanation('עבודה עצמאית עם כלי AI', 'הקניית מיומנויות הנדסת פרומפטים מתקדמת לצוותים כדי שיוכלו להשתמש בצורה יומיומית ויעילה במודלים השונים.')}
-                  className="underline decoration-cyan-500/60 decoration-2 underline-offset-4 hover:text-cyan-500 font-bold transition-all cursor-pointer"
-                  title="הדבק מושג לצ׳אטבוט 📋"
-                >
-                  עבודה עצמאית עם כלי AI
-                </button>, ומפתח סוכנים ואוטומציות שמייצרים תוצאות בשטח.
+              <p className={`text-lg md:text-2xl font-medium max-w-3xl mx-auto leading-relaxed mb-12 ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
+                אני מלווה עסקים וארגונים באפיון תהליכים, כתיבת מסמכי עבודה (SOPs) ואוטומציות מעשיות באמצעות כלי AI מתקדמים.
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-5 max-w-xl mx-auto">
@@ -731,14 +710,14 @@ const App: React.FC = () => {
                   onClick={openContactView}
                   className="w-full sm:w-auto px-10 py-5 bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-black text-xl rounded-2xl shadow-2xl hover:shadow-cyan-500/25 transition-all active:scale-95 flex items-center justify-center gap-3"
                 >
-                  <span>תיאום פגישת אבחון ראשונית</span>
+                  <span>תיאום שיחת אבחון ראשונית</span>
                   <span>🚀</span>
                 </button>
                 <button
-                  onClick={scrollToMethodology}
+                  onClick={scrollToCapabilities}
                   className={`w-full sm:w-auto px-8 py-5 border font-black text-lg rounded-2xl transition-all flex items-center justify-center gap-2 ${isDarkMode ? 'bg-[#0D131F] border-slate-800 text-slate-200 hover:border-cyan-500/50' : 'bg-white border-slate-300 text-slate-800 hover:border-cyan-500 shadow-md'}`}
                 >
-                  <span>איך התהליך עובד? ↓</span>
+                  <span>השירותים שלנו ↓</span>
                 </button>
               </div>
             </section>
@@ -747,282 +726,115 @@ const App: React.FC = () => {
             <section className="bg-white dark:bg-[#0D131F] rounded-[3rem] p-8 md:p-14 border border-slate-200 dark:border-slate-800 shadow-2xl dark:shadow-none">
               <div className="text-center mb-12">
                 <span className="text-cyan-600 dark:text-cyan-400 text-xs font-bold uppercase tracking-wider block mb-2">המציאות בשטח</span>
-                <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">למה רוב יוזמות ה-AI בארגונים נתקעות?</h2>
+                <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">למה רוב יוזמות ה-AI בעסקים נתקעות?</h2>
               </div>
 
               <div className="grid md:grid-cols-2 gap-8">
                 {/* הבעיה */}
                 <div className="bg-slate-50 dark:bg-[#070A10] p-8 md:p-10 rounded-[2.5rem] border border-red-500/20 space-y-4">
-                  <button
-                    onClick={() => triggerConceptExplanation('הבעיה השכיחה ביוזמות AI', 'רכישת מנויים וכלים ללא התאמה מעשית לתהליכי העבודה וללא ליווי והכשרה אנושית, מה שגורם לעובדים לא להשתמש בהם בפועל.')}
-                    className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-red-500/10 text-red-600 dark:text-red-400 rounded-full text-xs font-black border border-red-500/30 hover:border-red-500 hover:scale-105 transition-all cursor-pointer shadow-sm text-right"
-                    title="העתק מושג לצ׳אטבוט 📋"
-                  >
+                  <div className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-red-500/10 text-red-600 dark:text-red-400 rounded-full text-xs font-black border border-red-500/30">
                     <span>⚠️ הבעיה השכיחה</span>
-                    <span className="text-[10px]">📋</span>
-                  </button>
+                  </div>
                   <h3 className="text-2xl font-black text-slate-900 dark:text-white">רכישת כלים ללא חיבור לתהליכים</h3>
                   <p className="text-slate-600 dark:text-slate-300 text-base md:text-lg font-medium leading-relaxed">
-                    חברות קונות מנויים למודלי AI (כמו ChatGPT) או מחברות תוספים בסיסיים, אבל העובדים לא משתמשים, התהליכים לא מתחברים, וההשקעה יורדת לטמיון.
+                    חברות קונות מנויים למודלי AI או כלים גנריים, אבל העובדים לא יודעים איך להשתמש בהם נכון, התהליכים נשארים ידניים, וההשקעה יורדת לטמיון.
                   </p>
                 </div>
 
-                {/* הפתרון של בינה לתעשייה */}
+                {/* הפתרון */}
                 <div className="bg-slate-50 dark:bg-[#070A10] p-8 md:p-10 rounded-[2.5rem] border border-cyan-500/30 space-y-4">
-                  <button
-                    onClick={() => triggerConceptExplanation('✓ הפתרון של בינה לתעשייה', 'שילוב הוליסטי המשלב הכשרה מעשית של העובדים יחד עם תכנון וארכיטקטורה יציבה ומאובטחת המבוססת על צרכי החברה ומערכותיה.')}
-                    className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 rounded-full text-xs font-black border border-cyan-500/30 hover:border-cyan-500 hover:scale-105 transition-all cursor-pointer shadow-sm text-right"
-                    title="העתק מושג לצ׳אטבוט 📋"
-                  >
+                  <div className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 rounded-full text-xs font-black border border-cyan-500/30">
                     <span>✓ הפתרון של בינה לתעשייה</span>
-                    <span className="text-[10px]">📋</span>
-                  </button>
-                  <h3 className="text-2xl font-black text-slate-900 dark:text-white">הכשרה אנושית + תשתיות יציבות</h3>
+                  </div>
+                  <h3 className="text-2xl font-black text-slate-900 dark:text-white">אפיון תהליכים + הכשרה מעשית</h3>
                   <p className="text-slate-600 dark:text-slate-300 text-base md:text-lg font-medium leading-relaxed">
-                    שילוב בין הכשרה אנושית עמוקה לבין ארכיטקטורת מערכות יציבה. אני לא עוזב עד שהכלים עובדים בחיי היום-יום של הצוות.
+                    שילוב בין ניהול מוצר ואפיון תהליכים מדויק לבין הכשרה מעשית hands-on. אנחנו מתאימים את הכלים ישירות למשימות האמיתיות של העסק.
                   </p>
                 </div>
               </div>
             </section>
 
-            {/* 3. CORE SERVICES (גריד Bento נקי ואלגנטי) */}
+            {/* 3. CORE SERVICES (3 שירותים ממוקדים ונקיים) */}
             <section ref={capabilitiesRef} className="py-6 space-y-12">
-              <div className="text-center">
+              <div className="text-center max-w-3xl mx-auto">
                 <span className="text-cyan-600 dark:text-cyan-400 text-xs font-bold uppercase tracking-wider block mb-2">שירותי הליבה</span>
-                <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">ארכיטקטורת הפתרונות לארגונים</h2>
+                <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">3 מסלולי עבודה ממוקדים לתוצאות</h2>
+                <p className="text-slate-600 dark:text-slate-400 font-bold text-base md:text-lg">
+                  ללא מורכבות מיותרת — פתרונות מדויקים המייצרים חיסכון בשעות עבודה וערך עסקי מיידי.
+                </p>
               </div>
 
-              <div className="grid md:grid-cols-12 gap-8">
-                {/* קובייה 01 (גדולה ומרכזית) */}
-                <div className="md:col-span-8 bg-white dark:bg-[#0D131F] rounded-[3rem] p-8 md:p-12 border border-slate-200 dark:border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between group shadow-xl dark:shadow-none">
-                  <div>
-                    <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
-                      <span className="w-9 h-9 rounded-xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center font-bold text-sm border border-cyan-500/30">01</span>
-                      <button
-                        onClick={() => triggerConceptExplanation('CUSTOM AI AGENTS', 'סוכני AI מותאמים אישית פועלים כאנשי צוות וירטואליים האוטונומיים מול מאגרי המידע וה-CRM של החברה, לביצוע משימות מורכבות בדיוק מוחלט.')}
-                        className="text-xs font-bold px-3 py-1.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 rounded-xl border border-cyan-500/30 hover:border-cyan-500 hover:scale-105 transition-all cursor-pointer flex items-center gap-1.5"
-                        title="לחץ לקבלת הסבר מפורט בסוכן ה-AI"
-                      >
-                        <span>CUSTOM AI AGENTS</span>
-                        <span className="text-[10px]">💡</span>
-                      </button>
-                    </div>
-
-                    <span className="text-xs font-bold text-slate-500 dark:text-slate-400 block mb-1">סוכני AI מותאמים אישית</span>
-                    <h3 className="text-2xl md:text-4xl font-black text-slate-900 dark:text-white mb-4 leading-tight">
-                      אפיון ופיתוח סוכנים חכמים על בסיס הידע הארגוני
-                    </h3>
-
-                    <p className="text-slate-600 dark:text-slate-300 text-base md:text-lg font-medium leading-relaxed mb-8">
-                      פיתוח סוכנים אוטונומיים שמחוברים ישירות למסמכי החברה, מאגרי המידע וה-CRM. הסוכנים מייצרים ניתוחי דאטה, סיכומי דוחות, מחקרים ומענה מדויק ללא שגיאות וללא דליפת מידע.
-                    </p>
-
-                    <div className="flex flex-wrap gap-3 mb-8">
-                      <button
-                        onClick={() => triggerConceptExplanation('RAG Architecture', 'RAG (Retrieval-Augmented Generation) היא ארכיטקטורה המחברת את מודל ה-AI למאגרי המידע והמסמכים של הארגון. היא מאפשרת לסוכן להפיק תשובות מדויקות, מבוססות עובדות בלבד, ללא שגיאות וללא דליפת מידע.')}
-                        className="px-3.5 py-1.5 bg-slate-100 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 text-cyan-600 dark:text-cyan-400 font-mono text-xs font-black rounded-xl hover:border-cyan-500 hover:scale-105 transition-all cursor-pointer shadow-sm flex items-center gap-1.5"
-                        title="לחץ לקבלת הסבר מפורט בסוכן ה-AI"
-                      >
-                        <span>RAG Architecture</span>
-                        <span className="text-[10px]">💡</span>
-                      </button>
-                      <button
-                        onClick={() => triggerConceptExplanation('Private Data', 'Private Data מבטיח שכל המידע הארגוני והמסמכים מעובדים בסביבה מוצפנת ומבודדת לחלוטין. שום מידע שלכם אינו נחשף לצד ג\' ואינו משמש לאימון מודלים ציבוריים.')}
-                        className="px-3.5 py-1.5 bg-slate-100 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 text-cyan-600 dark:text-cyan-400 font-mono text-xs font-black rounded-xl hover:border-cyan-500 hover:scale-105 transition-all cursor-pointer shadow-sm flex items-center gap-1.5"
-                        title="לחץ לקבלת הסבר מפורט בסוכן ה-AI"
-                      >
-                        <span>Private Data</span>
-                        <span className="text-[10px]">🔒</span>
-                      </button>
-                      <button
-                        onClick={() => triggerConceptExplanation('Zero Retention', 'מדיניות Zero Retention מבטיחה שספקי ה-AI והסוכנים אינם שומרים את השאילתות או התשובות בשרתים שלהם לאחר סיום העיבוד, לרמת דיסקרטיות ואבטחת מידע מרבית.')}
-                        className="px-3.5 py-1.5 bg-slate-100 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 text-cyan-600 dark:text-cyan-400 font-mono text-xs font-black rounded-xl hover:border-cyan-500 hover:scale-105 transition-all cursor-pointer shadow-sm flex items-center gap-1.5"
-                        title="לחץ לקבלת הסבר מפורט בסוכן ה-AI"
-                      >
-                        <span>Zero Retention</span>
-                        <span className="text-[10px]">🛡️</span>
-                      </button>
-                    </div>
-                  </div>
-
-                  <button onClick={() => prefillServiceAndScroll('ai')} className="w-full py-4 rounded-2xl bg-cyan-500/10 hover:bg-cyan-500 text-cyan-600 dark:text-cyan-400 hover:text-white font-black text-sm border border-cyan-500/30 transition-all text-center">
-                    לתיאום פגישת אבחון בנושא סוכני AI ➔
-                  </button>
-                </div>
-
-                {/* קובייה 02 */}
-                <div className="md:col-span-4 bg-white dark:bg-[#0D131F] rounded-[3rem] p-8 md:p-10 border border-slate-200 dark:border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between group shadow-xl dark:shadow-none">
-                  <div>
-                    <div className="flex items-center justify-between mb-6">
-                      <span className="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-sm border border-blue-500/30">02</span>
-                      <button
-                        onClick={() => triggerConceptExplanation('WORKSHOPS')}
-                        className="text-[11px] font-bold px-3 py-1.5 bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-xl border border-blue-500/30 hover:border-blue-500 hover:scale-105 transition-all cursor-pointer flex items-center gap-1"
-                        title="העתק מושג לצ׳אטבוט 📋"
-                      >
-                        <span>WORKSHOPS</span>
-                        <span>📋</span>
-                      </button>
-                    </div>
-
-                    <span className="text-xs font-bold text-slate-500 dark:text-slate-400 block mb-1">הדרכות עומק וסדנאות Hands-on</span>
-                    <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-3 leading-tight">
-                      הכשרת מנהלים וצוותים לעבודה יומיומית עם AI
-                    </h3>
-
-                    <p className="text-slate-600 dark:text-slate-300 text-sm font-medium leading-relaxed mb-6">
-                      סדנאות מעשיות ממוקדות תפקיד (הנהלה, שיווק, תפעול, כספים). לומדים הנדסת פרומפטים מתקדמת, עבודה עם Claude, ChatGPT ו-Gemini, ותרגול ישיר על משימות אמיתיות מהעסק.
-                    </p>
-
-                    <div className="p-4 bg-slate-100 dark:bg-[#070A10] rounded-2xl border border-slate-200 dark:border-slate-800 text-xs font-bold text-cyan-600 dark:text-cyan-300 mb-6">
-                      🎯 סילבוס ייעודי לפי מחלקות החברה
-                    </div>
-                  </div>
-
-                  <button onClick={() => prefillServiceAndScroll('workshops')} className="w-full py-4 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-cyan-500 hover:text-white font-black text-xs transition-all text-center">
-                    לפרטים על סדנאות והכשרות ➔
-                  </button>
-                </div>
-
-                {/* קובייה 03 */}
-                <div className="md:col-span-6 bg-white dark:bg-[#0D131F] rounded-[3rem] p-8 md:p-10 border border-slate-200 dark:border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between group shadow-xl dark:shadow-none">
-                  <div>
-                    <div className="flex items-center justify-between mb-6">
-                      <span className="w-9 h-9 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold text-sm border border-indigo-500/30">03</span>
-                      <button
-                        onClick={() => triggerConceptExplanation('ENTERPRISE DATA & APIS')}
-                        className="text-[11px] font-bold px-3 py-1.5 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 rounded-xl border border-indigo-500/30 hover:border-indigo-500 hover:scale-105 transition-all cursor-pointer flex items-center gap-1 font-mono"
-                        title="העתק מושג לצ׳אטבוט 📋"
-                      >
-                        <span>03 // ENTERPRISE DATA & APIS</span>
-                        <span>📋</span>
-                      </button>
-                    </div>
-
-                    <span className="text-xs font-bold text-cyan-600 dark:text-cyan-400 block mb-1">ארכיטקטורת נתונים, סוכנים ואינטגרציות עומק</span>
-                    <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-3 leading-tight">
-                      הופכים מודלי AI למערכות ליבה תפעוליות, לא לעוד "תוסף" שביר
-                    </h3>
-
-                    <p className="text-slate-600 dark:text-slate-300 text-sm font-medium leading-relaxed mb-6">
-                      תכנון הנדסי של זרימות עבודה מורכבות, חיבור מאגרי ידע ארגוניים ואוטומציה יציבה שעומדת בעומסים אמיתיים.
-                    </p>
-
-                    <div className="space-y-3 mb-6 bg-slate-50 dark:bg-[#070A10] p-4 rounded-2xl border border-slate-200 dark:border-slate-800 text-xs text-slate-700 dark:text-slate-300">
-                      <div className="flex items-start gap-2">
-                        <span className="text-cyan-500 font-bold">⚬</span>
-                        <p>
-                          <button
-                            onClick={() => triggerConceptExplanation('אינטגרציית APIs ישירה', 'חיבור ישיר ומאובטח בין מודלי השפה למערכות הליבה של הארגון ללא שימוש בפלטפורמות תיווך חיצוניות שבירות.')}
-                            className="underline decoration-cyan-500/60 hover:text-cyan-500 font-black text-slate-900 dark:text-white transition-all cursor-pointer text-right"
-                            title="העתק מושג לצ׳אטבוט 📋"
-                          >
-                            אינטגרציית APIs ישירה:
-                          </button>{' '}
-                          חיבור דו-כיווני מאובטח בין מודלי שפה, מערכות ERP, מסדי נתונים ו-CRMs, ללא תלות בכלים מוגבלים.
-                        </p>
+              <div className="grid md:grid-cols-3 gap-8">
+                {B2B_SERVICES.map((srv) => (
+                  <div
+                    key={srv.id}
+                    className="bg-white dark:bg-[#0D131F] rounded-[3rem] p-8 md:p-10 border border-slate-200 dark:border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between group shadow-xl dark:shadow-none"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-6">
+                        <span className="w-10 h-10 rounded-2xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center font-black text-sm border border-cyan-500/30">
+                          {srv.num}
+                        </span>
+                        <span className="text-3xl group-hover:scale-110 transition-transform">
+                          {srv.icon}
+                        </span>
                       </div>
-                      <div className="flex items-start gap-2">
-                        <span className="text-cyan-500 font-bold">⚬</span>
-                        <p>
-                          <button
-                            onClick={() => triggerConceptExplanation('חסינות תקלות (Fault Tolerance)', 'מנגנונים המבטיחים יציבות של מערכות ה-AI וטיפול אוטומטי בכשלים או שגיאות של מודלי שפה.')}
-                            className="underline decoration-cyan-500/60 hover:text-cyan-500 font-black text-slate-900 dark:text-white transition-all cursor-pointer text-right"
-                            title="העתק מושג לצ׳אטבוט 📋"
-                          >
-                            חסינות תקלות (Fault Tolerance):
-                          </button>{' '}
-                          תכנון מלא של מנגנוני טיפול בשגיאות (Error Handling), אימות קלטים (Schema Validation) וניטור רציף.
-                        </p>
+
+                      <span className="text-xs font-bold text-cyan-600 dark:text-cyan-400 block mb-1">
+                        {srv.subtitle}
+                      </span>
+                      <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-4 leading-tight">
+                        {srv.title}
+                      </h3>
+
+                      <p className="text-slate-600 dark:text-slate-300 text-sm md:text-base font-medium leading-relaxed mb-6">
+                        {srv.shortDesc}
+                      </p>
+
+                      <div className="space-y-2.5 mb-8">
+                        {srv.features.map((feat, fIdx) => (
+                          <div key={fIdx} className="flex items-start gap-2 text-xs md:text-sm text-slate-700 dark:text-slate-300 font-medium">
+                            <span className="text-cyan-500 font-bold mt-0.5">✓</span>
+                            <span>{feat}</span>
+                          </div>
+                        ))}
                       </div>
-                      <div className="flex items-start gap-2">
-                        <span className="text-cyan-500 font-bold">⚬</span>
-                        <p>
-                          <button
-                            onClick={() => triggerConceptExplanation('אבטחה בסטנדרט ארגוני', 'מערכת הגנה מקיפה המונעת דליפת מידע וכוללת שימוש בסביבות ענן פרטיות ומבודדות.')}
-                            className="underline decoration-cyan-500/60 hover:text-cyan-500 font-black text-slate-900 dark:text-white transition-all cursor-pointer text-right"
-                            title="העתק מושג לצ׳אטבוט 📋"
-                          >
-                            אבטחה בסטנדרט ארגוני:
-                          </button>{' '}
-                          עבודה בסביבות מבודדות,{' '}
-                          <button
-                            onClick={() => triggerConceptExplanation('מודלים מקומיים (Local/Private VPC)', 'פריסת מודלים של בינה מלאכותית על גבי ענן פרטי או תשתיות מקומיות של הארגון ללא צורך בחיבור חיצוני.')}
-                            className="underline decoration-cyan-500/60 hover:text-cyan-500 font-bold transition-all cursor-pointer"
-                            title="העתק מושג לצ׳אטבוט 📋"
-                          >
-                            מודלים מקומיים (Local/Private VPC)
-                          </button>{' '}
-                          ומדיניות מוחלטת של{' '}
-                          <button
-                            onClick={() => triggerConceptExplanation('אי-שמירת היסטוריה (Zero Data Retention)', 'מדיניות אבטחה המונעת מספקי ה-AI לשמור את הנתונים והשיחות שלכם בשרתים שלהם.')}
-                            className="underline decoration-cyan-500/60 hover:text-cyan-500 font-bold transition-all cursor-pointer"
-                            title="העתק מושג לצ׳אטבוט 📋"
-                          >
-                            אי-שמירת היסטוריה (Zero Data Retention).
-                          </button>
-                        </p>
-                      </div>
+
+                      {srv.techBadges && srv.techBadges.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mb-8">
+                          {srv.techBadges.map((badge, bIdx) => (
+                            <span
+                              key={bIdx}
+                              className="px-3 py-1 bg-slate-100 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 text-cyan-600 dark:text-cyan-400 font-mono text-xs font-bold rounded-xl"
+                            >
+                              {badge}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                     </div>
-                  </div>
-
-                  <button onClick={() => prefillServiceAndScroll('transformation')} className="w-full py-4 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-cyan-500 hover:text-white font-black text-xs transition-all text-center border border-slate-200 dark:border-slate-700 shadow-sm">
-                    לייעוץ בנושאי אוטומציה תפעולית ➔
-                  </button>
-                </div>
-
-                {/* קובייה 04 */}
-                <div className="md:col-span-6 bg-white dark:bg-[#0D131F] rounded-[3rem] p-8 md:p-10 border border-slate-200 dark:border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between group shadow-xl dark:shadow-none">
-                  <div>
-                    <div className="flex items-center justify-between mb-6">
-                      <span className="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-sm border border-emerald-500/30">04</span>
-                      <button
-                        onClick={() => triggerConceptExplanation('SECURITY FIRST')}
-                        className="text-[11px] font-bold px-3 py-1.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-xl border border-emerald-500/30 hover:border-emerald-500 hover:scale-105 transition-all cursor-pointer flex items-center gap-1"
-                        title="העתק מושג לצ׳אטבוט 📋"
-                      >
-                        <span>SECURITY FIRST</span>
-                        <span>📋</span>
-                      </button>
-                    </div>
-
-                    <span className="text-xs font-bold text-slate-500 dark:text-slate-400 block mb-1">אבטחת מידע ופרטיות</span>
-                    <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-3 leading-tight">
-                      עבודה בסביבות סגורות ומאובטחות
-                    </h3>
-
-                    <p className="text-slate-600 dark:text-slate-300 text-sm font-medium leading-relaxed mb-6">
-                      התאמת פתרונות העומדים בדרישות אבטחת מידע מחמירות, שמבטיחות שהדאטה הרגיש של הארגון אינו משמש לאימון מודלים ציבוריים.
-                    </p>
 
                     <button
-                      onClick={() => triggerConceptExplanation('Local LLMs', 'מודלים מקומיים (Local LLMs) פועלים ישירות על גבי תשתיות המחשוב או הענן הפרטי של הארגון. הפתרון מאפשר עצמאות מוחלטת, עבודה ללא אינטרנט ועמידה בתקני אבטחה מחמירים ביותר.')}
-                      className="w-full text-right p-4 bg-slate-100 dark:bg-[#070A10] rounded-2xl border border-slate-200 dark:border-slate-800 text-xs font-bold text-cyan-600 dark:text-cyan-300 mb-6 hover:border-cyan-500 hover:scale-[1.01] transition-all cursor-pointer flex items-center justify-between shadow-sm"
-                      title="לחץ לקבלת הסבר מפורט בסוכן ה-AI"
+                      onClick={() => prefillServiceAndScroll(srv.serviceKey || 'sop')}
+                      className="w-full py-4 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-gradient-to-r hover:from-cyan-500 hover:to-blue-600 hover:text-white font-black text-sm transition-all text-center border border-slate-200 dark:border-slate-700 shadow-sm"
                     >
-                      <span>🛡️ אפשרות לפריסת מודלים מקומיים (Local LLMs) 💡</span>
+                      {srv.ctaText} ➔
                     </button>
                   </div>
-
-                  <button onClick={() => prefillServiceAndScroll('product')} className="w-full py-4 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-cyan-500 hover:text-white font-black text-xs transition-all text-center">
-                    לפרטים על אבטחת מידע וסביבות סגורות ➔
-                  </button>
-                </div>
+                ))}
               </div>
             </section>
 
             {/* 4. METHODOLOGY (מתודולוגיית העבודה - 4 השלבים) */}
             <section ref={methodologyRef} className="bg-white dark:bg-[#0D131F] text-slate-900 dark:text-white rounded-[3rem] p-8 md:p-14 border border-slate-200 dark:border-slate-800 shadow-2xl dark:shadow-none">
               <div className="text-center mb-14">
-                <button
-                  onClick={() => triggerConceptExplanation('תהליך העבודה', 'מתודולוגיית העבודה המלאה משלב האבחון, אפיון הארכיטקטורה ומפת הדרכים, דרך הכשרת הצוותים ועד להטמעה ובקרה שוטפת בשטח לקבלת ROI מקסימלי.')}
-                  className="inline-flex items-center gap-1.5 px-3 py-1 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 rounded-lg text-xs font-bold border border-cyan-500/30 transition-all cursor-pointer shadow-sm mb-2"
-                  title="העתק מושג לצ׳אטבוט 📋"
-                >
-                  <span>תהליך העבודה</span>
-                  <span className="text-[10px]">📋</span>
-                </button>
+                <span className="inline-flex items-center px-4 py-1.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 rounded-full text-xs font-bold border border-cyan-500/30 uppercase tracking-wider mb-2">
+                  תהליך העבודה
+                </span>
                 <h2 className="text-3xl md:text-5xl font-black mb-4">מאבחון ועד להטמעה מלאה</h2>
+                <p className="text-slate-600 dark:text-slate-400 font-bold text-base md:text-lg max-w-2xl mx-auto">
+                  תהליך מובנה ומסודר שמבטיח שכל כלי AI המוטמע בעסק מביא תוצאות ברורות ומיידיות.
+                </p>
               </div>
 
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -1033,15 +845,8 @@ const App: React.FC = () => {
                         <span className="w-8 h-8 rounded-full bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center font-bold text-sm border border-cyan-500/30">{st.stepNum}</span>
                         <span className="text-3xl group-hover:scale-110 transition-transform">{st.icon}</span>
                       </div>
-                      <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2 flex items-center justify-between gap-2">
-                        <span>{st.title}</span>
-                        <button
-                          onClick={() => triggerConceptExplanation(st.title.includes('Blueprint') ? 'System Blueprint' : st.title, st.details)}
-                          className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-900 hover:bg-cyan-500/10 text-slate-400 hover:text-cyan-500 transition-all border border-slate-200 dark:border-slate-800 cursor-pointer"
-                          title="העתק מושג לצ׳אטבוט 📋"
-                        >
-                          <span className="text-[10px]">📋</span>
-                        </button>
+                      <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2">
+                        {st.title}
                       </h3>
                       <p className="text-xs font-bold text-cyan-600 dark:text-cyan-400 mb-4">{st.shortDesc}</p>
                       <p className="text-xs text-slate-600 dark:text-slate-300 font-medium leading-relaxed">{st.details}</p>
@@ -1079,18 +884,11 @@ const App: React.FC = () => {
 
                 <div className="lg:col-span-4 bg-slate-50 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 p-8 rounded-[2.5rem] shadow-inner text-center space-y-4">
                   <div className="w-16 h-16 rounded-2xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 flex items-center justify-center text-3xl mx-auto">🚀</div>
-                  <h3 className="text-2xl font-black text-slate-900 dark:text-white flex items-center justify-center gap-2">
-                    <span>אוטוריטה וחדשנות</span>
-                    <button
-                      onClick={() => triggerConceptExplanation('אוטוריטה וחדשנות', 'הובלת קהילת הידע והפרומפטים הגדולה בישראל (מדברים בינה) מאפשרת לנו להביא את התובנות, השיטות והמגמות העדכניות ביותר ישירות אליכם.')}
-                      className="p-1.5 rounded-lg bg-slate-100 dark:bg-[#070A10] hover:bg-cyan-500/10 text-slate-400 hover:text-cyan-500 transition-all border border-slate-200 dark:border-slate-800 cursor-pointer animate-pulse"
-                      title="העתק מושג לצ׳אטבוט 📋"
-                    >
-                      <span className="text-[10px]">📋</span>
-                    </button>
+                  <h3 className="text-2xl font-black text-slate-900 dark:text-white">
+                    אוטוריטה וחדשנות
                   </h3>
                   <p className="text-xs text-slate-600 dark:text-slate-300 font-medium leading-relaxed">
-                    תובנות מעודכנות, מתודולוגיות עבודה מוכחות וגישה ישירה למאגר הידע המוביל בתחום.
+                    הובלת קהילת הידע והפרומפטים המובילה בישראל עם תובנות עדכניות ומתודולוגיות עבודה מוכחות.
                   </p>
                 </div>
               </div>
@@ -1110,7 +908,7 @@ const App: React.FC = () => {
                     />
                   </div>
                   <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-1">אוהד ברעם</h3>
-                  <p className="text-xs font-bold text-cyan-600 dark:text-cyan-400 mb-6">מנהל מוצר ומוביל טרנספורמציה דיגיטלית בכיר</p>
+                  <p className="text-xs font-bold text-cyan-600 dark:text-cyan-400 mb-6">מנהל מוצר ואפיון תהליכים עסקיים</p>
                   
                   <a
                     href="https://www.linkedin.com/in/ohad-baram-58a22632a"
@@ -1128,7 +926,7 @@ const App: React.FC = () => {
                   <div>
                     <span className="text-cyan-600 dark:text-cyan-400 text-xs font-bold uppercase tracking-wider block mb-2">מי מוביל את התהליך</span>
                     <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-6 leading-tight">
-                      החיבור בין ניתוח תהליכים עסקיים, ניהול מוצר והנדסת AI מעשית
+                      מומחיות בניהול מוצר ואפיון תהליכים יחד עם הנדסת AI מעשית
                     </h2>
                     
                     <div className="space-y-4 text-slate-600 dark:text-slate-300 text-base md:text-lg font-medium leading-relaxed">
@@ -1136,16 +934,10 @@ const App: React.FC = () => {
                         <strong className="text-slate-900 dark:text-white font-black text-xl block mb-2">נעים להכיר, שמי אוהד ברעם.</strong>
                       </p>
                       <p>
-                        אני מנהל מוצר ומוביל טרנספורמציה דיגיטלית בכיר, עם ניסיון עשיר בליווי והובלה של מערכות מורכבות, ארכיטקטורות ענן ופלטפורמות מתקדמות. ברקע האקדמי אני בעל תואר שני בניהול ארגוני שירות בהצטיינות, יחד עם הסמכה בניהול מוצר.
+                        אני מנהל מוצר בכיר ובעל תואר שני בניהול ארגוני שירות בהצטיינות. המומחיות שלי היא לתרגם צרכים עסקיים מורכבים לתהליכי עבודה ברורים, מסמכי אפיון חכמים (SOPs/PRDs) ופתרונות AI שמייצרים ערך אמיתי בשטח.
                       </p>
                       <p>
-                        המומחיות המרכזית שלי היא היכולת לקחת אסטרטגיה וצרכים ארגוניים רחבים, ולתרגם אותם למוצרים דיגיטליים אפקטיביים, אינטואיטיביים וסקילביליים. לאורך הדרך הובלתי תהליכים מורכבים משלב החזון, האפיון והארכיטקטורה, ועד להטמעה ותפעול מלא בשטח, תוך סנכרון הדוק מול צוותי הנדסה, פיתוח והנהלה בכירה.
-                      </p>
-                      <p>
-                        בנוסף, אני מביא חיבור עמוק וראייה הוליסטית של עולמות הבינה המלאכותית, האוטומציה ותהליכי העבודה המתקדמים. אני מוביל קהילה מקצועית גדולה בתחום, ומתמקד בשילוב מעשי של יכולות AI וטכנולוגיות חדשות כחלק מובנה מתוך תהליכי העבודה של הארגון.
-                      </p>
-                      <p className="text-cyan-600 dark:text-cyan-400 font-bold border-r-4 border-cyan-500 pr-4 my-2">
-                        המטרה שלי היא להביא את הראייה המערכתית, היכולת לגשר בין הצרכים המקצועיים לטכנולוגיה, ולהוביל תהליכי חדשנות ומודרניזציה שמייצרים ערך אמיתי ומתמשך.
+                        לאורך השנים ליוויתי והובלתי תהליכים מורכבים משלב האבחון והגדרת הדרישות ועד להטמעה מלאה בקרב צוותים ועובדים. אני מאמין שהמפתח להצלחה ב-AI אינו "עוד כלי מדף", אלא התאמה מדויקת לתהליכי העבודה היומיומיים של העסק והכשרה מעשית של האנשים שמפעילים אותם.
                       </p>
                     </div>
                   </div>
@@ -1155,23 +947,23 @@ const App: React.FC = () => {
                     <div className="bg-white dark:bg-[#070A10] p-5 rounded-2xl border border-cyan-500/30 dark:border-slate-800 shadow-sm hover:shadow-md transition-all">
                       <div className="text-cyan-700 dark:text-cyan-400 font-black text-sm md:text-base mb-1.5 flex items-center gap-1.5">
                         <span>🎯</span>
-                        <span>ראייה תהליכית מקיפה</span>
+                        <span>אפיון תהליכים מעמיק</span>
                       </div>
-                      <div className="text-xs font-medium text-slate-700 dark:text-slate-300 leading-relaxed">אפיון זרימת מידע בארגון ומניעת כפילויות עבודה.</div>
+                      <div className="text-xs font-medium text-slate-700 dark:text-slate-300 leading-relaxed">בניית מסמכי SOPs ונהלי עבודה חכמים ומדויקים.</div>
                     </div>
                     <div className="bg-white dark:bg-[#070A10] p-5 rounded-2xl border border-blue-500/30 dark:border-slate-800 shadow-sm hover:shadow-md transition-all">
                       <div className="text-blue-700 dark:text-blue-400 font-black text-sm md:text-base mb-1.5 flex items-center gap-1.5">
-                        <span>🤖</span>
-                        <span>מומחיות ב-AI מתקדם</span>
+                        <span>🎓</span>
+                        <span>הכשרה מעשית Hands-on</span>
                       </div>
-                      <div className="text-xs font-medium text-slate-700 dark:text-slate-300 leading-relaxed">בניית סוכנים חכמים, חיבורי API וצ'אטבוטים מבוססי ידע.</div>
+                      <div className="text-xs font-medium text-slate-700 dark:text-slate-300 leading-relaxed">סדנאות ממוקדות על משימות אמת של העסק.</div>
                     </div>
                     <div className="bg-white dark:bg-[#070A10] p-5 rounded-2xl border border-emerald-500/30 dark:border-slate-800 shadow-sm hover:shadow-md transition-all">
                       <div className="text-emerald-700 dark:text-emerald-400 font-black text-sm md:text-base mb-1.5 flex items-center gap-1.5">
                         <span>📈</span>
-                        <span>מחויבות לתוצאות (ROI)</span>
+                        <span>מחויבות ל-ROI וחיסכון בזמן</span>
                       </div>
-                      <div className="text-xs font-medium text-slate-700 dark:text-slate-300 leading-relaxed">פתרונות מותאמים אישית ללא תלות בכלים מיותרים.</div>
+                      <div className="text-xs font-medium text-slate-700 dark:text-slate-300 leading-relaxed">חיסכון של עשרות שעות עבודה ידניות בחודש.</div>
                     </div>
                   </div>
                 </div>
@@ -1179,17 +971,17 @@ const App: React.FC = () => {
               </div>
             </section>
 
-            {/* 6.5. INDUSTRIAL STANDARD COMPARISON SECTION (למה אנחנו? ההבדל בין חיבור אוטומציות לתשתית AI תעשייתית) */}
+            {/* 6.5. COMPARISON SECTION (למה לעבוד איתי? ההבדל בתוצאות) */}
             <section className="bg-white dark:bg-[#0D131F] rounded-[3rem] p-8 md:p-14 border border-slate-200 dark:border-slate-800 shadow-2xl dark:shadow-none space-y-10 animate-fadeIn">
               <div className="text-center max-w-3xl mx-auto space-y-3">
                 <span className="inline-flex items-center px-4 py-1.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 rounded-full text-xs font-black border border-cyan-500/30 uppercase tracking-wider">
-                  למה אנחנו?
+                  למה לעבוד איתי?
                 </span>
                 <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white leading-tight">
-                  ההבדל בין "חיבור אוטומציות" לתשתית AI תעשייתית
+                  מומחיות בניהול מוצר במקום הבטחות שיווקיות
                 </h2>
                 <p className="text-slate-600 dark:text-slate-400 font-bold text-base md:text-lg">
-                  השוואה ישירה בין הפתרונות השבירים בשוק לבין הסטנדרט ההנדסי של בינה לתעשייה
+                  ההבדל בין פתרונות שבירים לבין הטמעה מעשית שעובדת בשטח
                 </p>
               </div>
 
@@ -1200,21 +992,13 @@ const App: React.FC = () => {
                     <div className="p-5 bg-red-500/10 border border-red-500/30 rounded-2xl">
                       <span className="text-xs font-black text-red-600 dark:text-red-400 block mb-1.5">🛑 בשוק הרגיל</span>
                       <p className="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 leading-relaxed">
-                        בונים{' '}
-                        <button
-                          onClick={() => triggerConceptExplanation('תהליכי No-Code', 'בניית אוטומציות וחיבורים באמצעות פלטפורמות חיצוניות ללא קוד (כמו Make או Zapier). פתרונות אלו עלולים להיות שבירים, מוגבלים בכמות המידע וחשופים לתקלות רבות ללא ניהול שגיאות קפדני.')}
-                          className="underline decoration-cyan-500/60 hover:text-cyan-500 font-bold transition-all cursor-pointer"
-                          title="העתק מושג לצ׳אטבוט 📋"
-                        >
-                          תהליכי No-Code
-                        </button>{' '}
-                        בסיסיים שנשברים בכל שינוי קטן, ללא תיעוד וללא טיפול בשגיאות.
+                        בונים תהליכים שטחיים שנשברים בכל שינוי קטן, ללא תיעוד, ללא נהלים וללא טיפול בשגיאות.
                       </p>
                     </div>
                     <div className="p-5 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl">
-                      <span className="text-xs font-black text-emerald-600 dark:text-emerald-400 block mb-1.5">✅ בבינה לתעשייה</span>
+                      <span className="text-xs font-black text-emerald-600 dark:text-emerald-400 block mb-1.5">✅ איתי</span>
                       <p className="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 leading-relaxed">
-                        ארכיטקטורת נתונים מנוהלת, בדיקות עומסים ותהליכים עמידים עם אפס אובדן מידע.
+                        אפיון תהליך מעמיק, מסמכי SOPs מסודרים ומתודולוגיה מובנית שמייצרת תוצרים אמינים לאורך זמן.
                       </p>
                     </div>
                   </div>
@@ -1226,21 +1010,13 @@ const App: React.FC = () => {
                     <div className="p-5 bg-red-500/10 border border-red-500/30 rounded-2xl">
                       <span className="text-xs font-black text-red-600 dark:text-red-400 block mb-1.5">🛑 בשוק הרגיל</span>
                       <p className="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 leading-relaxed">
-                        זורקים{' '}
-                        <button
-                          onClick={() => triggerConceptExplanation('רישיונות למודלי AI', 'רכישה וחלוקה של מנויים לכלים ציבוריים (כמו ChatGPT Plus או Claude Pro) לעובדי הארגון, ללא הדרכה מובנית וללא התאמה לתהליכים המקצועיים.')}
-                          className="underline decoration-cyan-500/60 hover:text-cyan-500 font-bold transition-all cursor-pointer"
-                          title="העתק מושג לצ׳אטבוט 📋"
-                        >
-                          רישיונות למודלי AI
-                        </button>{' '}
-                        לעובדים (כמו ChatGPT או Claude) ומקווים שהם "יסתדרו לבד".
+                        קונים מנויים ל-ChatGPT/Claude ומשאירים את העובדים לנסות "להסתדר לבד" ללא הדרכה.
                       </p>
                     </div>
                     <div className="p-5 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl">
-                      <span className="text-xs font-black text-emerald-600 dark:text-emerald-400 block mb-1.5">✅ בבינה לתעשייה</span>
+                      <span className="text-xs font-black text-emerald-600 dark:text-emerald-400 block mb-1.5">✅ איתי</span>
                       <p className="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 leading-relaxed">
-                        הכשרה מעשית ממוקדת-תפקיד על מקרי בוחן ונתונים אמיתיים מתוך העסק שלכם.
+                        סדנאות Hands-on מעשיות ותרגול ישיר על משימות אמת מהעסק עד לאימוץ מלא ועצמאי של הצוות.
                       </p>
                     </div>
                   </div>
@@ -1252,20 +1028,13 @@ const App: React.FC = () => {
                     <div className="p-5 bg-red-500/10 border border-red-500/30 rounded-2xl">
                       <span className="text-xs font-black text-red-600 dark:text-red-400 block mb-1.5">🛑 בשוק הרגיל</span>
                       <p className="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 leading-relaxed">
-                        <button
-                          onClick={() => triggerConceptExplanation('פתרונות מדף גנריים', 'מוצרים מובנים מראש שאינם ניתנים להתאמה אישית, חסרים חיבור ל-APIs של הארגון ועלולים שלא לעמוד בתקני אבטחת מידע ורגולציה מחמירים.')}
-                          className="underline decoration-cyan-500/60 hover:text-cyan-500 font-bold transition-all cursor-pointer"
-                          title="העתק מושג לצ׳אטבוט 📋"
-                        >
-                          פתרונות מדף גנריים
-                        </button>{' '}
-                        שלא מתחשבים באבטחת מידע או רגולציה.
+                        הבטחות שיווקיות על "מהפכות ענק" שמתמסמסות ללא חיסכון מוכח בזמן או בעלויות.
                       </p>
                     </div>
                     <div className="p-5 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl">
-                      <span className="text-xs font-black text-emerald-600 dark:text-emerald-400 block mb-1.5">✅ בבינה לתעשייה</span>
+                      <span className="text-xs font-black text-emerald-600 dark:text-emerald-400 block mb-1.5">✅ איתי</span>
                       <p className="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 leading-relaxed">
-                        התאמה מדויקת לנהלי ה-IT, שמירה קפדנית על פרטיות המידע ואפשרות למודלים סגורים.
+                        אבחון ממוקד לזיהוי צווארי הבקבוק, חיסכון מיידי בשעות עבודה והחזר השקעה (ROI) ברור ומדיד.
                       </p>
                     </div>
                   </div>
