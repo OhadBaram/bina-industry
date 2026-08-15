@@ -96,8 +96,26 @@ export const METHODOLOGY_STEPS: MethodologyStep[] = [
 
 export const B2B_SERVICES: B2BService[] = [
   {
-    id: 'sop',
+    id: 'consulting',
     num: '01',
+    serviceKey: 'consulting',
+    badge: 'DIAGNOSIS & ROI',
+    subtitle: 'אבחון ומיפוי צווארי בקבוק',
+    title: 'אבחון וייעוץ ממוקד לזיהוי צווארי בקבוק ו-ROI אמיתי',
+    icon: '🔍',
+    shortDesc: 'מיפוי תהליכים מעשי, זיהוי נקודות תורפה ותכנון אוטומציות שמחזירות את ההשקעה בפועל וחוסכות שעות עבודה יקרות בעסק.',
+    features: [
+      'איתור מדויק של צווארי הבקבוק ומשימות הזוללות זמן יקר',
+      'בניית תוכנית עבודה פרקטית ומדורגת להטמעת כלי AI',
+      'חישוב ROI ברור ומדיד לפני כל הטמעה או פיתוח',
+      'המלצות פרקטיות ללא תלות בכלים מיותרים או יקרים'
+    ],
+    techBadges: ['ROI Analysis', 'Bottlenecks Diagnosis', 'Actionable Roadmap'],
+    ctaText: 'לתיאום פגישת אבחון וייעוץ ממוקד'
+  },
+  {
+    id: 'sop',
+    num: '02',
     serviceKey: 'sop',
     badge: 'PROCESS & SOPS',
     subtitle: 'אפיון תהליכים ומסמכים חכמים',
@@ -115,7 +133,7 @@ export const B2B_SERVICES: B2BService[] = [
   },
   {
     id: 'workshops',
-    num: '02',
+    num: '03',
     serviceKey: 'workshops',
     badge: 'HANDS-ON WORKSHOPS',
     subtitle: 'הדרכות עומק ותרגול מעשי',
@@ -130,24 +148,6 @@ export const B2B_SERVICES: B2BService[] = [
     ],
     techBadges: ['Hands-on Practice', 'Claude & ChatGPT & Gemini', 'Custom Syllabus'],
     ctaText: 'לפרטים על סדנאות והכשרות מעשיות'
-  },
-  {
-    id: 'consulting',
-    num: '03',
-    serviceKey: 'consulting',
-    badge: 'DIAGNOSIS & ROI',
-    subtitle: 'אבחון וייעוץ ממוקד',
-    title: 'אבחון וייעוץ ממוקד לזיהוי צווארי בקבוק ו-ROI אמיתי',
-    icon: '🎯',
-    shortDesc: 'מיפוי תהליכים מעשי, זיהוי נקודות תורפה ותכנון אוטומציות שמחזירות את ההשקעה בפועל וחוסכות שעות עבודה יקרות בעסק.',
-    features: [
-      'איתור מדויק של צווארי הבקבוק ומשימות הזוללות זמן יקר',
-      'בניית תוכנית עבודה פרקטית ומדורגת להטמעת כלי AI',
-      'חישוב ROI ברור ומדיד לפני כל הטמעה או פיתוח',
-      'המלצות פרקטיות ללא תלות בכלים מיותרים או יקרים'
-    ],
-    techBadges: ['ROI Analysis', 'Bottlenecks Diagnosis', 'Actionable Roadmap'],
-    ctaText: 'לתיאום פגישת אבחון וייעוץ ממוקד'
   }
 ];
 
