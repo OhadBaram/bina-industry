@@ -703,7 +703,7 @@ const App: React.FC = () => {
             </a>
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
               title={isDarkMode ? "מעבר למצב בהיר ☀️" : "מעבר למצב כהה 🌙"}
@@ -711,18 +711,30 @@ const App: React.FC = () => {
             >
               {isDarkMode ? '☀️' : '🌙'}
             </button>
+
+            <a
+              href="https://wa.me/972536244330?text=%D7%94%D7%99%D7%99%20%D7%90%D7%95%D7%94%D7%93%2C%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%93%D7%A8%D7%9A%20%D7%94%D7%90%D7%AA%D7%A8%20%22%D7%91%D7%99%D7%A0%D7%94%20%D7%9C%D7%AA%D7%A2%D7%A9%D7%99%D7%99%D7%94%22%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%AA%D7%90%D7%9D%20%D7%A9%D7%99%D7%97%D7%AA%20%D7%90%D7%91%D7%97%D7%95%D7%9F"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-black text-xs md:text-sm transition-all shadow-md active:scale-95 flex items-center gap-1.5 cursor-pointer border border-emerald-400/30"
+              title="פנייה מהירה בוואטסאפ (053-6244330)"
+            >
+              <span className="hidden sm:inline">וואטסאפ</span>
+              <span>💬</span>
+            </a>
+
             <button 
               onClick={() => {
                 openContactView();
                 setShouldPulseCTA(false); // הפסקת ההבהוב בלחיצה
               }} 
-              className={`px-6 py-3 bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white rounded-xl font-black text-xs md:text-sm transition-all shadow-lg active:scale-95 flex items-center gap-2 ${
+              className={`px-5 py-3 bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white rounded-xl font-black text-xs md:text-sm transition-all shadow-lg active:scale-95 flex items-center gap-2 cursor-pointer ${
                 shouldPulseCTA 
                   ? 'animate-pulse ring-4 ring-cyan-400 shadow-[0_0_35px_rgba(34,211,238,0.95)] border border-cyan-300 scale-105' 
                   : 'hover:shadow-cyan-500/20'
               }`}
             >
-              <span>תיאום שיחת אבחון</span>
+              <span>שיחת אבחון</span>
               <span>📞</span>
             </button>
           </div>
@@ -734,6 +746,7 @@ const App: React.FC = () => {
           <button onClick={scrollToMethodology} className="px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">תהליך האפיון</button>
           <button onClick={goToPromptsView} className={`px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 ${mainView === 'prompts' ? 'bg-cyan-500/20 text-cyan-600 dark:text-cyan-300 border border-cyan-500/40' : 'bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800'}`}>מאגר הפרומפטים</button>
           <button onClick={scrollToAbout} className="px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">אודות</button>
+          <a href="https://www.facebook.com/share/g/183u1ktJDZ/" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 bg-blue-600 text-white">קהילה 👥</a>
         </div>
       </header>
 
@@ -756,23 +769,34 @@ const App: React.FC = () => {
                 </span>
               </h1>
 
-              <p className={`text-lg md:text-2xl font-medium max-w-3xl mx-auto leading-relaxed mb-12 ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
+              <p className={`text-lg md:text-2xl font-medium max-w-3xl mx-auto leading-relaxed mb-10 ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
                 אני מלווה עסקים וארגונים באפיון תהליכים, כתיבת מסמכי עבודה (SOPs) ואוטומציות מעשיות באמצעות כלי AI מתקדמים.
               </p>
 
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-5 max-w-xl mx-auto">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-3xl mx-auto">
                 <button
                   onClick={openContactView}
-                  className="w-full sm:w-auto px-10 py-5 bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-black text-xl rounded-2xl shadow-2xl hover:shadow-cyan-500/25 transition-all active:scale-95 flex items-center justify-center gap-3"
+                  className="w-full sm:w-auto px-8 py-4.5 bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-black text-lg rounded-2xl shadow-xl hover:shadow-cyan-500/25 transition-all active:scale-95 flex items-center justify-center gap-2.5 cursor-pointer"
                 >
-                  <span>תיאום שיחת אבחון ראשונית</span>
+                  <span>תיאום שיחת אבחון</span>
                   <span>🚀</span>
                 </button>
+
+                <a
+                  href="https://wa.me/972536244330?text=%D7%94%D7%99%D7%99%20%D7%90%D7%95%D7%94%D7%93%2C%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%93%D7%A8%D7%9A%20%D7%94%D7%90%D7%AA%D7%A8%20%22%D7%91%D7%99%D7%A0%D7%94%20%D7%9C%D7%AA%D7%A2%D7%A9%D7%99%D7%99%D7%94%22%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%AA%D7%90%D7%9D%20%D7%A9%D7%99%D7%97%D7%AA%20%D7%90%D7%91%D7%97%D7%95%D7%9F"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto px-8 py-4.5 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-lg rounded-2xl shadow-xl hover:shadow-emerald-500/30 transition-all active:scale-95 flex items-center justify-center gap-2.5 cursor-pointer border-2 border-emerald-400/40"
+                >
+                  <span>וואטסאפ ישיר: 053-6244330</span>
+                  <span>💬</span>
+                </a>
+
                 <button
                   onClick={scrollToCapabilities}
-                  className={`w-full sm:w-auto px-8 py-5 border font-black text-lg rounded-2xl transition-all flex items-center justify-center gap-2 ${isDarkMode ? 'bg-[#0D131F] border-slate-800 text-slate-200 hover:border-cyan-500/50' : 'bg-white border-slate-300 text-slate-800 hover:border-cyan-500 shadow-md'}`}
+                  className={`w-full sm:w-auto px-6 py-4.5 border font-black text-base rounded-2xl transition-all flex items-center justify-center gap-2 cursor-pointer ${isDarkMode ? 'bg-[#0D131F] border-slate-800 text-slate-200 hover:border-cyan-500/50' : 'bg-white border-slate-300 text-slate-800 hover:border-cyan-500 shadow-md'}`}
                 >
-                  <span>השירותים שלנו ↓</span>
+                  <span>השירותים ↓</span>
                 </button>
               </div>
             </section>
