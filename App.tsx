@@ -27,9 +27,11 @@ const serviceMessages: Record<string, string> = {
   consulting: "היי אוהד,\nאנו מעוניינים באבחון וייעוץ ממוקד לזיהוי צווארי בקבוק והחזר השקעה (ROI) אמיתי בעסק. נשמח לתאם שיחת אבחון."
 };
 
+import { AppointmentSystem } from './components/appointments/AppointmentSystem';
+
 const App: React.FC = () => {
   // --- ניהול תצוגה וניתוב ---
-  const [mainView, setMainView] = useState<'home' | 'prompts'>('home');
+  const [mainView, setMainView] = useState<'home' | 'prompts' | 'appointments'>('home');
   const [activeB2BCategory, setActiveB2BCategory] = useState<string>('all');
   const [isPrivacyPolicyOpen, setIsPrivacyPolicyOpen] = useState(false);
   const [isTermsOfServiceOpen, setIsTermsOfServiceOpen] = useState(false);
@@ -462,6 +464,12 @@ const App: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // מעבר לתצוגת מערכת התורים
+  const goToAppointmentsView = () => {
+    setMainView('appointments');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   // איחוד כל 1,000 הפרומפטים מכל הקטגוריות
   const fullPromptPool = useMemo(() => {
     const combined: B2BPrompt[] = [...B2B_PROMPTS];
@@ -720,6 +728,7 @@ const App: React.FC = () => {
             <button onClick={scrollToCapabilities} className="px-5 py-2.5 rounded-xl font-black text-xs md:text-sm text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all cursor-pointer">השירותים</button>
             <button onClick={scrollToMethodology} className="px-5 py-2.5 rounded-xl font-black text-xs md:text-sm text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all cursor-pointer">תהליך האפיון</button>
             <button onClick={goToPromptsView} className={`px-5 py-2.5 rounded-xl font-black text-xs md:text-sm transition-all cursor-pointer ${mainView === 'prompts' ? 'bg-cyan-500/20 text-cyan-600 dark:text-cyan-300 border border-cyan-500/40' : 'text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400'}`}>מאגר הפרומפטים</button>
+            <button onClick={goToAppointmentsView} className={`px-5 py-2.5 rounded-xl font-black text-xs md:text-sm transition-all cursor-pointer ${mainView === 'appointments' ? 'bg-orange-500/20 text-orange-600 dark:text-orange-300 border border-orange-500/40' : 'text-slate-700 dark:text-slate-300 hover:text-orange-600 dark:hover:text-orange-400'}`}>מערכת תורים 📅</button>
             <button onClick={scrollToAbout} className="px-5 py-2.5 rounded-xl font-black text-xs md:text-sm text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all cursor-pointer">אודות</button>
             <a href="https://www.facebook.com/share/g/183u1ktJDZ/" target="_blank" rel="noopener noreferrer" className="px-4 py-2.5 rounded-xl font-black text-xs md:text-sm text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-all flex items-center gap-1">
               <span>קהילה</span>
@@ -769,6 +778,7 @@ const App: React.FC = () => {
           <button onClick={scrollToCapabilities} className="px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">השירותים</button>
           <button onClick={scrollToMethodology} className="px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">תהליך האפיון</button>
           <button onClick={goToPromptsView} className={`px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 ${mainView === 'prompts' ? 'bg-cyan-500/20 text-cyan-600 dark:text-cyan-300 border border-cyan-500/40' : 'bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800'}`}>מאגר הפרומפטים</button>
+          <button onClick={goToAppointmentsView} className={`px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 ${mainView === 'appointments' ? 'bg-orange-500/20 text-orange-600 dark:text-orange-300 border border-orange-500/40' : 'bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800'}`}>מערכת תורים 📅</button>
           <button onClick={scrollToAbout} className="px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">אודות</button>
           <a href="https://www.facebook.com/share/g/183u1ktJDZ/" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 bg-blue-600 text-white">קהילה 👥</a>
         </div>
@@ -1311,6 +1321,13 @@ const App: React.FC = () => {
                 </div>
               ))}
             </div>
+          </section>
+        )}
+
+        {/* === VIEW 3: APPOINTMENT SYSTEM (/appointments) === */}
+        {mainView === 'appointments' && (
+          <section className="animate-fadeIn max-w-xl mx-auto py-4">
+            <AppointmentSystem />
           </section>
         )}
       </main>
