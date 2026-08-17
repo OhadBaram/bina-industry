@@ -38,22 +38,24 @@ export const ZapierChatbot: React.FC = () => {
     <>
       {/* 1. FLOATING LAUNCHER BUTTON - ALWAYS VISIBLE AT BOTTOM RIGHT */}
       <div 
-        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[999999] flex items-center gap-3 pointer-events-auto"
+        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[999999] flex items-center gap-2 pointer-events-auto"
         style={{ position: 'fixed', bottom: '24px', right: '24px', zIndex: 999999, display: 'flex', alignItems: 'center' }}
       >
-        {!isOpen && (
-          <span className="hidden sm:inline-block px-3 py-1.5 bg-[#0D131F] text-cyan-400 border border-cyan-500/50 rounded-xl text-xs font-black shadow-2xl animate-pulse">
-            💬 Zapier Chatbot AI
-          </span>
-        )}
         <button
           onClick={handleOpenClick}
-          aria-label="סוכן AI צ׳אטבוט מחובר ל-Zapier"
-          className="w-16 h-16 bg-gradient-to-tr from-cyan-400 via-blue-500 to-indigo-600 hover:from-cyan-300 hover:to-indigo-500 text-white font-black rounded-full flex items-center justify-center text-3xl shadow-2xl transition-all duration-300 transform hover:scale-110 border-2 border-slate-900 ring-4 ring-cyan-500/40 relative cursor-pointer"
-          style={{ width: '64px', height: '64px', cursor: 'pointer' }}
+          aria-label={isOpen ? "סגור צ'אטבוט AI" : "פתח שיחה עם סוכן AI"}
+          className="px-4 py-3 sm:px-5 sm:py-3.5 bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-black rounded-full flex items-center gap-2.5 shadow-2xl transition-all duration-300 hover:scale-105 active:scale-95 border-2 border-slate-900 ring-4 ring-cyan-500/40 relative cursor-pointer"
+          style={{ cursor: 'pointer' }}
         >
-          <span>🤖</span>
-          <span className="absolute -top-1 -right-1 w-4.5 h-4.5 bg-emerald-500 rounded-full border-2 border-[#070A10] animate-pulse"></span>
+          <div className="relative flex items-center justify-center text-xl">
+            <span>{isOpen ? '✕' : '🤖'}</span>
+            {!isOpen && (
+              <span className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-400 rounded-full border-2 border-[#070A10] animate-pulse"></span>
+            )}
+          </div>
+          <span className="text-xs sm:text-sm font-black whitespace-nowrap">
+            {isOpen ? 'סגירת צ׳אט' : 'צ׳אט עם סוכן AI 💬'}
+          </span>
         </button>
       </div>
 
