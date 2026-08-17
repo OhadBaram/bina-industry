@@ -299,9 +299,35 @@ const App: React.FC = () => {
     }, 150);
   };
 
+  // פונקציית אימות למספר טלפון ישראלי (נייד או קווי, 9-10 ספרות)
+  const isValidIsraeliPhone = (phoneStr: string): boolean => {
+    if (!phoneStr) return false;
+    const digits = phoneStr.replace(/\D/g, '');
+    if (digits.startsWith('972')) {
+      const local = '0' + digits.slice(3);
+      return local.length === 10 || local.length === 9;
+    }
+    if (digits.startsWith('05')) {
+      return digits.length === 10;
+    }
+    if (/^0[23489]/.test(digits)) {
+      return digits.length === 9;
+    }
+    return false;
+  };
+
   // שליחת ליד כפולה: ל-Netlify Forms ול-Webhook בזמן אמת עם איחוד שדות ה-Name וה-Company
   const handleLeadSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // אימות תקינות מספר טלפון ישראלי
+    if (!isValidIsraeliPhone(leadData.phone)) {
+      setToastMessage('נא להזין מספר טלפון תקין (9-10 ספרות, לדוגמה: 050-1234567) ⚠️');
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 4000);
+      return;
+    }
+
     setIsSubmittingLead(true);
 
     try {
@@ -558,16 +584,26 @@ const App: React.FC = () => {
 
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <label htmlFor="phone" className="block text-xs font-black text-slate-700 dark:text-slate-300 mb-2">מספר טלפון *</label>
+              <div className="flex items-center justify-between mb-2">
+                <label htmlFor="phone" className="block text-xs font-black text-slate-700 dark:text-slate-300">מספר טלפון *</label>
+                {leadData.phone && !isValidIsraeliPhone(leadData.phone) && (
+                  <span className="text-[11px] font-bold text-amber-600 dark:text-amber-400 animate-pulse">נא להזין מספר תקין (9-10 ספרות)</span>
+                )}
+              </div>
               <input
                 id="phone"
                 type="tel"
                 name="phone"
                 required
+                pattern="^(?:0(?:5[0-9]|[23489])[0-9]{7}|\+972(?:5[0-9]|[23489])[0-9]{7})$"
                 value={leadData.phone}
                 onChange={(e) => setLeadData({ ...leadData, phone: e.target.value })}
-                placeholder="050-0000000"
-                className="w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 focus:border-cyan-500 outline-none text-right text-slate-900 dark:text-white font-medium transition-all shadow-sm"
+                placeholder="050-1234567"
+                className={`w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#070A10] border ${
+                  leadData.phone && !isValidIsraeliPhone(leadData.phone)
+                    ? 'border-amber-500/70 focus:border-amber-500 ring-2 ring-amber-500/20'
+                    : 'border-slate-200 dark:border-slate-800 focus:border-cyan-500'
+                } outline-none text-right text-slate-900 dark:text-white font-medium transition-all shadow-sm`}
                 dir="ltr"
               />
             </div>
@@ -614,13 +650,28 @@ const App: React.FC = () => {
             </label>
           </div>
 
-          <button
-            type="submit"
-            disabled={isSubmittingLead}
-            className="btn-submit w-full py-5 rounded-2xl bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-black text-xl shadow-xl hover:shadow-cyan-500/25 transition-all active:scale-[0.99] flex items-center justify-center gap-3 disabled:opacity-50"
-          >
-            {isSubmittingLead ? 'שולח פנייה...' : 'תיאום שיחת אבחון ראשונית 🚀'}
-          </button>
+          <div className="space-y-3 pt-2">
+            <button
+              type="submit"
+              disabled={isSubmittingLead}
+              className="btn-submit w-full py-5 rounded-2xl bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-black text-xl shadow-xl hover:shadow-cyan-500/25 transition-all active:scale-[0.99] flex items-center justify-center gap-3 disabled:opacity-50 cursor-pointer"
+            >
+              {isSubmittingLead ? 'שולח פנייה...' : 'תיאום שיחת אבחון ראשונית 🚀'}
+            </button>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2 text-center">
+              <span className="text-xs font-bold text-slate-500 dark:text-slate-400">מעדיפים פנייה מהירה וישירה?</span>
+              <a
+                href="https://api.whatsapp.com/send?text=%D7%94%D7%99%D7%99%20%D7%90%D7%95%D7%94%D7%93%2C%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%93%D7%A8%D7%9A%20%D7%94%D7%90%D7%AA%D7%A8%20%22%D7%91%D7%99%D7%A0%D7%94%20%D7%9C%D7%AA%D7%A2%D7%A9%D7%99%D7%99%D7%94%22%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%AA%D7%90%D7%9D%20%D7%A9%D7%99%D7%97%D7%AA%20%D7%90%D7%91%D7%97%D7%95%D7%9F"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs rounded-xl transition-all shadow-md active:scale-95 cursor-pointer"
+              >
+                <span>שליחת הודעה בוואטסאפ</span>
+                <span>💬</span>
+              </a>
+            </div>
+          </div>
         </form>
       )}
     </div>
@@ -642,10 +693,14 @@ const App: React.FC = () => {
           </div>
           
           <nav className="hidden lg:flex items-center gap-1 bg-slate-100 dark:bg-slate-900/90 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-800">
-            <button onClick={scrollToCapabilities} className="px-5 py-2.5 rounded-xl font-black text-xs md:text-sm text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all">השירותים</button>
-            <button onClick={scrollToMethodology} className="px-5 py-2.5 rounded-xl font-black text-xs md:text-sm text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all">תהליך האפיון</button>
-            <button onClick={goToPromptsView} className={`px-5 py-2.5 rounded-xl font-black text-xs md:text-sm transition-all ${mainView === 'prompts' ? 'bg-cyan-500/20 text-cyan-600 dark:text-cyan-300 border border-cyan-500/40' : 'text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400'}`}>מאגר הפרומפטים</button>
-            <button onClick={scrollToAbout} className="px-5 py-2.5 rounded-xl font-black text-xs md:text-sm text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all">אודות</button>
+            <button onClick={scrollToCapabilities} className="px-5 py-2.5 rounded-xl font-black text-xs md:text-sm text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all cursor-pointer">השירותים</button>
+            <button onClick={scrollToMethodology} className="px-5 py-2.5 rounded-xl font-black text-xs md:text-sm text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all cursor-pointer">תהליך האפיון</button>
+            <button onClick={goToPromptsView} className={`px-5 py-2.5 rounded-xl font-black text-xs md:text-sm transition-all cursor-pointer ${mainView === 'prompts' ? 'bg-cyan-500/20 text-cyan-600 dark:text-cyan-300 border border-cyan-500/40' : 'text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400'}`}>מאגר הפרומפטים</button>
+            <button onClick={scrollToAbout} className="px-5 py-2.5 rounded-xl font-black text-xs md:text-sm text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all cursor-pointer">אודות</button>
+            <a href="https://www.facebook.com/share/g/183u1ktJDZ/" target="_blank" rel="noopener noreferrer" className="px-4 py-2.5 rounded-xl font-black text-xs md:text-sm text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-all flex items-center gap-1">
+              <span>קהילה</span>
+              <span className="text-xs">👥</span>
+            </a>
           </nav>
 
           <div className="flex items-center gap-3">
@@ -825,6 +880,68 @@ const App: React.FC = () => {
               </div>
             </section>
 
+            {/* 3.5 SOCIAL PROOF & TESTIMONIALS (המלצות ומשובים מהשטח) */}
+            <section className="bg-gradient-to-b from-slate-100/80 to-white dark:from-[#0D131F] dark:to-[#070A10] rounded-[3rem] p-8 md:p-12 border border-slate-200 dark:border-slate-800 shadow-xl dark:shadow-none space-y-8 animate-fadeIn">
+              <div className="text-center max-w-2xl mx-auto space-y-2">
+                <span className="inline-flex items-center px-4 py-1 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 rounded-full text-xs font-black border border-cyan-500/30 uppercase tracking-wider">
+                  תוצאות ומשובים מהשטח
+                </span>
+                <h3 className="text-2xl md:text-4xl font-black text-slate-900 dark:text-white">
+                  מה מנהלים ועסקים מספרים על העבודה איתי
+                </h3>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="bg-white dark:bg-[#070A10] p-6 md:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-4 shadow-sm hover:border-cyan-500/40 transition-all">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-amber-400 text-sm">★★★★★</span>
+                      <span className="text-2xl">⚡</span>
+                    </div>
+                    <p className="text-xs md:text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed">
+                      "הסדנה של אוהד חסכה לצוות שלנו לפחות 15 שעות שבועיות של כתיבת הצעות מחיר ונהלים. הכל היה ממוקד ומעשי על הדאטה האמיתי שלנו, ללא התנגדויות מצד העובדים."
+                    </p>
+                  </div>
+                  <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80">
+                    <h4 className="font-black text-xs md:text-sm text-slate-900 dark:text-white">רועי ש.</h4>
+                    <p className="text-[11px] font-bold text-cyan-600 dark:text-cyan-400">סמנכ״ל תפעול בחברת שירותים</p>
+                  </div>
+                </div>
+
+                <div className="bg-white dark:bg-[#070A10] p-6 md:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-4 shadow-sm hover:border-cyan-500/40 transition-all">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-amber-400 text-sm">★★★★★</span>
+                      <span className="text-2xl">🎯</span>
+                    </div>
+                    <p className="text-xs md:text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed">
+                      "במקום עוד כלי מדף גנרי שלא מתחבר לשגרה, אוהד אפיין לנו תהליך SOP מובנה שעובד כל יום בדיוק מרבי ומקצר זמני תגובה ללקוחות ביותר מ-70%."
+                    </p>
+                  </div>
+                  <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80">
+                    <h4 className="font-black text-xs md:text-sm text-slate-900 dark:text-white">דנה ל.</h4>
+                    <p className="text-[11px] font-bold text-cyan-600 dark:text-cyan-400">מנהלת מוצר ופרויקטים</p>
+                  </div>
+                </div>
+
+                <div className="bg-white dark:bg-[#070A10] p-6 md:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-4 shadow-sm hover:border-cyan-500/40 transition-all">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-amber-400 text-sm">★★★★★</span>
+                      <span className="text-2xl">📈</span>
+                    </div>
+                    <p className="text-xs md:text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed">
+                      "האבחון הממוקד של צווארי הבקבוק נתן לנו בהירות מיידית איפה שווה להשקיע באוטומציות AI ואיפה לא לבזבז זמן וכסף. תוצאות וחיסכון בשטח כבר בחודש הראשון."
+                    </p>
+                  </div>
+                  <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80">
+                    <h4 className="font-black text-xs md:text-sm text-slate-900 dark:text-white">איתי מ.</h4>
+                    <p className="text-[11px] font-bold text-cyan-600 dark:text-cyan-400">מנכ״ל ובעלים</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
             {/* 4. METHODOLOGY (מתודולוגיית העבודה - 4 השלבים) */}
             <section ref={methodologyRef} className="bg-white dark:bg-[#0D131F] text-slate-900 dark:text-white rounded-[3rem] p-8 md:p-14 border border-slate-200 dark:border-slate-800 shadow-2xl dark:shadow-none">
               <div className="text-center mb-14">
@@ -911,10 +1028,10 @@ const App: React.FC = () => {
                   <p className="text-xs font-bold text-cyan-600 dark:text-cyan-400 mb-6">מנהל מוצר ואפיון תהליכים עסקיים</p>
                   
                   <a
-                    href="https://www.linkedin.com/in/ohad-baram-58a22632a"
+                    href="https://www.linkedin.com/in/ohad-baram"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full py-3.5 px-6 bg-[#0A66C2] hover:bg-[#084e96] text-white font-black rounded-2xl text-xs transition-all shadow-md flex items-center justify-center gap-2"
+                    className="w-full py-3.5 px-6 bg-[#0A66C2] hover:bg-[#084e96] text-white font-black rounded-2xl text-xs transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <span>פרופיל LinkedIn מקצועי</span>
                     <span className="text-base">🔗</span>
@@ -1194,15 +1311,25 @@ const App: React.FC = () => {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-black text-slate-700 dark:text-slate-300 mb-1">מספר טלפון *</label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-xs font-black text-slate-700 dark:text-slate-300">מספר טלפון *</label>
+                    {leadData.phone && !isValidIsraeliPhone(leadData.phone) && (
+                      <span className="text-[10px] font-bold text-amber-600 dark:text-amber-400">9-10 ספרות</span>
+                    )}
+                  </div>
                   <input
                     type="tel"
                     name="phone"
                     required
+                    pattern="^(?:0(?:5[0-9]|[23489])[0-9]{7}|\+972(?:5[0-9]|[23489])[0-9]{7})$"
                     value={leadData.phone}
                     onChange={(e) => setLeadData({ ...leadData, phone: e.target.value })}
-                    placeholder="050-0000000"
-                    className="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 outline-none text-slate-900 dark:text-white text-sm"
+                    placeholder="050-1234567"
+                    className={`w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-[#070A10] border ${
+                      leadData.phone && !isValidIsraeliPhone(leadData.phone)
+                        ? 'border-amber-500/70 focus:border-amber-500'
+                        : 'border-slate-200 dark:border-slate-800'
+                    } outline-none text-slate-900 dark:text-white text-sm`}
                     dir="ltr"
                   />
                 </div>
@@ -1236,7 +1363,7 @@ const App: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSubmittingLead}
-                className="w-full py-4 bg-cyan-500 hover:bg-cyan-400 text-white font-black rounded-xl text-base shadow-lg transition-all disabled:opacity-50 mt-2"
+                className="w-full py-4 bg-cyan-500 hover:bg-cyan-400 text-white font-black rounded-xl text-base shadow-lg transition-all disabled:opacity-50 mt-2 cursor-pointer"
               >
                 {isSubmittingLead ? 'פותח גישה...' : 'פתיחת כל התבניות העסקיות 🔓'}
               </button>
@@ -1252,15 +1379,17 @@ const App: React.FC = () => {
         </p>
         
         <div className="flex flex-wrap justify-center items-center gap-4 text-xs font-bold text-slate-600 dark:text-slate-400">
-          <button onClick={() => setIsTermsOfServiceOpen(true)} className="hover:text-cyan-600 dark:hover:text-cyan-400 underline transition-colors">תנאי שימוש</button>
+          <button onClick={() => setIsTermsOfServiceOpen(true)} className="hover:text-cyan-600 dark:hover:text-cyan-400 underline transition-colors cursor-pointer bg-transparent border-none">תנאי שימוש</button>
           <span>|</span>
-          <button onClick={() => setIsPrivacyPolicyOpen(true)} className="hover:text-cyan-600 dark:hover:text-cyan-400 underline transition-colors">מדיניות פרטיות</button>
+          <button onClick={() => setIsPrivacyPolicyOpen(true)} className="hover:text-cyan-600 dark:hover:text-cyan-400 underline transition-colors cursor-pointer bg-transparent border-none">מדיניות פרטיות</button>
           <span>|</span>
-          <button onClick={() => setIsAccessibilityStatementOpen(true)} className="hover:text-cyan-600 dark:hover:text-cyan-400 underline transition-colors">הצהרת נגישות</button>
+          <button onClick={() => setIsAccessibilityStatementOpen(true)} className="hover:text-cyan-600 dark:hover:text-cyan-400 underline transition-colors cursor-pointer bg-transparent border-none">הצהרת נגישות</button>
           <span>|</span>
-          <a href="https://www.linkedin.com/in/ohad-baram-58a22632a" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">LinkedIn 🔗</a>
+          <a href="https://www.linkedin.com/in/ohad-baram" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors cursor-pointer flex items-center gap-1">LinkedIn 🔗</a>
           <span>|</span>
-          <button onClick={() => setIsCookieSettingsOpen(true)} className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">ניהול עוגיות 🍪</button>
+          <a href="https://www.facebook.com/share/g/183u1ktJDZ/" target="_blank" rel="noopener noreferrer" className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors cursor-pointer flex items-center gap-1">קהילת מדברים בינה 👥</a>
+          <span>|</span>
+          <button onClick={() => setIsCookieSettingsOpen(true)} className="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors cursor-pointer bg-transparent border-none">ניהול עוגיות 🍪</button>
         </div>
       </footer>
 
@@ -1302,7 +1431,6 @@ const App: React.FC = () => {
 
           <div className="space-y-4 text-lg md:text-xl font-black leading-relaxed text-right pt-2">
             {sloganLines.map((line, lineIdx) => {
-              // נחשב את האינדקס ההתחלתי של השורה הנוכחית במערך המילים הכולל
               let startIdx = 0;
               for (let i = 0; i < lineIdx; i++) {
                 startIdx += sloganLines[i].length;
@@ -1319,7 +1447,7 @@ const App: React.FC = () => {
                         className="transition-all duration-300 px-1.5 py-0.5 rounded-lg inline-block"
                         style={{
                           transform: isActive ? 'scale(1.3)' : 'scale(1)',
-                          color: isActive ? '#22d3ee' : '#64748b', // ציאן מודגש לעומת אפור רקע
+                          color: isActive ? '#22d3ee' : '#64748b',
                           backgroundColor: isActive ? 'rgba(6, 182, 212, 0.2)' : 'transparent',
                           boxShadow: isActive ? '0 0 12px rgba(6, 182, 212, 0.5)' : 'none',
                           border: '1px solid ' + (isActive ? 'rgba(6, 182, 212, 0.4)' : 'transparent'),
@@ -1348,6 +1476,22 @@ const App: React.FC = () => {
           <span className="text-xl">🎙️</span>
         </button>
       )}
+
+      {/* כפתור וואטסאפ צף מהיר */}
+      <a
+        href="https://api.whatsapp.com/send?text=%D7%94%D7%99%D7%99%20%D7%90%D7%95%D7%94%D7%93%2C%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%93%D7%A8%D7%9A%20%D7%94%D7%90%D7%AA%D7%A8%20%22%D7%91%D7%99%D7%A0%D7%94%20%D7%9C%D7%AA%D7%A2%D7%A9%D7%99%D7%99%D7%94%22%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%AA%D7%90%D7%9D%20%D7%A9%D7%99%D7%97%D7%AA%20%D7%90%D7%91%D7%97%D7%95%D7%9F"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="פנייה מהירה בוואטסאפ"
+        className="fixed bottom-24 right-4 sm:bottom-24 sm:right-6 z-[999998] flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-white px-4 py-3 rounded-full shadow-2xl transition-all duration-300 hover:scale-105 group border-2 border-slate-900 ring-4 ring-emerald-500/30 cursor-pointer"
+        style={{ position: 'fixed', bottom: '96px', right: '24px', zIndex: 999998 }}
+        title="פנייה מהירה בוואטסאפ 💬"
+      >
+        <span className="hidden sm:inline font-black text-xs">פנייה בוואטסאפ</span>
+        <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+          <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+        </svg>
+      </a>
 
       <AccessibilityToolbar />
       <ZapierChatbot />
