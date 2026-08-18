@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const ZAPIER_CHATBOT_IFRAME = 'https://interfaces.zapier.com/embed/chatbot/cmssrqyy2002hq5yg3j99toye';
+const ZAPIER_CHATBOT_IFRAME = 'https://interfaces.zapier.com/embed/chatbot/cmsyrjqc9001wxqbjhbspguxn';
 
 export const ZapierChatbot: React.FC = () => {
   // בניידים הצאטבוט יהיה סגור כברירת מחדל
