@@ -262,7 +262,8 @@ const App: React.FC = () => {
   // פונקציית אימות לכתובת דוא"ל תקינה
   const isValidEmail = (emailStr: string): boolean => {
     if (!emailStr) return false;
-    return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(emailStr.trim());
+    // דפוס תואם גם לדפדפנים עם pattern + דגל v (ללא מחלקות תווים בעייתיות)
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(emailStr.trim());
   };
 
   // שליחת ליד: ארכיון ב-Netlify Forms + אוטומציה פנימית ב-/api/lead
@@ -575,7 +576,7 @@ const App: React.FC = () => {
                 type="email"
                 name="email"
                 required
-                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                pattern="^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$"
                 value={leadData.email}
                 onChange={(e) => setLeadData({ ...leadData, email: e.target.value })}
                 placeholder="you@company.com"
@@ -1333,7 +1334,7 @@ const App: React.FC = () => {
                     type="email"
                     name="email"
                     required
-                    pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                    pattern="^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$"
                     value={leadData.email}
                     onChange={(e) => setLeadData({ ...leadData, email: e.target.value })}
                     placeholder="name@company.com"

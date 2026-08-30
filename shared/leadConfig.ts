@@ -266,7 +266,7 @@ export function buildEmailHtml(lead: LeadInput, analysis: LeadAnalysis, timestam
   return `<div dir="rtl" style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.6;">${body}</div>`;
 }
 
-const EMAIL_RE = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 export function parseLeadPayload(raw: unknown): { ok: true; lead: LeadInput } | { ok: false; error: string } {
   if (!raw || typeof raw !== 'object') {
