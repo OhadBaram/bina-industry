@@ -165,8 +165,31 @@ function appsScriptResponseOk(status: number, text: string): boolean {
   // חלק מהפריסות מחזירות גוף ריק אחרי הצלחה
   if (status >= 200 && status < 300 && (!text || !text.trim())) return true;
   // דף HTML של התחברות/שגיאה — לא הצלחה
-  if (text.includes('<html') || text.includes('<!DOCTYPE')) return false;
+  if (
+    text.includes('<html') ||
+    text.includes('<!DOCTYPE') ||
+    text.includes('accounts.google') ||
+    text.includes('Sign in')
+  ) {
+    return false;
+  }
   return status >= 200 && status < 300 && text.includes('ok');
+}
+
+function describeAppsScriptFailure(status: number, text: string): string {
+  const lower = text.toLowerCase();
+  if (
+    status === 401 ||
+    status === 403 ||
+    lower.includes('accounts.google') ||
+    lower.includes('sign in')
+  ) {
+    return 'Apps Script blocked anonymous access — redeploy Web app with Who has access = Anyone, then use the /exec URL';
+  }
+  if (lower.includes('<!doctype') || lower.includes('<html')) {
+    return `got HTML instead of JSON (status ${status})`;
+  }
+  return `status ${status}: ${text.slice(0, 100)}`;
 }
 
 /**
@@ -299,7 +322,10 @@ async function appendViaWebhook(
 
   const getResult = await appendViaWebhookGetFallback(normalized, payload, LEAD_SHEETS_TIMEOUT_MS);
   if (!getResult.ok) {
-    const detail = `post=${postResult.status}/${postResult.text.slice(0, 80)} | get=${getResult.status}/${getResult.text.slice(0, 80)}`;
+    const detail =
+      describeAppsScriptFailure(postResult.status, postResult.text) +
+      ' | fallback: ' +
+      describeAppsScriptFailure(getResult.status, getResult.text);
     logChannel('sheets', 'error', detail);
     return { status: 'error', detail };
   }
