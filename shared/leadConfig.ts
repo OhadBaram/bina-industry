@@ -26,6 +26,8 @@ export function resolveGoogleSheetsId(env: Record<string, string | undefined> = 
 
 export const LEAD_AI_TIMEOUT_MS = 20_000;
 export const LEAD_CHANNEL_TIMEOUT_MS = 10_000;
+/** Apps Script לפעמים איטי בפתיחה ראשונה */
+export const LEAD_SHEETS_TIMEOUT_MS = 25_000;
 
 export interface LeadInput {
   full_name: string;

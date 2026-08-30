@@ -115,40 +115,50 @@ https://docs.google.com/spreadsheets/d/1S9Oh1EkOWEW1M6zvu5G0hD7y_53jXabepHOv4at4
 3. מחקו את התוכן הקיים והדביקו את הסקריפט הבא:
 
 ```javascript
-function doPost(e) {
-  var DEFAULT_SPREADSHEET_ID = '1S9Oh1EkOWEW1M6zvu5G0hD7y_53jXabepHOv4at4qLw';
-  var DEFAULT_SHEET_GID = 0;
-  var DEFAULT_SHEET_NAME = 'גיליון1';
-  var data = JSON.parse(e.postData.contents);
-  var spreadsheetId = data.spreadsheetId || DEFAULT_SPREADSHEET_ID;
-  var sheetGid = typeof data.sheetGid === 'number' ? data.sheetGid : DEFAULT_SHEET_GID;
-  var ss = SpreadsheetApp.openById(spreadsheetId);
-  var sheets = ss.getSheets();
-  var sheet =
-    sheets.filter(function (s) { return s.getSheetId() === sheetGid; })[0] ||
-    ss.getSheetByName(data.sheetName || DEFAULT_SHEET_NAME) ||
-    sheets[0];
-  // A תאריך, B שם, C טלפון, D הערה (= סיכום AI), E תשובת AI (= סיווג)
-  var row = data.values || [
-    data.timestamp,
-    data.full_name,
-    data.phone,
-    data.summary,
-    data.classification,
-  ];
-  sheet.appendRow(row);
+var DEFAULT_SPREADSHEET_ID = '1S9Oh1EkOWEW1M6zvu5G0hD7y_53jXabepHOv4at4qLw';
+
+function doGet() {
   return ContentService
-    .createTextOutput(JSON.stringify({ ok: true }))
+    .createTextOutput(JSON.stringify({ ok: true, ready: true }))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+function doPost(e) {
+  try {
+    var raw = (e && e.postData && e.postData.contents) ? e.postData.contents : '{}';
+    var data = JSON.parse(raw);
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    if (!ss) {
+      ss = SpreadsheetApp.openById(data.spreadsheetId || DEFAULT_SPREADSHEET_ID);
+    }
+    var sheet = ss.getSheetByName('גיליון1') || ss.getSheets()[0];
+    // A תאריך, B שם, C טלפון, D הערה (= סיכום AI), E תשובת AI (= סיווג)
+    sheet.appendRow([
+      data.timestamp || '',
+      data.full_name || '',
+      data.phone || '',
+      data.summary || '',
+      data.classification || ''
+    ]);
+    return ContentService
+      .createTextOutput(JSON.stringify({ ok: true }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ ok: false, error: String(err) }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
 }
 ```
 
-4. Deploy → New deployment → Web app
+4. **חובה:** Deploy → **New deployment** → Web app (אחרי כל שינוי בקוד — שמירה בלבד לא מספיקה)
    - Execute as: Me
    - Who has access: Anyone
-5. העתיקו את כתובת ה-Web app
-6. ב-Netlify, תחת Environment variables, שימו את הכתובת ב-`GOOGLE_SHEETS_WEBHOOK_URL`
-7. Redeploy את האתר
+5. העתיקו את כתובת ה-Web app — חייבת להיראות כמו `https://script.google.com/macros/s/.../exec`
+   - לא קישור `docs.google.com`
+   - לא כתובת שמסתיימת ב-`/dev`
+6. בדיקה מהירה: פתחו את כתובת ה-`/exec` בדפדפן — אמור להופיע `{"ok":true,"ready":true}`
+7. ב-Netlify, שימו את הכתובת ב-`GOOGLE_SHEETS_WEBHOOK_URL` ואז Redeploy
 
 | משתנה | מה זה |
 |---|---|

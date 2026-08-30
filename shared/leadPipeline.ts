@@ -12,6 +12,7 @@ import {
   DEFAULT_LEAD_NOTIFY_EMAIL,
   LEAD_AI_TIMEOUT_MS,
   LEAD_CHANNEL_TIMEOUT_MS,
+  LEAD_SHEETS_TIMEOUT_MS,
   LEAD_SYSTEM_PROMPT,
   buildEmailBody,
   buildEmailHtml,
@@ -126,13 +127,44 @@ export async function analyzeLead(
   return { analysis: fallback, ai: 'error' };
 }
 
-function isAppsScriptWebhookUrl(url: string): boolean {
+function normalizeAppsScriptWebhookUrl(raw: string): string | null {
+  const trimmed = raw.trim().replace(/\/+$/, '');
+  if (!trimmed) return null;
+  let parsed: URL;
   try {
-    const host = new URL(url).hostname;
-    return host === 'script.google.com' || host.endsWith('.googleusercontent.com');
+    parsed = new URL(trimmed);
   } catch {
-    return false;
+    return null;
   }
+  // קישור גיליון — לא webhook
+  if (parsed.hostname === 'docs.google.com' || parsed.hostname === 'sheets.google.com') {
+    return null;
+  }
+  // /dev עובד רק כשמחוברים כבעלים — דורשים /exec
+  if (parsed.pathname.includes('/dev')) {
+    return null;
+  }
+  const hostOk =
+    parsed.hostname === 'script.google.com' || parsed.hostname.endsWith('.googleusercontent.com');
+  if (!hostOk) return null;
+  return trimmed;
+}
+
+function resolveRedirectUrl(baseUrl: string, location: string): string {
+  try {
+    return new URL(location, baseUrl).href;
+  } catch {
+    return location;
+  }
+}
+
+function appsScriptResponseOk(status: number, text: string): boolean {
+  if (text.includes('"ok":true') || text.includes('"ok": true')) return true;
+  // חלק מהפריסות מחזירות גוף ריק אחרי הצלחה
+  if (status >= 200 && status < 300 && (!text || !text.trim())) return true;
+  // דף HTML של התחברות/שגיאה — לא הצלחה
+  if (text.includes('<html') || text.includes('<!DOCTYPE')) return false;
+  return status >= 200 && status < 300 && text.includes('ok');
 }
 
 /**
@@ -159,20 +191,46 @@ async function postAppsScriptWebhook(
 
   if (first.status >= 200 && first.status < 300) {
     const text = await first.text().catch(() => '');
-    return { ok: true, status: first.status, text };
+    return { ok: appsScriptResponseOk(first.status, text), status: first.status, text };
   }
 
   const location = first.headers.get('location') || first.headers.get('Location');
-  if ((first.status === 301 || first.status === 302 || first.status === 303 || first.status === 307 || first.status === 308) && location) {
-    const redirected = await fetch(location, {
+  if (
+    (first.status === 301 ||
+      first.status === 302 ||
+      first.status === 303 ||
+      first.status === 307 ||
+      first.status === 308) &&
+    location
+  ) {
+    const absolute = resolveRedirectUrl(url, location);
+    // תמיד POST מחדש ליעד — follow אוטומטי עלול להפוך POST ל-GET
+    const redirected = await fetch(absolute, {
       method: 'POST',
       headers,
       body,
-      redirect: 'follow',
+      redirect: 'manual',
       signal: withTimeout(timeoutMs),
     });
+    if (redirected.status >= 200 && redirected.status < 300) {
+      const text = await redirected.text().catch(() => '');
+      return { ok: appsScriptResponseOk(redirected.status, text), status: redirected.status, text };
+    }
+    const location2 = redirected.headers.get('location') || redirected.headers.get('Location');
+    if (location2) {
+      const absolute2 = resolveRedirectUrl(absolute, location2);
+      const third = await fetch(absolute2, {
+        method: 'POST',
+        headers,
+        body,
+        redirect: 'follow',
+        signal: withTimeout(timeoutMs),
+      });
+      const text = await third.text().catch(() => '');
+      return { ok: appsScriptResponseOk(third.status, text), status: third.status, text };
+    }
     const text = await redirected.text().catch(() => '');
-    return { ok: redirected.ok, status: redirected.status, text };
+    return { ok: false, status: redirected.status, text };
   }
 
   const text = await first.text().catch(() => '');
@@ -187,11 +245,12 @@ async function appendViaWebhook(
   timestamp: string,
   spreadsheetId: string
 ): Promise<ChannelStatus> {
-  if (!isAppsScriptWebhookUrl(url)) {
+  const normalized = normalizeAppsScriptWebhookUrl(url);
+  if (!normalized) {
     logChannel(
       'sheets',
       'error',
-      'GOOGLE_SHEETS_WEBHOOK_URL must be a script.google.com Web app URL (not a docs.google.com sheet link)'
+      'GOOGLE_SHEETS_WEBHOOK_URL must be https://script.google.com/.../exec (not docs.google.com and not /dev)'
     );
     return 'error';
   }
@@ -209,14 +268,10 @@ async function appendViaWebhook(
     values: row,
   });
 
-  const result = await postAppsScriptWebhook(url, payload, LEAD_CHANNEL_TIMEOUT_MS);
-  const looksOk =
-    result.ok ||
-    (typeof result.text === 'string' &&
-      (result.text.includes('"ok":true') || result.text.includes('"ok": true')));
+  const result = await postAppsScriptWebhook(normalized, payload, LEAD_SHEETS_TIMEOUT_MS);
 
-  if (!looksOk) {
-    logChannel('sheets', 'error', `webhook ${result.status} ${result.text.slice(0, 120)}`);
+  if (!result.ok) {
+    logChannel('sheets', 'error', `webhook ${result.status} ${result.text.slice(0, 160)}`);
     return 'error';
   }
   logChannel('sheets', 'ok', 'webhook');

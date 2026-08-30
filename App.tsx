@@ -313,7 +313,7 @@ const App: React.FC = () => {
         created_at: new Date().toISOString()
       };
 
-      await Promise.allSettled([
+      const [, leadResult] = await Promise.allSettled([
         fetch('/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -323,19 +323,40 @@ const App: React.FC = () => {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(leadPayload),
-        })
+        }),
       ]);
+
+      let sheetsFailed = false;
+      if (leadResult.status === 'fulfilled') {
+        try {
+          const leadJson = (await leadResult.value.json()) as {
+            channels?: { sheets?: string; telegram?: string };
+          };
+          console.log('[lead] channels', leadJson.channels);
+          sheetsFailed = leadJson.channels?.sheets === 'error';
+        } catch {
+          /* ignore parse */
+        }
+      }
+
+      setToastMessage(
+        sheetsFailed
+          ? 'הפנייה התקבלה (טלגרם/ניתוח), אבל הגיליון לא עודכן — בדקו את כתובת הסקריפט בנטליפיי ⚠️'
+          : 'פנייתך התקבלה בהצלחה! אחזור אליך לשיחת אבחון בהקדם 🚀'
+      );
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), sheetsFailed ? 6000 : 4000);
     } catch (err) {
       console.log('Form submission handled:', err);
+      setToastMessage('פנייתך התקבלה בהצלחה! אחזור אליך לשיחת אבחון בהקדם 🚀');
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 4000);
     } finally {
       setIsSubmittingLead(false);
       setLeadSubmitted(true);
       setUnlockedPremium(true);
       localStorage.setItem('b2b_leads_unlocked', 'true');
       setShowUnlockModal(false);
-      setToastMessage('פנייתך התקבלה בהצלחה! אחזור אליך לשיחת אבחון בהקדם 🚀');
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), 4000);
     }
   };
 
