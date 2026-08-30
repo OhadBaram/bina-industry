@@ -115,22 +115,35 @@ https://docs.google.com/spreadsheets/d/1S9Oh1EkOWEW1M6zvu5G0hD7y_53jXabepHOv4at4
 3. מחקו את התוכן הקיים והדביקו את הסקריפט הבא:
 
 ```javascript
-var DEFAULT_SPREADSHEET_ID = '1S9Oh1EkOWEW1M6zvu5G0hD7y_53jXabepHOv4at4qLw';
+// חשוב: בפריסת Web App עדיף openById — getActiveSpreadsheet לעיתים מחזיר null
+var SPREADSHEET_ID = '1S9Oh1EkOWEW1M6zvu5G0hD7y_53jXabepHOv4at4qLw';
+
+function jsonOut_(obj) {
+  return ContentService
+    .createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}
 
 function doGet() {
-  return ContentService
-    .createTextOutput(JSON.stringify({ ok: true, ready: true }))
-    .setMimeType(ContentService.MimeType.JSON);
+  try {
+    var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+    var sheet = ss.getSheetByName('גיליון1') || ss.getSheets()[0];
+    return jsonOut_({
+      ok: true,
+      ready: true,
+      sheet: sheet.getName(),
+      rows: sheet.getLastRow()
+    });
+  } catch (err) {
+    return jsonOut_({ ok: false, error: String(err) });
+  }
 }
 
 function doPost(e) {
   try {
     var raw = (e && e.postData && e.postData.contents) ? e.postData.contents : '{}';
     var data = JSON.parse(raw);
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
-    if (!ss) {
-      ss = SpreadsheetApp.openById(data.spreadsheetId || DEFAULT_SPREADSHEET_ID);
-    }
+    var ss = SpreadsheetApp.openById(data.spreadsheetId || SPREADSHEET_ID);
     var sheet = ss.getSheetByName('גיליון1') || ss.getSheets()[0];
     // A תאריך, B שם, C טלפון, D הערה (= סיכום AI), E תשובת AI (= סיווג)
     sheet.appendRow([
@@ -140,13 +153,9 @@ function doPost(e) {
       data.summary || '',
       data.classification || ''
     ]);
-    return ContentService
-      .createTextOutput(JSON.stringify({ ok: true }))
-      .setMimeType(ContentService.MimeType.JSON);
+    return jsonOut_({ ok: true, sheet: sheet.getName(), row: sheet.getLastRow() });
   } catch (err) {
-    return ContentService
-      .createTextOutput(JSON.stringify({ ok: false, error: String(err) }))
-      .setMimeType(ContentService.MimeType.JSON);
+    return jsonOut_({ ok: false, error: String(err) });
   }
 }
 ```
