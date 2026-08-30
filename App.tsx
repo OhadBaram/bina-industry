@@ -207,6 +207,7 @@ const App: React.FC = () => {
   });
   const [isSubmittingLead, setIsSubmittingLead] = useState(false);
   const [leadSubmitted, setLeadSubmitted] = useState(false);
+  const [emailTouched, setEmailTouched] = useState(false);
 
   const contactFormRef = useRef<HTMLDivElement>(null);
   const capabilitiesRef = useRef<HTMLDivElement>(null);
@@ -259,11 +260,11 @@ const App: React.FC = () => {
     return false;
   };
 
-  // פונקציית אימות לכתובת דוא"ל תקינה
+  // אימות אימייל — בלי HTML pattern (דפדפנים עם דגל v שוברים אותו)
   const isValidEmail = (emailStr: string): boolean => {
     if (!emailStr) return false;
-    // דפוס תואם גם לדפדפנים עם pattern + דגל v (ללא מחלקות תווים בעייתיות)
-    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(emailStr.trim());
+    const cleaned = emailStr.trim().replace(/[\u200e\u200f\u202a-\u202e]/g, '');
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test(cleaned);
   };
 
   // שליחת ליד: ארכיון ב-Netlify Forms + אוטומציה פנימית ב-/api/lead
@@ -280,6 +281,7 @@ const App: React.FC = () => {
 
     // אימות תקינות כתובת אימייל
     if (!isValidEmail(leadData.email)) {
+      setEmailTouched(true);
       setToastMessage('נא להזין כתובת דוא״ל תקינה (לדוגמה: name@company.com) ⚠️');
       setShowToast(true);
       setTimeout(() => setShowToast(false), 4000);
@@ -567,8 +569,8 @@ const App: React.FC = () => {
             <div>
               <div className="flex items-center justify-between mb-2">
                 <label htmlFor="user_email" className="block text-xs font-black text-slate-700 dark:text-slate-300">דוא״ל לחזרה *</label>
-                {leadData.email && !isValidEmail(leadData.email) && (
-                  <span className="text-[11px] font-bold text-amber-600 dark:text-amber-400 animate-pulse">פורמט דוא״ל לא תקין</span>
+                {emailTouched && leadData.email && !isValidEmail(leadData.email) && (
+                  <span className="text-[11px] font-bold text-amber-600 dark:text-amber-400">פורמט דוא״ל לא תקין</span>
                 )}
               </div>
               <input
@@ -576,16 +578,17 @@ const App: React.FC = () => {
                 type="email"
                 name="email"
                 required
-                pattern="^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$"
                 value={leadData.email}
                 onChange={(e) => setLeadData({ ...leadData, email: e.target.value })}
+                onBlur={() => setEmailTouched(true)}
                 placeholder="you@company.com"
                 className={`w-full px-5 py-4 rounded-2xl bg-white dark:bg-[#070A10] border ${
-                  leadData.email && !isValidEmail(leadData.email)
+                  emailTouched && leadData.email && !isValidEmail(leadData.email)
                     ? 'border-amber-500/70 focus:border-amber-500 ring-2 ring-amber-500/20'
                     : 'border-slate-200 dark:border-slate-800 focus:border-cyan-500'
                 } outline-none text-right text-slate-900 dark:text-white font-medium transition-all shadow-sm`}
                 dir="ltr"
+                autoComplete="email"
               />
             </div>
           </div>
@@ -1326,7 +1329,7 @@ const App: React.FC = () => {
                 <div>
                   <div className="flex items-center justify-between mb-1">
                     <label className="block text-xs font-black text-slate-700 dark:text-slate-300">אימייל *</label>
-                    {leadData.email && !isValidEmail(leadData.email) && (
+                    {emailTouched && leadData.email && !isValidEmail(leadData.email) && (
                       <span className="text-[10px] font-bold text-amber-600 dark:text-amber-400">אימייל שגוי</span>
                     )}
                   </div>
@@ -1334,16 +1337,17 @@ const App: React.FC = () => {
                     type="email"
                     name="email"
                     required
-                    pattern="^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$"
                     value={leadData.email}
                     onChange={(e) => setLeadData({ ...leadData, email: e.target.value })}
+                    onBlur={() => setEmailTouched(true)}
                     placeholder="name@company.com"
                     className={`w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-[#070A10] border ${
-                      leadData.email && !isValidEmail(leadData.email)
+                      emailTouched && leadData.email && !isValidEmail(leadData.email)
                         ? 'border-amber-500/70 focus:border-amber-500'
                         : 'border-slate-200 dark:border-slate-800'
                     } outline-none text-slate-900 dark:text-white text-sm`}
                     dir="ltr"
+                    autoComplete="email"
                   />
                 </div>
               </div>

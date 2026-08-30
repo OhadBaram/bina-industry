@@ -266,7 +266,16 @@ export function buildEmailHtml(lead: LeadInput, analysis: LeadAnalysis, timestam
   return `<div dir="rtl" style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.6;">${body}</div>`;
 }
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+/** ניקוי תווי כיוון עברית + בדיקת אימייל (בלי HTML pattern עם דגל v) */
+export function normalizeEmail(raw: string): string {
+  return raw.trim().replace(/[\u200e\u200f\u202a-\u202e]/g, '').toLowerCase();
+}
+
+export function isValidLeadEmail(emailStr: string): boolean {
+  const email = normalizeEmail(emailStr);
+  if (!email || email.length > 200) return false;
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+}
 
 export function parseLeadPayload(raw: unknown): { ok: true; lead: LeadInput } | { ok: false; error: string } {
   if (!raw || typeof raw !== 'object') {
@@ -280,13 +289,13 @@ export function parseLeadPayload(raw: unknown): { ok: true; lead: LeadInput } | 
     asPlainText(body.full_identity) ||
     (companyName ? `${userName} (${companyName})` : userName);
   const phone = asPlainText(body.phone);
-  const email = asPlainText(body.email).toLowerCase();
+  const email = normalizeEmail(asPlainText(body.email));
   const message = asPlainText(body.message);
   const created_at = asPlainText(body.created_at) || new Date().toISOString();
 
   if (!combined) return { ok: false, error: 'חסר שם מלא' };
   if (!phone) return { ok: false, error: 'חסר טלפון' };
-  if (!email || !EMAIL_RE.test(email)) return { ok: false, error: 'כתובת דוא״ל לא תקינה' };
+  if (!email || !isValidLeadEmail(email)) return { ok: false, error: 'כתובת דוא״ל לא תקינה' };
 
   return {
     ok: true,
