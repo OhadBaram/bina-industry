@@ -6,6 +6,8 @@ import {
 } from './chatConfig';
 import {
   FALLBACK_ANALYSIS,
+  DEFAULT_GOOGLE_SHEETS_GID,
+  DEFAULT_GOOGLE_SHEETS_RANGE,
   DEFAULT_LEAD_NOTIFY_EMAIL,
   LEAD_AI_TIMEOUT_MS,
   LEAD_CHANNEL_TIMEOUT_MS,
@@ -15,6 +17,7 @@ import {
   buildTelegramMessage,
   formatIsraelTimestamp,
   parseLeadAnalysis,
+  resolveGoogleSheetsId,
   resolveLeadModels,
   type ChannelStatus,
   type LeadAnalysis,
@@ -124,7 +127,8 @@ async function appendViaWebhook(
   row: string[],
   lead: LeadInput,
   analysis: LeadAnalysis,
-  timestamp: string
+  timestamp: string,
+  spreadsheetId: string
 ): Promise<ChannelStatus> {
   const result = await fetchJson(
     url,
@@ -132,6 +136,8 @@ async function appendViaWebhook(
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        spreadsheetId,
+        sheetGid: DEFAULT_GOOGLE_SHEETS_GID,
         timestamp,
         full_name: lead.full_name,
         phone: lead.phone,
@@ -223,11 +229,11 @@ async function appendViaSheetsApi(
   env: Record<string, string | undefined>,
   row: string[]
 ): Promise<ChannelStatus> {
-  const sheetId = env.GOOGLE_SHEETS_ID?.trim();
+  const sheetId = resolveGoogleSheetsId(env);
   const account = readServiceAccount(env);
-  if (!sheetId || !account) return 'skipped';
+  if (!account) return 'skipped';
 
-  const range = (env.GOOGLE_SHEETS_RANGE || 'Sheet1!A:E').trim();
+  const range = (env.GOOGLE_SHEETS_RANGE || DEFAULT_GOOGLE_SHEETS_RANGE).trim();
   const token = await getGoogleAccessToken(account.email, account.privateKey);
   const url =
     `https://sheets.googleapis.com/v4/spreadsheets/${encodeURIComponent(sheetId)}` +
@@ -261,8 +267,9 @@ async function sendSheets(
 ): Promise<ChannelStatus> {
   const row = [timestamp, lead.full_name, lead.phone, analysis.summary, analysis.classification];
   const webhook = env.GOOGLE_SHEETS_WEBHOOK_URL?.trim();
+  const spreadsheetId = resolveGoogleSheetsId(env);
   try {
-    if (webhook) return await appendViaWebhook(webhook, row, lead, analysis, timestamp);
+    if (webhook) return await appendViaWebhook(webhook, row, lead, analysis, timestamp, spreadsheetId);
     return await appendViaSheetsApi(env, row);
   } catch (err) {
     logChannel('sheets', 'error', err instanceof Error ? err.message : 'unknown');

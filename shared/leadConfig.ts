@@ -6,6 +6,16 @@ export const DEFAULT_LEAD_MODEL = DEFAULT_FALLBACK_MODEL; // deepseek/deepseek-c
 export const DEFAULT_LEAD_FALLBACK_MODEL = DEFAULT_MODEL;
 export const DEFAULT_LEAD_NOTIFY_EMAIL = 'binator.industry@gmail.com';
 
+/** גיליון לידים קבוע — אפשר לדרוס עם GOOGLE_SHEETS_ID */
+export const DEFAULT_GOOGLE_SHEETS_ID = '1S9Oh1EkOWEW1M6zvu5G0hD7y_53jXabepHOv4at4qLw';
+/** לשונית ראשונה (gid=0) */
+export const DEFAULT_GOOGLE_SHEETS_GID = 0;
+export const DEFAULT_GOOGLE_SHEETS_RANGE = 'A:E';
+
+export function resolveGoogleSheetsId(env: Record<string, string | undefined> = {}): string {
+  return env.GOOGLE_SHEETS_ID?.trim() || DEFAULT_GOOGLE_SHEETS_ID;
+}
+
 export const LEAD_AI_TIMEOUT_MS = 20_000;
 export const LEAD_CHANNEL_TIMEOUT_MS = 10_000;
 

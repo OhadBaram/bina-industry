@@ -74,14 +74,31 @@
 
 ### גיליון Google — הדרך הפשוטה (מומלץ)
 
-1. פתחו גיליון עם כותרות בשורה 1: תאריך, שם, טלפון, סיכום, סיווג
-2. בגיליון: Extensions → Apps Script, הדביקו:
+מזהה הגיליון כבר מקודד בפרויקט (אין צורך להגדיר אותו ב-Netlify):
+
+`1S9Oh1EkOWEW1M6zvu5G0hD7y_53jXabepHOv4at4qLw`
+
+הגיליון:
+
+https://docs.google.com/spreadsheets/d/1S9Oh1EkOWEW1M6zvu5G0hD7y_53jXabepHOv4at4qLw/edit?gid=0#gid=0
+
+עמודות בשורה 1 (או שהסקריפט פשוט יוסיף שורות): תאריך, שם, טלפון, סיכום, סיווג
+
+1. פתחו **את הגיליון הזה** (הקישור למעלה)
+2. בתפריט: Extensions → Apps Script
+3. מחקו את התוכן הקיים והדביקו את הסקריפט הבא:
 
 ```javascript
 function doPost(e) {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
-  const data = JSON.parse(e.postData.contents);
-  const row = data.values || [
+  var DEFAULT_SPREADSHEET_ID = '1S9Oh1EkOWEW1M6zvu5G0hD7y_53jXabepHOv4at4qLw';
+  var DEFAULT_SHEET_GID = 0;
+  var data = JSON.parse(e.postData.contents);
+  var spreadsheetId = data.spreadsheetId || DEFAULT_SPREADSHEET_ID;
+  var sheetGid = typeof data.sheetGid === 'number' ? data.sheetGid : DEFAULT_SHEET_GID;
+  var ss = SpreadsheetApp.openById(spreadsheetId);
+  var sheets = ss.getSheets();
+  var sheet = sheets.filter(function (s) { return s.getSheetId() === sheetGid; })[0] || sheets[0];
+  var row = data.values || [
     data.timestamp,
     data.full_name,
     data.phone,
@@ -95,14 +112,17 @@ function doPost(e) {
 }
 ```
 
-3. Deploy → New deployment → Web app
+4. Deploy → New deployment → Web app
    - Execute as: Me
    - Who has access: Anyone
-4. העתיקו את כתובת ה-Web app
+5. העתיקו את כתובת ה-Web app
+6. ב-Netlify, תחת Environment variables, שימו את הכתובת ב-`GOOGLE_SHEETS_WEBHOOK_URL`
+7. Redeploy את האתר
 
 | משתנה | מה זה |
 |---|---|
-| `GOOGLE_SHEETS_WEBHOOK_URL` | כתובת ה-Web app |
+| `GOOGLE_SHEETS_WEBHOOK_URL` | כתובת ה-Web app אחרי הפריסה על **הגיליון הזה** |
+| `GOOGLE_SHEETS_ID` | אופציונלי. ברירת מחדל בקוד: `1S9Oh1EkOWEW1M6zvu5G0hD7y_53jXabepHOv4at4qLw` |
 
 ### גיליון Google — דרך מתקדמת (חשבון שירות)
 
@@ -110,10 +130,10 @@ function doPost(e) {
 
 | משתנה | מה זה |
 |---|---|
-| `GOOGLE_SHEETS_ID` | מזהה הגיליון מהכתובת |
+| `GOOGLE_SHEETS_ID` | אופציונלי. ברירת מחדל בקוד: `1S9Oh1EkOWEW1M6zvu5G0hD7y_53jXabepHOv4at4qLw` |
 | `GOOGLE_SERVICE_ACCOUNT_EMAIL` | האימייל של חשבון השירות |
 | `GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY` | המפתח הפרטי (עם `\n` לשורות חדשות) |
-| `GOOGLE_SHEETS_RANGE` | אופציונלי, ברירת מחדל `Sheet1!A:E` |
+| `GOOGLE_SHEETS_RANGE` | אופציונלי, ברירת מחדל `A:E` |
 
 ---
 
