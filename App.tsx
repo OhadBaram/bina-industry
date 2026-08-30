@@ -56,41 +56,11 @@ const App: React.FC = () => {
   ];
 
   useEffect(() => {
-    // בדיקה האם כבר ניגנו בסשן הנוכחי
-    const played = sessionStorage.getItem('bina_music_played');
-    
-    // אם כבר ניגנו בסשן זה, נאתחל ישר למצב מיקרופון מכווץ
-    if (played === 'true') {
-      setSloganPanelState('collapsed');
-    }
-
+    // שמע וסלוגן — רק בלחיצה על המיקרופון (ללא הפעלה אוטומטית בטעינה / לחיצה ראשונה)
     const audio = new Audio('/מוזיקת רקע.mp4');
-    audio.loop = false; // שמע מופעל פעם אחת בלבד
+    audio.loop = false;
     audio.volume = 0.3;
     audioRef.current = audio;
-
-    let hasStarted = false;
-
-    const handleInitialClick = (e: MouseEvent) => {
-      // מניעת הפעלה אוטומטית של מוזיקה בניידים
-      if (window.innerWidth < 768) return;
-      if (hasStarted || played === 'true') return;
-
-      const target = e.target as HTMLElement;
-      const isInteractive = target.closest('button') || target.closest('a') || target.closest('.cursor-pointer') || target.tagName === 'BUTTON';
-
-      if (isInteractive) {
-        audio.play().then(() => {
-          hasStarted = true;
-          setIsPlayingMusic(true);
-          setSloganPanelState('expanded');
-          sessionStorage.setItem('bina_music_played', 'true');
-          document.removeEventListener('click', handleInitialClick);
-        }).catch(err => {
-          console.log('Audio playback failed or blocked:', err);
-        });
-      }
-    };
 
     const handleTimeUpdate = () => {
       if (!audio.duration) return;
@@ -108,13 +78,8 @@ const App: React.FC = () => {
 
     audio.addEventListener('timeupdate', handleTimeUpdate);
     audio.addEventListener('ended', handleEnded);
-    
-    if (played !== 'true') {
-      document.addEventListener('click', handleInitialClick);
-    }
 
     return () => {
-      document.removeEventListener('click', handleInitialClick);
       audio.removeEventListener('timeupdate', handleTimeUpdate);
       audio.removeEventListener('ended', handleEnded);
       audio.pause();
@@ -1501,11 +1466,11 @@ const App: React.FC = () => {
         </div>
       )}
 
-      {/* כפתור מיקרופון צף להתחלת השמעה חוזרת במצב מכווץ */}
+      {/* כפתור מיקרופון צף — הפעלה ידנית בלבד (ללא אנימציה בטעינת הדף) */}
       {sloganPanelState === 'collapsed' && (
         <button
           onClick={playMusicFromMicrophone}
-          className="fixed bottom-24 left-6 z-[99999] bg-cyan-500 hover:bg-cyan-400 text-slate-950 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 animate-explode-left"
+          className="fixed bottom-24 left-6 z-[99999] bg-cyan-500 hover:bg-cyan-400 text-slate-950 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95"
           style={{ position: 'fixed', bottom: '96px', left: '24px', zIndex: 99999, width: '48px', height: '48px', cursor: 'pointer' }}
           title="שמע את הסלוגן 🎙️"
         >
