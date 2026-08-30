@@ -69,7 +69,7 @@
 | משתנה | מה זה |
 |---|---|
 | `RESEND_API_KEY` | מפתח Resend |
-| `LEAD_NOTIFY_EMAIL` | לאן לשלוח את הדוח (המייל שלכם) |
+| `LEAD_NOTIFY_EMAIL` | אופציונלי. ברירת מחדל בקוד: `binator.industry@gmail.com` |
 | `LEAD_EMAIL_FROM` | אופציונלי — כתובת השולח |
 
 ### גיליון Google — הדרך הפשוטה (מומלץ)

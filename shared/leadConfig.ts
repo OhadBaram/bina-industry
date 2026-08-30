@@ -4,6 +4,7 @@ import { DEFAULT_FALLBACK_MODEL, DEFAULT_MODEL } from './chatConfig';
 
 export const DEFAULT_LEAD_MODEL = DEFAULT_FALLBACK_MODEL; // deepseek/deepseek-chat — זול וטוב ל-JSON בעברית
 export const DEFAULT_LEAD_FALLBACK_MODEL = DEFAULT_MODEL;
+export const DEFAULT_LEAD_NOTIFY_EMAIL = 'binator.industry@gmail.com';
 
 export const LEAD_AI_TIMEOUT_MS = 20_000;
 export const LEAD_CHANNEL_TIMEOUT_MS = 10_000;

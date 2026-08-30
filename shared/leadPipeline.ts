@@ -6,6 +6,7 @@ import {
 } from './chatConfig';
 import {
   FALLBACK_ANALYSIS,
+  DEFAULT_LEAD_NOTIFY_EMAIL,
   LEAD_AI_TIMEOUT_MS,
   LEAD_CHANNEL_TIMEOUT_MS,
   LEAD_SYSTEM_PROMPT,
@@ -313,9 +314,9 @@ async function sendEmail(
   timestamp: string
 ): Promise<ChannelStatus> {
   const apiKey = env.RESEND_API_KEY?.trim();
-  const to = env.LEAD_NOTIFY_EMAIL?.trim();
-  if (!apiKey || !to) {
-    logChannel('email', 'skipped');
+  const to = env.LEAD_NOTIFY_EMAIL?.trim() || DEFAULT_LEAD_NOTIFY_EMAIL;
+  if (!apiKey) {
+    logChannel('email', 'skipped', 'RESEND_API_KEY missing');
     return 'skipped';
   }
   const from = (env.LEAD_EMAIL_FROM || 'בינה לתעשייה <onboarding@resend.dev>').trim();
