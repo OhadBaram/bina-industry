@@ -8,7 +8,7 @@ import { AccessibilityStatementModal } from './components/AccessibilityStatement
 import { CookieSettingsModal } from './components/CookieSettingsModal';
 import { CookieBanner } from './components/CookieBanner';
 import { AccessibilityToolbar } from './components/AccessibilityToolbar';
-import { ZapierChatbot } from './components/ZapierChatbot';
+import { AiChatbot } from './components/AiChatbot';
 
 // מערכת התראות (Toast)
 const Toast: React.FC<{ message: string; show: boolean }> = ({ message, show }) => (
@@ -264,28 +264,6 @@ const App: React.FC = () => {
       }, 500);
     }
 
-    // פתיחה אוטומטית של הצ'אטבוט של Zapier
-    const openZapierBot = () => {
-      const zapierBot = document.querySelector('zapier-interfaces-chatbot-embed');
-      if (zapierBot) {
-        zapierBot.setAttribute('open', 'true');
-        zapierBot.setAttribute('is-open', 'true');
-        try {
-          const button = zapierBot.shadowRoot?.querySelector('button') || zapierBot.shadowRoot?.querySelector('[role="button"]');
-          button?.click();
-        } catch(e) {}
-      }
-    };
-
-    const timer1 = setTimeout(openZapierBot, 1000);
-    const timer2 = setTimeout(openZapierBot, 2500);
-    const timer3 = setTimeout(openZapierBot, 5000);
-
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
-    };
   }, []);
 
   // פונקציית שתילת טקסט וגלילה לטופס בלחיצה על כפתור שירות
@@ -1552,7 +1530,7 @@ const App: React.FC = () => {
       </a>
 
       <AccessibilityToolbar />
-      <ZapierChatbot />
+      <AiChatbot />
       <Toast message={toastMessage} show={showToast} />
     </div>
   );

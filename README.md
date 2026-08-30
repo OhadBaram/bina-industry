@@ -10,11 +10,16 @@ View your app in AI Studio: https://ai.studio/apps/drive/1uXrZS13APHCOnlNgD9hnNJ
 
 ## Run Locally
 
-**Prerequisites:**  Node.js
+**Prerequisites:** Node.js
 
+1. Install dependencies: `npm install`
+2. Copy `.env.example` → `.env.local` and set:
+   - `OPENROUTER_API_KEY` (required for the AI chatbot)
+   - optional: `OPENROUTER_MODEL`, `OPENROUTER_FALLBACK_MODEL`
+3. Run the app: `npm run dev`  
+   Local `/api/chat` is served by the Vite OpenRouter streaming proxy.
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## Deploy (Netlify)
+
+Set the same `OPENROUTER_*` variables in the Netlify project env, then deploy.  
+The serverless handler lives at `netlify/functions/chat.ts` (`/api/chat`).

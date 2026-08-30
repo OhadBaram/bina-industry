@@ -54,21 +54,14 @@
   scrollbar-width: none;
 }
 
-/* Zapier Interfaces Chatbot RTL Alignment */
-zapier-interfaces-chatbot-embed {
-  direction: rtl !important;
-  text-align: right !important;
-}
-
-zapier-interfaces-chatbot-embed * {
-  direction: rtl !important;
-  text-align: right !important;
-}
-
-iframe[src*="interfaces.zapier.com"] {
-  direction: rtl !important;
-  text-align: right !important;
-  unicode-bidi: plaintext !important;
+/* AI Chatbot — RTL / BiDi בטוח בזמן סטרימינג עברית */
+.ai-chat-stream,
+.ai-chat-bubble {
+  direction: rtl;
+  text-align: right;
+  unicode-bidi: plaintext;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 /* Accessibility Filters */

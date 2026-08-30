@@ -22,5 +22,6 @@
     }
   },
   "include": ["./**/*.ts", "./**/*.tsx"],
+  "exclude": ["netlify", "node_modules", "dist"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
