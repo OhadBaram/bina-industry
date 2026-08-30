@@ -237,6 +237,24 @@ async function postAppsScriptWebhook(
   return { ok: false, status: first.status, text };
 }
 
+async function appendViaWebhookGetFallback(
+  url: string,
+  payload: string,
+  timeoutMs: number
+): Promise<{ ok: boolean; status: number; text: string }> {
+  // גיבוי: גוגל לפעמים הופך POST ל-GET אחרי 302 — שולחים את הגוף כ-query (?w=base64)
+  const encoded = Buffer.from(payload, 'utf8').toString('base64url');
+  const sep = url.includes('?') ? '&' : '?';
+  const getUrl = `${url}${sep}w=${encoded}`;
+  const res = await fetch(getUrl, {
+    method: 'GET',
+    redirect: 'follow',
+    signal: withTimeout(timeoutMs),
+  });
+  const text = await res.text().catch(() => '');
+  return { ok: appsScriptResponseOk(res.status, text), status: res.status, text };
+}
+
 async function appendViaWebhook(
   url: string,
   row: string[],
@@ -268,13 +286,22 @@ async function appendViaWebhook(
     values: row,
   });
 
-  const result = await postAppsScriptWebhook(normalized, payload, LEAD_SHEETS_TIMEOUT_MS);
+  const postResult = await postAppsScriptWebhook(normalized, payload, LEAD_SHEETS_TIMEOUT_MS);
+  if (postResult.ok) {
+    logChannel('sheets', 'ok', 'webhook-post');
+    return 'ok';
+  }
 
-  if (!result.ok) {
-    logChannel('sheets', 'error', `webhook ${result.status} ${result.text.slice(0, 160)}`);
+  console.error(
+    `[lead] sheets POST failed ${postResult.status}; trying GET fallback. body=${postResult.text.slice(0, 120)}`
+  );
+
+  const getResult = await appendViaWebhookGetFallback(normalized, payload, LEAD_SHEETS_TIMEOUT_MS);
+  if (!getResult.ok) {
+    logChannel('sheets', 'error', `webhook ${getResult.status} ${getResult.text.slice(0, 160)}`);
     return 'error';
   }
-  logChannel('sheets', 'ok', 'webhook');
+  logChannel('sheets', 'ok', 'webhook-get-fallback');
   return 'ok';
 }
 

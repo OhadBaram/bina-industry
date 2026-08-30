@@ -115,7 +115,7 @@ https://docs.google.com/spreadsheets/d/1S9Oh1EkOWEW1M6zvu5G0hD7y_53jXabepHOv4at4
 3. מחקו את התוכן הקיים והדביקו את הסקריפט הבא:
 
 ```javascript
-// חשוב: בפריסת Web App עדיף openById — getActiveSpreadsheet לעיתים מחזיר null
+// חשוב: אחרי הדבקה — Deploy → New deployment (לא רק שמירה)
 var SPREADSHEET_ID = '1S9Oh1EkOWEW1M6zvu5G0hD7y_53jXabepHOv4at4qLw';
 
 function jsonOut_(obj) {
@@ -124,8 +124,27 @@ function jsonOut_(obj) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 
-function doGet() {
+function appendLead_(data) {
+  var ss = SpreadsheetApp.openById(data.spreadsheetId || SPREADSHEET_ID);
+  var sheet = ss.getSheetByName('גיליון1') || ss.getSheets()[0];
+  sheet.appendRow([
+    data.timestamp || '',
+    data.full_name || '',
+    data.phone || '',
+    data.summary || '',
+    data.classification || ''
+  ]);
+  return { ok: true, sheet: sheet.getName(), row: sheet.getLastRow() };
+}
+
+// בדיקת חיים + כתיבה בגיבוי (כש-POST נהפך ל-GET אחרי הפניה של גוגל)
+function doGet(e) {
   try {
+    if (e && e.parameter && e.parameter.w) {
+      var raw = Utilities.newBlob(Utilities.base64DecodeWebSafe(e.parameter.w)).getDataAsString();
+      var data = JSON.parse(raw);
+      return jsonOut_(appendLead_(data));
+    }
     var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
     var sheet = ss.getSheetByName('גיליון1') || ss.getSheets()[0];
     return jsonOut_({
@@ -143,17 +162,7 @@ function doPost(e) {
   try {
     var raw = (e && e.postData && e.postData.contents) ? e.postData.contents : '{}';
     var data = JSON.parse(raw);
-    var ss = SpreadsheetApp.openById(data.spreadsheetId || SPREADSHEET_ID);
-    var sheet = ss.getSheetByName('גיליון1') || ss.getSheets()[0];
-    // A תאריך, B שם, C טלפון, D הערה (= סיכום AI), E תשובת AI (= סיווג)
-    sheet.appendRow([
-      data.timestamp || '',
-      data.full_name || '',
-      data.phone || '',
-      data.summary || '',
-      data.classification || ''
-    ]);
-    return jsonOut_({ ok: true, sheet: sheet.getName(), row: sheet.getLastRow() });
+    return jsonOut_(appendLead_(data));
   } catch (err) {
     return jsonOut_({ ok: false, error: String(err) });
   }
