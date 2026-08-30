@@ -137,12 +137,11 @@ function appendLead_(data) {
   return { ok: true, sheet: sheet.getName(), row: sheet.getLastRow() };
 }
 
-// בדיקת חיים + כתיבה בגיבוי (כש-POST נהפך ל-GET אחרי הפניה של גוגל)
+// בדיקת חיים + כתיבה בגיבוי (?payload=JSON) כש-POST נכשל אחרי הפניה של גוגל
 function doGet(e) {
   try {
-    if (e && e.parameter && e.parameter.w) {
-      var raw = Utilities.newBlob(Utilities.base64DecodeWebSafe(e.parameter.w)).getDataAsString();
-      var data = JSON.parse(raw);
+    if (e && e.parameter && e.parameter.payload) {
+      var data = JSON.parse(e.parameter.payload);
       return jsonOut_(appendLead_(data));
     }
     var ss = SpreadsheetApp.openById(SPREADSHEET_ID);

@@ -35,6 +35,8 @@ export interface LeadPipelineResult {
   timestampIsrael: string;
   analysis: LeadAnalysis;
   channels: LeadChannelResults;
+  /** פירוט שגיאת גיליון לדיבאג בקונסול הדפדפן */
+  sheetsDetail?: string;
 }
 
 function withTimeout(ms: number): AbortSignal {
@@ -242,10 +244,9 @@ async function appendViaWebhookGetFallback(
   payload: string,
   timeoutMs: number
 ): Promise<{ ok: boolean; status: number; text: string }> {
-  // גיבוי: גוגל לפעמים הופך POST ל-GET אחרי 302 — שולחים את הגוף כ-query (?w=base64)
-  const encoded = Buffer.from(payload, 'utf8').toString('base64url');
+  // גיבוי: שולחים JSON ב-query (?payload=...) — עוקף POST→GET של גוגל בלי base64
   const sep = url.includes('?') ? '&' : '?';
-  const getUrl = `${url}${sep}w=${encoded}`;
+  const getUrl = `${url}${sep}payload=${encodeURIComponent(payload)}`;
   const res = await fetch(getUrl, {
     method: 'GET',
     redirect: 'follow',
@@ -255,6 +256,8 @@ async function appendViaWebhookGetFallback(
   return { ok: appsScriptResponseOk(res.status, text), status: res.status, text };
 }
 
+export type SheetsWriteResult = { status: ChannelStatus; detail?: string };
+
 async function appendViaWebhook(
   url: string,
   row: string[],
@@ -262,15 +265,13 @@ async function appendViaWebhook(
   analysis: LeadAnalysis,
   timestamp: string,
   spreadsheetId: string
-): Promise<ChannelStatus> {
+): Promise<SheetsWriteResult> {
   const normalized = normalizeAppsScriptWebhookUrl(url);
   if (!normalized) {
-    logChannel(
-      'sheets',
-      'error',
-      'GOOGLE_SHEETS_WEBHOOK_URL must be https://script.google.com/.../exec (not docs.google.com and not /dev)'
-    );
-    return 'error';
+    const detail =
+      'GOOGLE_SHEETS_WEBHOOK_URL must be https://script.google.com/.../exec (not docs.google.com and not /dev)';
+    logChannel('sheets', 'error', detail);
+    return { status: 'error', detail };
   }
 
   const payload = JSON.stringify({
@@ -289,7 +290,7 @@ async function appendViaWebhook(
   const postResult = await postAppsScriptWebhook(normalized, payload, LEAD_SHEETS_TIMEOUT_MS);
   if (postResult.ok) {
     logChannel('sheets', 'ok', 'webhook-post');
-    return 'ok';
+    return { status: 'ok' };
   }
 
   console.error(
@@ -298,11 +299,12 @@ async function appendViaWebhook(
 
   const getResult = await appendViaWebhookGetFallback(normalized, payload, LEAD_SHEETS_TIMEOUT_MS);
   if (!getResult.ok) {
-    logChannel('sheets', 'error', `webhook ${getResult.status} ${getResult.text.slice(0, 160)}`);
-    return 'error';
+    const detail = `post=${postResult.status}/${postResult.text.slice(0, 80)} | get=${getResult.status}/${getResult.text.slice(0, 80)}`;
+    logChannel('sheets', 'error', detail);
+    return { status: 'error', detail };
   }
   logChannel('sheets', 'ok', 'webhook-get-fallback');
-  return 'ok';
+  return { status: 'ok' };
 }
 
 function base64url(input: Buffer | string): string {
@@ -377,10 +379,10 @@ async function getGoogleAccessToken(email: string, privateKey: string): Promise<
 async function appendViaSheetsApi(
   env: Record<string, string | undefined>,
   row: string[]
-): Promise<ChannelStatus> {
+): Promise<SheetsWriteResult> {
   const sheetId = resolveGoogleSheetsId(env);
   const account = readServiceAccount(env);
-  if (!account) return 'skipped';
+  if (!account) return { status: 'skipped', detail: 'no webhook and no service account' };
 
   const range = (env.GOOGLE_SHEETS_RANGE || DEFAULT_GOOGLE_SHEETS_RANGE).trim();
   const token = await getGoogleAccessToken(account.email, account.privateKey);
@@ -401,11 +403,12 @@ async function appendViaSheetsApi(
     LEAD_CHANNEL_TIMEOUT_MS
   );
   if (!result.ok) {
-    logChannel('sheets', 'error', `api ${result.status}`);
-    return 'error';
+    const detail = `api ${result.status}`;
+    logChannel('sheets', 'error', detail);
+    return { status: 'error', detail };
   }
   logChannel('sheets', 'ok', 'api');
-  return 'ok';
+  return { status: 'ok' };
 }
 
 async function sendSheets(
@@ -413,7 +416,7 @@ async function sendSheets(
   lead: LeadInput,
   analysis: LeadAnalysis,
   timestamp: string
-): Promise<ChannelStatus> {
+): Promise<SheetsWriteResult> {
   const row = buildSheetsRow(lead, analysis, timestamp);
   const webhook = env.GOOGLE_SHEETS_WEBHOOK_URL?.trim();
   const spreadsheetId = resolveGoogleSheetsId(env);
@@ -421,8 +424,9 @@ async function sendSheets(
     if (webhook) return await appendViaWebhook(webhook, row, lead, analysis, timestamp, spreadsheetId);
     return await appendViaSheetsApi(env, row);
   } catch (err) {
-    logChannel('sheets', 'error', err instanceof Error ? err.message : 'unknown');
-    return 'error';
+    const detail = err instanceof Error ? err.message : 'unknown';
+    logChannel('sheets', 'error', detail);
+    return { status: 'error', detail };
   }
 }
 
@@ -530,7 +534,7 @@ export async function runLeadPipeline(
     };
   }
 
-  const [sheets, telegram, email] = await Promise.all([
+  const [sheetsResult, telegram, email] = await Promise.all([
     sendSheets(env, lead, analysis, timestampIsrael),
     sendTelegram(env, lead, analysis, timestampIsrael),
     sendEmail(env, lead, analysis, timestampIsrael),
@@ -540,6 +544,7 @@ export async function runLeadPipeline(
     ok: true,
     timestampIsrael,
     analysis,
-    channels: { sheets, telegram, email, ai },
+    channels: { sheets: sheetsResult.status, telegram, email, ai },
+    sheetsDetail: sheetsResult.detail,
   };
 }

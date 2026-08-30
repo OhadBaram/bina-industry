@@ -43,6 +43,7 @@ export default async (req: Request, _context: Context) => {
       timestampIsrael: result.timestampIsrael,
       classification: result.analysis.classification,
       channels: result.channels,
+      sheetsDetail: result.sheetsDetail || null,
     });
   } catch (err) {
     console.error('[lead] unhandled:', err instanceof Error ? err.message : err);

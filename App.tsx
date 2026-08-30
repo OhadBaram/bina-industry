@@ -331,8 +331,12 @@ const App: React.FC = () => {
         try {
           const leadJson = (await leadResult.value.json()) as {
             channels?: { sheets?: string; telegram?: string };
+            sheetsDetail?: string | null;
           };
           console.log('[lead] channels', leadJson.channels);
+          if (leadJson.sheetsDetail) {
+            console.warn('[lead] sheetsDetail', leadJson.sheetsDetail);
+          }
           sheetsFailed = leadJson.channels?.sheets === 'error';
         } catch {
           /* ignore parse */
