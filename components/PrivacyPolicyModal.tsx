@@ -89,7 +89,7 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ isOpen, 
               אנו מתחייבים שלא למכור, להשכיר או להעביר את פרטיך האישיים לצדדים שלישיים, למעט במקרים הבאים:
             </p>
             <ul className="list-disc list-inside space-y-1">
-              <li>ספקי שירות טכנולוגיים המורשים מטעמנו (כגון שרתי אוטומציה, Netlify, Zapier/n8n) לצורך עיבוד הפנייה בלבד.</li>
+              <li>ספקי שירות טכנולוגיים המורשים מטעמנו (כגון Netlify, OpenRouter, Google Sheets, Telegram ושירות דיוור) לצורך עיבוד הפנייה, ניתוחה ומתן מענה בלבד.</li>
               <li>אם נידרש לכך על פי צו שיפוטי או דרישה חוקית מפורשת.</li>
             </ul>
           </section>

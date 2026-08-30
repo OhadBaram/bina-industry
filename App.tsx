@@ -265,7 +265,7 @@ const App: React.FC = () => {
     return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(emailStr.trim());
   };
 
-  // שליחת ליד כפולה: ל-Netlify Forms ול-Webhook בזמן אמת עם איחוד שדות ה-Name וה-Company
+  // שליחת ליד: ארכיון ב-Netlify Forms + אוטומציה פנימית ב-/api/lead
   const handleLeadSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -292,15 +292,13 @@ const App: React.FC = () => {
       const companyName = leadData.company.trim();
       const combinedIdentity = companyName ? `${userName} (${companyName})` : userName;
 
-      // 1. קריאת ה-FormData מתוך ה-DOM של הטופס ועדכון השדות
       const formElement = e.currentTarget;
       const formData = new FormData(formElement);
       formData.set('full_name', combinedIdentity);
       formData.set('full_identity', combinedIdentity);
       const netlifyBody = new URLSearchParams(formData as any).toString();
 
-      // 2. שליחה במקביל ל-n8n / Zapier Webhook במבנה JSON תואם
-      const zapierPayload = {
+      const leadPayload = {
         full_name: combinedIdentity,
         full_identity: combinedIdentity,
         user_name: userName,
@@ -318,10 +316,10 @@ const App: React.FC = () => {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: netlifyBody,
         }),
-        fetch('https://hooks.zapier.com/hooks/standard/28540433/239b16bf87b84e75958c730fd83cf2ff/', {
+        fetch('/api/lead', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(zapierPayload),
+          body: JSON.stringify(leadPayload),
         })
       ]);
     } catch (err) {
