@@ -33,7 +33,7 @@
 
 ארכיון נוסף נשמר גם ב-Netlify Forms (טופס `contact`).
 
-**חשוב:** כבו את ה-Zap הישן ב-Zapier כדי שלא יתקבלו כפילויות.
+**חשוב:** אין לשדרג Zapier. כבו את ה-Zap הישן והשאירו אותו כבוי — `/api/lead` מחליף אותו (כולל שלב הפייתון לשעון ישראל).
 
 ---
 
@@ -82,7 +82,17 @@
 
 https://docs.google.com/spreadsheets/d/1S9Oh1EkOWEW1M6zvu5G0hD7y_53jXabepHOv4at4qLw/edit?gid=0#gid=0
 
-עמודות בשורה 1 (או שהסקריפט פשוט יוסיף שורות): תאריך, שם, טלפון, סיכום, סיווג
+מיפוי עמודות כמו בזאפ (גיליון **לידים נכנסים**, לשונית **גיליון1**):
+
+| עמודה | כותרת | מה נכתב |
+|---|---|---|
+| A | תאריך | שעת ישראל `DD.MM.YYYY HH:mm:ss` (למשל `14.08.2026 08:48:31`) |
+| B | שם | שם מלא |
+| C | טלפון | טלפון |
+| D | הערה | סיכום AI (`summary`) — **לא** הודעת הלקוח הגולמית |
+| E | תשובת AI | סיווג (`classification`, למשל Lead / Complaint) |
+
+השעה מחושבת ב-`Asia/Jerusalem` (כולל שעון קיץ), לא בהזזה גולמית של +3. זה מחליף את שלב הפייתון בזאפ.
 
 1. פתחו **את הגיליון הזה** (הקישור למעלה)
 2. בתפריט: Extensions → Apps Script
@@ -92,12 +102,17 @@ https://docs.google.com/spreadsheets/d/1S9Oh1EkOWEW1M6zvu5G0hD7y_53jXabepHOv4at4
 function doPost(e) {
   var DEFAULT_SPREADSHEET_ID = '1S9Oh1EkOWEW1M6zvu5G0hD7y_53jXabepHOv4at4qLw';
   var DEFAULT_SHEET_GID = 0;
+  var DEFAULT_SHEET_NAME = 'גיליון1';
   var data = JSON.parse(e.postData.contents);
   var spreadsheetId = data.spreadsheetId || DEFAULT_SPREADSHEET_ID;
   var sheetGid = typeof data.sheetGid === 'number' ? data.sheetGid : DEFAULT_SHEET_GID;
   var ss = SpreadsheetApp.openById(spreadsheetId);
   var sheets = ss.getSheets();
-  var sheet = sheets.filter(function (s) { return s.getSheetId() === sheetGid; })[0] || sheets[0];
+  var sheet =
+    sheets.filter(function (s) { return s.getSheetId() === sheetGid; })[0] ||
+    ss.getSheetByName(data.sheetName || DEFAULT_SHEET_NAME) ||
+    sheets[0];
+  // A תאריך, B שם, C טלפון, D הערה (= סיכום AI), E תשובת AI (= סיווג)
   var row = data.values || [
     data.timestamp,
     data.full_name,

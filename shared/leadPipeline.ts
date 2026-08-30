@@ -8,12 +8,14 @@ import {
   FALLBACK_ANALYSIS,
   DEFAULT_GOOGLE_SHEETS_GID,
   DEFAULT_GOOGLE_SHEETS_RANGE,
+  DEFAULT_GOOGLE_SHEETS_TAB_NAME,
   DEFAULT_LEAD_NOTIFY_EMAIL,
   LEAD_AI_TIMEOUT_MS,
   LEAD_CHANNEL_TIMEOUT_MS,
   LEAD_SYSTEM_PROMPT,
   buildEmailBody,
   buildEmailSubject,
+  buildSheetsRow,
   buildTelegramMessage,
   formatIsraelTimestamp,
   parseLeadAnalysis,
@@ -138,9 +140,11 @@ async function appendViaWebhook(
       body: JSON.stringify({
         spreadsheetId,
         sheetGid: DEFAULT_GOOGLE_SHEETS_GID,
+        sheetName: DEFAULT_GOOGLE_SHEETS_TAB_NAME,
         timestamp,
         full_name: lead.full_name,
         phone: lead.phone,
+        // מיפוי זאפ: הערה = סיכום AI (לא הודעת הלקוח), תשובת AI = סיווג
         summary: analysis.summary,
         classification: analysis.classification,
         values: row,
@@ -265,7 +269,7 @@ async function sendSheets(
   analysis: LeadAnalysis,
   timestamp: string
 ): Promise<ChannelStatus> {
-  const row = [timestamp, lead.full_name, lead.phone, analysis.summary, analysis.classification];
+  const row = buildSheetsRow(lead, analysis, timestamp);
   const webhook = env.GOOGLE_SHEETS_WEBHOOK_URL?.trim();
   const spreadsheetId = resolveGoogleSheetsId(env);
   try {

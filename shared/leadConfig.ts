@@ -8,8 +8,9 @@ export const DEFAULT_LEAD_NOTIFY_EMAIL = 'binator.industry@gmail.com';
 
 /** גיליון לידים קבוע — אפשר לדרוס עם GOOGLE_SHEETS_ID */
 export const DEFAULT_GOOGLE_SHEETS_ID = '1S9Oh1EkOWEW1M6zvu5G0hD7y_53jXabepHOv4at4qLw';
-/** לשונית ראשונה (gid=0) */
+/** לשונית ראשונה (gid=0) — בזאפ: "גיליון1" */
 export const DEFAULT_GOOGLE_SHEETS_GID = 0;
+export const DEFAULT_GOOGLE_SHEETS_TAB_NAME = 'גיליון1';
 export const DEFAULT_GOOGLE_SHEETS_RANGE = 'A:E';
 
 export function resolveGoogleSheetsId(env: Record<string, string | undefined> = {}): string {
@@ -84,6 +85,10 @@ export function resolveLeadModels(env: Record<string, string | undefined> = {}):
   return chain;
 }
 
+/**
+ * מחליף את שלב הפייתון בזאפ: המרה לשעון ישראל (כולל שעון קיץ), לא +3 גולמי.
+ * פורמט כמו בדוגמת הזאפ: DD.MM.YYYY HH:mm:ss (למשל 14.08.2026 08:48:31)
+ */
 export function formatIsraelTimestamp(isoUtc?: string): string {
   const parsed = isoUtc ? new Date(isoUtc) : new Date();
   const date = Number.isNaN(parsed.getTime()) ? new Date() : parsed;
@@ -98,7 +103,16 @@ export function formatIsraelTimestamp(isoUtc?: string): string {
     hour12: false,
   }).formatToParts(date);
   const get = (type: Intl.DateTimeFormatPartTypes) => parts.find((p) => p.type === type)?.value ?? '';
-  return `${get('day')}.${get('month')}.${get('year')} ${get('hour')}:${get('minute')}:${get('second')}`;
+  const pad = (value: string) => value.padStart(2, '0');
+  return `${pad(get('day'))}.${pad(get('month'))}.${get('year')} ${pad(get('hour'))}:${pad(get('minute'))}:${pad(get('second'))}`;
+}
+
+/**
+ * שורת גיליון לפי מיפוי הזאפ (לידים נכנסים / גיליון1):
+ * A תאריך, B שם, C טלפון, D הערה (= סיכום AI), E תשובת AI (= סיווג)
+ */
+export function buildSheetsRow(lead: LeadInput, analysis: LeadAnalysis, timestamp: string): string[] {
+  return [timestamp, lead.full_name, lead.phone, analysis.summary, analysis.classification];
 }
 
 export function asPlainText(value: unknown): string {
