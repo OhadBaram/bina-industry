@@ -326,7 +326,6 @@ const App: React.FC = () => {
         }),
       ]);
 
-      let sheetsFailed = false;
       if (leadResult.status === 'fulfilled') {
         try {
           const leadJson = (await leadResult.value.json()) as {
@@ -337,19 +336,15 @@ const App: React.FC = () => {
           if (leadJson.sheetsDetail) {
             console.warn('[lead] sheetsDetail', leadJson.sheetsDetail);
           }
-          sheetsFailed = leadJson.channels?.sheets === 'error';
         } catch {
           /* ignore parse */
         }
       }
 
-      setToastMessage(
-        sheetsFailed
-          ? 'הפנייה התקבלה (טלגרם/ניתוח), אבל הגיליון לא עודכן — בדקו את כתובת הסקריפט בנטליפיי ⚠️'
-          : 'פנייתך התקבלה בהצלחה! אחזור אליך לשיחת אבחון בהקדם 🚀'
-      );
+      // מייל וגיליון אופציונליים — ההצלחה למשתמש נשענת על קבלת הפנייה + טלגרם/ניתוח
+      setToastMessage('פנייתך התקבלה בהצלחה! אחזור אליך לשיחת אבחון בהקדם 🚀');
       setShowToast(true);
-      setTimeout(() => setShowToast(false), sheetsFailed ? 6000 : 4000);
+      setTimeout(() => setShowToast(false), 4000);
     } catch (err) {
       console.log('Form submission handled:', err);
       setToastMessage('פנייתך התקבלה בהצלחה! אחזור אליך לשיחת אבחון בהקדם 🚀');
