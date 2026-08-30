@@ -126,6 +126,59 @@ export async function analyzeLead(
   return { analysis: fallback, ai: 'error' };
 }
 
+function isAppsScriptWebhookUrl(url: string): boolean {
+  try {
+    const host = new URL(url).hostname;
+    return host === 'script.google.com' || host.endsWith('.googleusercontent.com');
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Web App של Apps Script מחזיר לעיתים 302; fetch רגיל הופך POST ל-GET אחרי הפניה
+ * ואז doPost לא רץ. לכן: POST עם redirect:manual ואז POST חוזר ל-Location.
+ */
+async function postAppsScriptWebhook(
+  url: string,
+  body: string,
+  timeoutMs: number
+): Promise<{ ok: boolean; status: number; text: string }> {
+  const headers = {
+    // text/plain — מקובל מול Apps Script; e.postData.contents עדיין מקבל את הגוף
+    'Content-Type': 'text/plain;charset=utf-8',
+  };
+
+  const first = await fetch(url, {
+    method: 'POST',
+    headers,
+    body,
+    redirect: 'manual',
+    signal: withTimeout(timeoutMs),
+  });
+
+  if (first.status >= 200 && first.status < 300) {
+    const text = await first.text().catch(() => '');
+    return { ok: true, status: first.status, text };
+  }
+
+  const location = first.headers.get('location') || first.headers.get('Location');
+  if ((first.status === 301 || first.status === 302 || first.status === 303 || first.status === 307 || first.status === 308) && location) {
+    const redirected = await fetch(location, {
+      method: 'POST',
+      headers,
+      body,
+      redirect: 'follow',
+      signal: withTimeout(timeoutMs),
+    });
+    const text = await redirected.text().catch(() => '');
+    return { ok: redirected.ok, status: redirected.status, text };
+  }
+
+  const text = await first.text().catch(() => '');
+  return { ok: false, status: first.status, text };
+}
+
 async function appendViaWebhook(
   url: string,
   row: string[],
@@ -134,28 +187,36 @@ async function appendViaWebhook(
   timestamp: string,
   spreadsheetId: string
 ): Promise<ChannelStatus> {
-  const result = await fetchJson(
-    url,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        spreadsheetId,
-        sheetGid: DEFAULT_GOOGLE_SHEETS_GID,
-        sheetName: DEFAULT_GOOGLE_SHEETS_TAB_NAME,
-        timestamp,
-        full_name: lead.full_name,
-        phone: lead.phone,
-        // מיפוי זאפ: הערה = סיכום AI (לא הודעת הלקוח), תשובת AI = סיווג
-        summary: analysis.summary,
-        classification: analysis.classification,
-        values: row,
-      }),
-    },
-    LEAD_CHANNEL_TIMEOUT_MS
-  );
-  if (!result.ok) {
-    logChannel('sheets', 'error', `webhook ${result.status}`);
+  if (!isAppsScriptWebhookUrl(url)) {
+    logChannel(
+      'sheets',
+      'error',
+      'GOOGLE_SHEETS_WEBHOOK_URL must be a script.google.com Web app URL (not a docs.google.com sheet link)'
+    );
+    return 'error';
+  }
+
+  const payload = JSON.stringify({
+    spreadsheetId,
+    sheetGid: DEFAULT_GOOGLE_SHEETS_GID,
+    sheetName: DEFAULT_GOOGLE_SHEETS_TAB_NAME,
+    timestamp,
+    full_name: lead.full_name,
+    phone: lead.phone,
+    // מיפוי זאפ: הערה = סיכום AI (לא הודעת הלקוח), תשובת AI = סיווג
+    summary: analysis.summary,
+    classification: analysis.classification,
+    values: row,
+  });
+
+  const result = await postAppsScriptWebhook(url, payload, LEAD_CHANNEL_TIMEOUT_MS);
+  const looksOk =
+    result.ok ||
+    (typeof result.text === 'string' &&
+      (result.text.includes('"ok":true') || result.text.includes('"ok": true')));
+
+  if (!looksOk) {
+    logChannel('sheets', 'error', `webhook ${result.status} ${result.text.slice(0, 120)}`);
     return 'error';
   }
   logChannel('sheets', 'ok', 'webhook');
