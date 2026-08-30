@@ -14,6 +14,7 @@ import {
   LEAD_CHANNEL_TIMEOUT_MS,
   LEAD_SYSTEM_PROMPT,
   buildEmailBody,
+  buildEmailHtml,
   buildEmailSubject,
   buildSheetsRow,
   buildTelegramMessage,
@@ -21,6 +22,7 @@ import {
   parseLeadAnalysis,
   resolveGoogleSheetsId,
   resolveLeadModels,
+  resolveTelegramChatId,
   type ChannelStatus,
   type LeadAnalysis,
   type LeadChannelResults,
@@ -288,9 +290,9 @@ async function sendTelegram(
   timestamp: string
 ): Promise<ChannelStatus> {
   const token = env.TELEGRAM_BOT_TOKEN?.trim();
-  const chatId = env.TELEGRAM_CHAT_ID?.trim();
-  if (!token || !chatId) {
-    logChannel('telegram', 'skipped');
+  const chatId = resolveTelegramChatId(env);
+  if (!token) {
+    logChannel('telegram', 'skipped', 'TELEGRAM_BOT_TOKEN missing');
     return 'skipped';
   }
   try {
@@ -345,6 +347,7 @@ async function sendEmail(
           to: [to],
           subject: buildEmailSubject(lead, analysis),
           text: buildEmailBody(lead, analysis, timestamp),
+          html: buildEmailHtml(lead, analysis, timestamp),
         }),
       },
       LEAD_CHANNEL_TIMEOUT_MS

@@ -6,6 +6,13 @@ export const DEFAULT_LEAD_MODEL = DEFAULT_FALLBACK_MODEL; // deepseek/deepseek-c
 export const DEFAULT_LEAD_FALLBACK_MODEL = DEFAULT_MODEL;
 export const DEFAULT_LEAD_NOTIFY_EMAIL = 'binator.industry@gmail.com';
 
+/** צ'אט טלגרם של אוהד ברעם — אפשר לדרוס עם TELEGRAM_CHAT_ID */
+export const DEFAULT_TELEGRAM_CHAT_ID = '1082547513';
+
+export function resolveTelegramChatId(env: Record<string, string | undefined> = {}): string {
+  return env.TELEGRAM_CHAT_ID?.trim() || DEFAULT_TELEGRAM_CHAT_ID;
+}
+
 /** גיליון לידים קבוע — אפשר לדרוס עם GOOGLE_SHEETS_ID */
 export const DEFAULT_GOOGLE_SHEETS_ID = '1S9Oh1EkOWEW1M6zvu5G0hD7y_53jXabepHOv4at4qLw';
 /** לשונית ראשונה (gid=0) — בזאפ: "גיליון1" */
@@ -178,9 +185,11 @@ export function buildTelegramMessage(lead: LeadInput, analysis: LeadAnalysis, ti
   return [
     '🔔 פנייה חדשה!',
     '',
-    `⏰ תאריך: ${timestamp}`,
+    `⏰ תאריך ושעה (בשעה ישראלית): ${timestamp}`,
+    '',
     `👤 שם: ${lead.full_name}`,
     `📱 טלפון: ${lead.phone}`,
+    '',
     `📋 סיווג: ${analysis.classification}`,
     `⭐ דחיפות: ${analysis.urgency_level}`,
     `📝 סיכום: ${analysis.summary}`,
@@ -191,12 +200,17 @@ export function buildEmailSubject(lead: LeadInput, analysis: LeadAnalysis): stri
   return `פנייה חדשה - ${lead.full_name} (${analysis.classification})`;
 }
 
+/** גוף מייל זהה לתבנית זאפ (טקסט רגיל; אותו תוכן גם ב-HTML) */
 export function buildEmailBody(lead: LeadInput, analysis: LeadAnalysis, timestamp: string): string {
   const line = '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━';
   return [
+    'שלום,',
+    '',
+    'הגיעה פנייה חדשה דרך האתר שלך:',
+    '',
     line,
     '',
-    `⏰ תאריך ושעה: ${timestamp}`,
+    `⏰ תאריך ושעה (בשעה ישראלית): ${timestamp}`,
     '',
     `👤 שם: ${lead.full_name}`,
     `📱 טלפון: ${lead.phone}`,
@@ -210,16 +224,46 @@ export function buildEmailBody(lead: LeadInput, analysis: LeadAnalysis, timestam
     line,
     '',
     '🔍 ניתוח AI:',
+    '',
     `📋 סיווג: ${analysis.classification}`,
     `⭐ דחיפות: ${analysis.urgency_level}`,
-    `📚 סיכום: ${analysis.summary}`,
-    `❓ צרכי הלקוח: ${analysis.customer_needs}`,
-    `💡 הפתרון המוצע: ${analysis.solution}`,
-    `🎯 נקודות חשובות: ${analysis.key_points}`,
-    `✅ מה לבדוק: ${analysis.items_to_check}`,
-    `🚀 צעדים בעדיפות: ${analysis.priority}`,
     '',
+    '📚 סיכום:',
+    analysis.summary,
+    '',
+    '❓ צרכי הלקוח:',
+    analysis.customer_needs,
+    '',
+    '💡 הפתרון המוצע:',
+    analysis.solution,
+    '',
+    '🎯 נקודות חשובות:',
+    analysis.key_points,
+    '',
+    '✅ מה לבדוק:',
+    analysis.items_to_check,
+    '',
+    '🚀 צעדים בעדיפות:',
+    analysis.priority,
+    '',
+    line,
+    '',
+    'בברכה,',
+    'מערכת הניהול האוטומטית שלך',
   ].join('\n');
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+export function buildEmailHtml(lead: LeadInput, analysis: LeadAnalysis, timestamp: string): string {
+  const body = escapeHtml(buildEmailBody(lead, analysis, timestamp)).replace(/\n/g, '<br>\n');
+  return `<div dir="rtl" style="font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.6;">${body}</div>`;
 }
 
 const EMAIL_RE = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;

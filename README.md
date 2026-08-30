@@ -50,14 +50,30 @@
 
 ### טלגרם (התראה מיידית)
 
-1. בטלגרם חפשו `@BotFather`, צרו בוט, העתיקו את הטוקן
-2. שלחו לבוט הודעה מהטלפון שלכם
-3. פתחו בדפדפן (החליפו TOKEN): `https://api.telegram.org/botTOKEN/getUpdates` ומצאו את `chat.id`
+הבוט הקיים: `bina_lead_123_bot` (Bina Leads Bot).
+
+מזהה הצ'אט כבר מקודד בפרויקט (הצ'אט הפרטי של אוהד ברעם) — אין צורך להגדיר אותו ב-Netlify:
+
+`1082547513`
+
+מה שחסר ב-Netlify הוא **רק** טוקן הבוט (`TELEGRAM_BOT_TOKEN`). הטוקן סודי — לא מקודדים אותו בקוד ולא בגיט.
+
+איך להשיג את הטוקן לבוט הקיים (אם עדיין יש גישה ב-BotFather):
+
+1. בטלגרם חפשו `@BotFather` ופתחו שיחה
+2. שלחו `/mybots`
+3. בחרו את `bina_lead_123_bot`
+4. לחצו API Token
+5. העתיקו את הטוקן
+6. ב-Netlify, תחת Environment variables, שימו אותו ב-`TELEGRAM_BOT_TOKEN`
+7. Redeploy את האתר
+
+אם אין גישה לבוט ב-BotFather, צריך שהחשבון שיצר את `bina_lead_123_bot` יפתח את אותו מסך ויעתיק את הטוקן.
 
 | משתנה | מה זה |
 |---|---|
-| `TELEGRAM_BOT_TOKEN` | הטוקן מ-BotFather |
-| `TELEGRAM_CHAT_ID` | מספר הצ'אט שלכם |
+| `TELEGRAM_BOT_TOKEN` | הטוקן מ-BotFather לבוט `bina_lead_123_bot`. **חובה** לשליחת התראות. |
+| `TELEGRAM_CHAT_ID` | אופציונלי. ברירת מחדל בקוד: `1082547513` |
 
 ### מייל (דוח מלא) — Resend
 
