@@ -47,7 +47,7 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ isOpen, 
           <span className="px-3 py-1 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300 rounded-full text-xs font-black mb-2 inline-block">
             📜 מסמך משפטי מחייב
           </span>
-          <h2 className="text-2xl md:text-4xl font-black dark:text-white">מדיניות פרטיות – בינה לעסקים</h2>
+          <h2 className="text-2xl md:text-4xl font-black dark:text-white">מדיניות פרטיות – בינה לתעשייה</h2>
           <p className="text-xs text-slate-500 dark:text-slate-400 font-bold mt-1">עדכון אחרון: אוגוסט 2026 | בהתאם לחוק הגנת הפרטיות, התשמ"א-1981</p>
         </div>
 
@@ -55,14 +55,14 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ isOpen, 
           <section className="space-y-2">
             <h3 className="text-base font-black dark:text-white text-blue-600 dark:text-blue-400">1. כללי ומתחייב</h3>
             <p>
-              אתר "בינה לעסקים" (להלן: "האתר"), המופעל ע"י אוהד ברעם (להלן: "המפעיל"), מחוייב לשמירה על פרטיות המשתמשים והמבקרים באתר. מדיניות פרטיות זו מפרטת את סוג המידע הנאסף, אופן השימוש בו, אמצעי האבטחה וזכויותיך כמשתמש.
+              אתר "בינה לתעשייה" (להלן: "האתר"), המופעל ע"י אוהד ברעם (להלן: "המפעיל"), מחוייב לשמירה על פרטיות המשתמשים והמבקרים באתר. מדיניות פרטיות זו מפרטת את סוג המידע הנאסף, אופן השימוש בו, אמצעי האבטחה וזכויותיך כמשתמש.
             </p>
           </section>
 
           <section className="space-y-2">
             <h3 className="text-base font-black dark:text-white text-blue-600 dark:text-blue-400">2. המידע הנאסף באתר</h3>
             <p>
-              אנו אוספים מידע בשני ערוצים מרכזיים:
+              המפעיל אוסף מידע בשני ערוצים מרכזיים:
             </p>
             <ul className="list-disc list-inside space-y-1 font-bold">
               <li><strong>מידע שנמסר מרצונך:</strong> בעת מילוי טופסי יצירת קשר, תיאום שיחות או פתיחת תבניות, נאספים פרטים כגון שם מלא, שם חברה/ארגון, מספר טלפון, כתובת אימייל ותוכן הפנייה.</li>
@@ -77,7 +77,7 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ isOpen, 
             </p>
             <ul className="list-disc list-inside space-y-1">
               <li>יצירת קשר ומתן מענה לפניותיך בנושאי ניהול מוצר, אוטומציה ו-AI.</li>
-              <li>תיאום שיחות היכרות ואפיון תהליכים עסקיים.</li>
+              <li>תיאום שיחות היכרות ואבחון ראשוני.</li>
               <li>אספקת גישה לתבניות עבודה ופרומפטים עסקיים.</li>
               <li>שיפור, אבטחה ואופטימיזציה של האתר והשירותים המוצעים בו.</li>
             </ul>
@@ -86,10 +86,10 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ isOpen, 
           <section className="space-y-2">
             <h3 className="text-base font-black dark:text-white text-blue-600 dark:text-blue-400">4. מסירת מידע לצד שלישי</h3>
             <p>
-              אנו מתחייבים שלא למכור, להשכיר או להעביר את פרטיך האישיים לצדדים שלישיים, למעט במקרים הבאים:
+              המפעיל מתחייב שלא למכור, להשכיר או להעביר את פרטיך האישיים לצדדים שלישיים, למעט במקרים הבאים:
             </p>
             <ul className="list-disc list-inside space-y-1">
-              <li>ספקי שירות טכנולוגיים המורשים מטעמנו (כגון Netlify, OpenRouter, Google Sheets, Telegram ושירות דיוור) לצורך עיבוד הפנייה, ניתוחה ומתן מענה בלבד.</li>
+              <li>ספקי שירות טכנולוגיים המורשים מטעם המפעיל (כגון Netlify, OpenRouter, Google Sheets, Telegram ושירות דיוור) לצורך עיבוד הפנייה, ניתוחה ומתן מענה בלבד.</li>
               <li>אם נידרש לכך על פי צו שיפוטי או דרישה חוקית מפורשת.</li>
             </ul>
           </section>
@@ -111,7 +111,7 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ isOpen, 
           <section className="space-y-2">
             <h3 className="text-base font-black dark:text-white text-blue-600 dark:text-blue-400">7. זכויות המשתמש ויצירת קשר</h3>
             <p>
-              בהתאם לחוק הגנת הפרטיות, הנך זכאי לעיין במידע שנאסף אודותיך, לבקש את תיקונו או את מחיקתו ממאגרינו. בכל שאלה או בקשה בנושא פרטיות, ניתן לפנות אלינו באימייל או דרך טופס יצירת הקשר באתר.
+              בהתאם לחוק הגנת הפרטיות, הנך זכאי לעיין במידע שנאסף אודותיך, לבקש את תיקונו או את מחיקתו ממאגרי המפעיל. בכל שאלה או בקשה בנושא פרטיות, ניתן לפנות למפעיל באימייל או דרך טופס יצירת הקשר באתר.
             </p>
           </section>
         </div>
