@@ -42,6 +42,8 @@ export default async (req: Request, _context: Context) => {
       ok: true,
       timestampIsrael: result.timestampIsrael,
       classification: result.analysis.classification,
+      analysis: result.analysis,
+      lead: parsed.lead,
       channels: result.channels,
       sheetsDetail: result.sheetsDetail || null,
     });

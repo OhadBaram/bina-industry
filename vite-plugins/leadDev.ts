@@ -62,6 +62,8 @@ async function handleLead(
       ok: true,
       timestampIsrael: result.timestampIsrael,
       classification: result.analysis.classification,
+      analysis: result.analysis,
+      lead: parsed.lead,
       channels: result.channels,
     });
   } catch (err) {

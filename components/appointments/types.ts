@@ -72,7 +72,7 @@ export interface Customer {
   lastAppointment?: string;
 }
 
-export type AdminTab = 'schedule' | 'products' | 'customers' | 'business_rules' | 'waitlist';
+export type AdminTab = 'schedule' | 'products' | 'customers' | 'leads' | 'business_rules' | 'waitlist';
 
 export interface WaitlistEntry {
   id: string;
