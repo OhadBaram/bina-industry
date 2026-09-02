@@ -65,10 +65,20 @@ export interface UserSession {
   isLoggedIn: boolean;
 }
 
+export interface Customer {
+  phone: string;
+  name: string;
+  appointmentCount: number;
+  lastAppointment?: string;
+}
+
+export type AdminTab = 'schedule' | 'products' | 'customers' | 'business_rules' | 'waitlist';
+
 export interface WaitlistEntry {
   id: string;
   customerName: string;
   customerPhone: string;
+  serviceId?: string;
   serviceTitle: string;
   preferredDate: string;
   createdAt: string;
