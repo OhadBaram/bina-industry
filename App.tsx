@@ -462,8 +462,9 @@ const App: React.FC = () => {
   };
 
   const sopService = B2B_SERVICES.find((s) => s.id === 'sop')!;
+  const otherServices = B2B_SERVICES.filter((s) => s.id !== 'sop');
 
-  const renderServiceCard = (srv: B2BService) => (
+  const renderServiceCard = (srv: B2BService, options?: { hideTitle?: boolean }) => (
     <div
       key={srv.id}
       className="bg-white dark:bg-[#0D131F] rounded-[3rem] p-8 md:p-10 border border-slate-200 dark:border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between group shadow-xl dark:shadow-none"
@@ -481,9 +482,11 @@ const App: React.FC = () => {
         <span className="text-xs font-bold text-cyan-600 dark:text-cyan-400 block mb-1">
           {srv.subtitle}
         </span>
-        <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-4 leading-tight">
-          {srv.title}
-        </h3>
+        {!options?.hideTitle && (
+          <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-4 leading-tight">
+            {srv.title}
+          </h3>
+        )}
 
         <p className="text-slate-600 dark:text-slate-300 text-sm md:text-base font-medium leading-relaxed mb-6">
           {srv.shortDesc}
@@ -810,28 +813,34 @@ const App: React.FC = () => {
             <button 
               onClick={() => {
                 openContactView();
-                setShouldPulseCTA(false); // הפסקת ההבהוב בלחיצה
+                setShouldPulseCTA(false);
               }} 
-              className={`px-5 py-3 bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white rounded-xl font-black text-xs md:text-sm transition-all shadow-lg active:scale-95 flex items-center gap-2 cursor-pointer ${
+              className={`px-3 sm:px-5 py-3 bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white rounded-xl font-black text-xs md:text-sm transition-all shadow-lg active:scale-95 flex items-center gap-2 cursor-pointer ${
                 shouldPulseCTA 
                   ? 'animate-pulse ring-4 ring-cyan-400 shadow-[0_0_35px_rgba(34,211,238,0.95)] border border-cyan-300 scale-105' 
                   : 'hover:shadow-cyan-500/20'
               }`}
+              title="תיאום שיחת אבחון — ללא עלות"
             >
-              <span>שיחת אבחון — ללא עלות</span>
+              <span className="hidden sm:inline">שיחת אבחון — ללא עלות</span>
+              <span className="sm:hidden">אבחון חינם</span>
               <span>📞</span>
             </button>
           </div>
         </div>
 
         {/* Mobile Nav */}
-        <div className="flex lg:hidden items-center justify-center gap-2 mt-3 pt-3 border-t border-slate-200 dark:border-slate-800 overflow-x-auto no-scrollbar">
-          <button onClick={scrollToCapabilities} className="px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">השירותים</button>
-          <button onClick={scrollToMethodology} className="px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">תהליך האפיון</button>
-          <button onClick={goToPromptsView} className={`px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 ${mainView === 'prompts' ? 'bg-cyan-500/20 text-cyan-600 dark:text-cyan-300 border border-cyan-500/40' : 'bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800'}`}>מאגר הפרומפטים</button>
-          <button onClick={scrollToAbout} className="px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">אודות</button>
-          <a href="https://www.facebook.com/share/g/183u1ktJDZ/" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 bg-blue-600 text-white">קהילה 👥</a>
-        </div>
+        <nav className="lg:hidden mt-3 pt-3 border-t border-slate-200 dark:border-slate-800" aria-label="ניווט ראשי">
+          <div className="-mx-6 px-6 overflow-x-auto no-scrollbar">
+            <div className="flex w-max min-w-full items-center gap-2 pb-1">
+              <button onClick={scrollToCapabilities} className="px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 whitespace-nowrap bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">השירותים</button>
+              <button onClick={scrollToMethodology} className="px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 whitespace-nowrap bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">תהליך האפיון</button>
+              <button onClick={goToPromptsView} className={`px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 whitespace-nowrap ${mainView === 'prompts' ? 'bg-cyan-500/20 text-cyan-600 dark:text-cyan-300 border border-cyan-500/40' : 'bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800'}`}>מאגר הפרומפטים</button>
+              <button onClick={scrollToAbout} className="px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 whitespace-nowrap bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">אודות</button>
+              <a href="https://www.facebook.com/share/g/183u1ktJDZ/" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 whitespace-nowrap bg-blue-600 text-white">קהילה 👥</a>
+            </div>
+          </div>
+        </nav>
       </header>
 
       <main className="max-w-7xl mx-auto px-6 py-10">
@@ -899,7 +908,7 @@ const App: React.FC = () => {
                 </p>
               </div>
               <div className="max-w-2xl mx-auto">
-                {renderServiceCard(sopService)}
+                {renderServiceCard(sopService, { hideTitle: true })}
               </div>
             </section>
 
@@ -997,18 +1006,18 @@ const App: React.FC = () => {
               </div>
             </section>
 
-            {/* 5. CORE SERVICES (3 שירותים ממוקדים ונקיים) */}
+            {/* 5. CORE SERVICES (מסלולים נוספים — ללא כפילות SOP) */}
             <section ref={capabilitiesRef} className="py-6 space-y-12">
               <div className="text-center max-w-3xl mx-auto">
-                <span className="text-cyan-600 dark:text-cyan-400 text-xs font-bold uppercase tracking-wider block mb-2">שירותי הליבה</span>
-                <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">3 מסלולי עבודה ממוקדים לתוצאות</h2>
+                <span className="text-cyan-600 dark:text-cyan-400 text-xs font-bold uppercase tracking-wider block mb-2">מסלולים נוספים</span>
+                <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">אבחון, סדנאות והטמעה</h2>
                 <p className="text-slate-600 dark:text-slate-400 font-bold text-base md:text-lg">
-                  ללא מורכבות מיותרת — פתרונות מדויקים המייצרים חיסכון בשעות עבודה וערך עסקי מיידי.
+                  מסלול SOP (02) מפורט למעלה. כאן שני המסלולים המשלימים לאבחון צווארי בקבוק והכשרת צוותים.
                 </p>
               </div>
 
-              <div className="grid md:grid-cols-3 gap-8">
-                {B2B_SERVICES.map((srv) => renderServiceCard(srv))}
+              <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                {otherServices.map((srv) => renderServiceCard(srv))}
               </div>
             </section>
 
@@ -1201,9 +1210,9 @@ const App: React.FC = () => {
           <section className="animate-fadeIn space-y-10">
             <div className="bg-white dark:bg-[#0D131F] rounded-[3rem] p-8 md:p-12 border border-slate-200 dark:border-slate-800 text-center shadow-xl dark:shadow-none">
               <span className="px-4 py-1.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 rounded-full text-xs font-black mb-4 inline-block border border-cyan-500/30">
-                ספריית 1,000+ התבניות והפרומפטים לעסקים ולמנהלים
+                דוגמאות מעשיות לעבודה עם AI בעסק
               </span>
-              <h2 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white mb-4">מאגר הפרומפטים המקצועי של "מדברים בינה"</h2>
+              <h2 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white mb-4">מאגר תבניות ופרומפטים לעסקים</h2>
               <p className="text-slate-600 dark:text-slate-400 font-bold text-base md:text-lg max-w-3xl mx-auto">
                 דוגמאות והמחשות להנדסת פרומפטים נכונה. סננו לפי נושא, העתיקו והתנסו בעצמכם כדי להבין איך לרתום את המודל למשימות מוגדרות.
               </p>
