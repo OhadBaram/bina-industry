@@ -1,10 +1,11 @@
-import { BusinessProfile, ServiceItem, Appointment, WaitlistEntry } from './types';
+import { BusinessProfile, Appointment, WaitlistEntry } from './types';
+import { servicesFromB2B } from './dataAdapter';
 
 export const MOCK_BUSINESS: BusinessProfile = {
-  id: 'biz_executive',
-  name: 'מרכז שירותים וקליניקה עסקית',
-  category: 'שירותי מומחה וייעוץ מקצועי',
-  tagline: 'ניהול פגישות ושירותים מקצועיים בדיוק ובאיכות ללא פשרות',
+  id: 'biz_bina_industry',
+  name: 'בינה לתעשייה',
+  category: 'ENTERPRISE AI | אפיון תהליכים והטמעת AI',
+  tagline: 'מטמיעים AI בעבודה האמיתית, לא במצגות. אפיון תהליכים, כתיבת מסמכי עבודה (SOPs), סדנאות Hands-on מעשיות ואוטומציות לתוצאות עסקיות בשטח.',
   address: 'שדרות רוטשילד 45',
   city: 'תל אביב',
   rating: 5.0,
@@ -23,47 +24,22 @@ export const MOCK_BUSINESS: BusinessProfile = {
   }
 };
 
-export const MOCK_SERVICES: ServiceItem[] = [
-  {
-    id: 'srv_consulting_full',
-    title: 'פגישת אפיון וייעוץ מקיפה',
-    category: 'ייעוץ אסטרטגי',
-    durationMinutes: 60,
-    price: 350,
-    description: 'סקירת תהליכים עסקית, מיפוי צרכים, הגדרת יעדים ובניית תוכנית עבודה ממוקדת תוצאות.',
-    icon: '📊'
-  },
-  {
-    id: 'srv_express_review',
-    title: 'מפגש ביקורת ומעקב תקופתי',
-    category: 'ליווי שוטף',
-    durationMinutes: 30,
-    price: 180,
-    description: 'בחינת עמידה ביעדים, דיוק משימות שוטפות והסרת חסמים תפעוליים.',
-    icon: '🎯'
-  },
-  {
-    id: 'srv_premium_strategy',
-    title: 'סדנת הטמעה ופיתוח תהליכים',
-    category: 'הטמעה ואימון',
-    durationMinutes: 90,
-    price: 500,
-    description: 'עבודה מעשית עם צוותי הארגון להטמעת כלי אוטומציה ושיטות עבודה אפקטיביות.',
-    icon: '⚡'
-  }
-];
+export const MOCK_SERVICES = servicesFromB2B();
+
+const consultingService = MOCK_SERVICES.find(s => s.id === 'consulting')!;
+const sopService = MOCK_SERVICES.find(s => s.id === 'sop')!;
 
 export const INITIAL_APPOINTMENTS: Appointment[] = [
   {
     id: 'apt_101',
-    businessId: 'biz_executive',
+    businessId: 'biz_bina_industry',
     customerName: 'אוהד ברעם',
     customerPhone: '0536244330',
-    serviceId: 'srv_consulting_full',
-    serviceTitle: 'פגישת אפיון וייעוץ מקיפה',
+    serviceId: 'consulting',
+    serviceTitle: consultingService.title,
     dateTime: new Date(Date.now() + 86400000 * 2 + 3600000 * 2).toISOString(),
-    durationMinutes: 60,
-    price: 350,
+    durationMinutes: consultingService.durationMinutes,
+    price: consultingService.price,
     status: 'CONFIRMED',
     notes: 'מיקוד בתהליכי אוטומציה עסקית וחיסכון בעלויות תפעול.',
     guarantee: {
@@ -77,14 +53,14 @@ export const INITIAL_APPOINTMENTS: Appointment[] = [
   },
   {
     id: 'apt_100',
-    businessId: 'biz_executive',
+    businessId: 'biz_bina_industry',
     customerName: 'אוהד ברעם',
     customerPhone: '0536244330',
-    serviceId: 'srv_express_review',
-    serviceTitle: 'מפגש ביקורת ומעקב תקופתי',
+    serviceId: 'sop',
+    serviceTitle: sopService.title,
     dateTime: new Date(Date.now() - 86400000 * 10).toISOString(),
-    durationMinutes: 30,
-    price: 180,
+    durationMinutes: sopService.durationMinutes,
+    price: sopService.price,
     status: 'COMPLETED'
   }
 ];
@@ -94,7 +70,8 @@ export const INITIAL_WAITLIST: WaitlistEntry[] = [
     id: 'wait_1',
     customerName: 'רועי ש.',
     customerPhone: '054-3322114',
-    serviceTitle: 'פגישת אפיון וייעוץ מקיפה',
+    serviceId: 'consulting',
+    serviceTitle: consultingService.title,
     preferredDate: new Date(Date.now() + 86400000 * 2).toISOString().split('T')[0],
     createdAt: new Date().toISOString()
   }
