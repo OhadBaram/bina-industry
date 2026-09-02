@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { CATEGORIES, ALL_PROMPTS } from './data/prompts';
 import { B2B_SERVICES, PAIN_POINTS, USE_CASES, B2B_PROMPT_CATEGORIES, B2B_PROMPTS, CAPABILITIES, METHODOLOGY_STEPS } from './data/b2bData';
-import { B2BPrompt } from './types';
+import { B2BPrompt, B2BService } from './types';
 import { PrivacyPolicyModal } from './components/PrivacyPolicyModal';
 import { TermsOfServiceModal } from './components/TermsOfServiceModal';
 import { AccessibilityStatementModal } from './components/AccessibilityStatementModal';
@@ -24,7 +24,7 @@ const Toast: React.FC<{ message: string; show: boolean }> = ({ message, show }) 
 
 // מיפוי הטקסטים הראשוניים לפי השירות שנבחר
 const serviceMessages: Record<string, string> = {
-  sop: "היי אוהד,\nאנו מעוניינים באפיון תהליכי עבודה ומסמכים (SOPs, הצעות מחיר ומסמכי דרישות) באמצעות כלי AI. נשמח לתאם שיחת אפיון ראשונית.",
+  sop: "היי אוהד,\nאנו מעוניינים באפיון תהליכי עבודה ומסמכים (SOPs, הצעות מחיר ומסמכי דרישות) באמצעות כלי AI. נשמח לתאם שיחת אבחון ראשונית.",
   workshops: "היי אוהד,\nאנו מעוניינים בסדנאות Hands-on מעשיות והכשרת צוותים/הנהלה לעבודה יומיומית עם כלי AI. נשמח לקבל פרטים וסילבוס מותאם.",
   consulting: "היי אוהד,\nאנו מעוניינים באבחון וייעוץ ממוקד לזיהוי צווארי בקבוק והחזר השקעה (ROI) אמיתי בעסק. נשמח לתאם שיחת אבחון."
 };
@@ -214,7 +214,6 @@ const App: React.FC = () => {
   const contactFormRef = useRef<HTMLDivElement>(null);
   const capabilitiesRef = useRef<HTMLDivElement>(null);
   const methodologyRef = useRef<HTMLDivElement>(null);
-  const communityRef = useRef<HTMLDivElement>(null);
   const aboutRef = useRef<HTMLDivElement>(null);
 
   // בדיקת ניתוב URL ושתילת פרמטר service בטופס במידה וקיים וכן פתיחה אוטומטית של הצ'אטבוט
@@ -462,6 +461,66 @@ const App: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const sopService = B2B_SERVICES.find((s) => s.id === 'sop')!;
+
+  const renderServiceCard = (srv: B2BService) => (
+    <div
+      key={srv.id}
+      className="bg-white dark:bg-[#0D131F] rounded-[3rem] p-8 md:p-10 border border-slate-200 dark:border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between group shadow-xl dark:shadow-none"
+    >
+      <div>
+        <div className="flex items-center justify-between mb-6">
+          <span className="w-10 h-10 rounded-2xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center font-black text-sm border border-cyan-500/30">
+            {srv.num}
+          </span>
+          <span className="text-3xl group-hover:scale-110 transition-transform">
+            {srv.icon}
+          </span>
+        </div>
+
+        <span className="text-xs font-bold text-cyan-600 dark:text-cyan-400 block mb-1">
+          {srv.subtitle}
+        </span>
+        <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-4 leading-tight">
+          {srv.title}
+        </h3>
+
+        <p className="text-slate-600 dark:text-slate-300 text-sm md:text-base font-medium leading-relaxed mb-6">
+          {srv.shortDesc}
+        </p>
+
+        <div className="space-y-2.5 mb-8">
+          {srv.features.map((feat, fIdx) => (
+            <div key={fIdx} className="flex items-start gap-2 text-xs md:text-sm text-slate-700 dark:text-slate-300 font-medium">
+              <span className="text-cyan-500 font-bold mt-0.5">✓</span>
+              <span>{feat}</span>
+            </div>
+          ))}
+        </div>
+
+        {srv.techBadges && srv.techBadges.length > 0 && (
+          <div className="flex flex-wrap gap-2 mb-8">
+            {srv.techBadges.map((badge, bIdx) => (
+              <span
+                key={bIdx}
+                className="px-3 py-1 bg-slate-100 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 text-cyan-600 dark:text-cyan-400 font-mono text-xs font-bold rounded-xl"
+              >
+                {badge}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <button
+        onClick={() => prefillServiceAndScroll(srv.serviceKey || 'sop')}
+        className="w-full py-4 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-gradient-to-r hover:from-cyan-500 hover:to-blue-600 hover:text-white font-black text-sm transition-all text-center border border-slate-200 dark:border-slate-700 shadow-sm"
+      >
+        {srv.ctaText} ➔
+      </button>
+    </div>
+  );
+
   // איחוד כל 1,000 הפרומפטים מכל הקטגוריות
   const fullPromptPool = useMemo(() => {
     const combined: B2BPrompt[] = [...B2B_PROMPTS];
@@ -527,7 +586,7 @@ const App: React.FC = () => {
         </div>
         <h3 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-3 tracking-tight">בואו נבדוק התאמה לארגון שלכם</h3>
         <p className="text-slate-600 dark:text-slate-400 font-bold text-base md:text-lg max-w-2xl mx-auto">
-          השאר פרטים, ספר לי בקצרה מה האתגר, ואחזור אליך לשיחת אפיון ראשונית ללא עלות.
+          השאר פרטים, ספר לי בקצרה מה האתגר, ואחזור אליך לשיחת אבחון ראשונית — ללא עלות.
         </p>
       </div>
 
@@ -536,7 +595,7 @@ const App: React.FC = () => {
           <div className="text-6xl mb-4">🎉</div>
           <h4 className="text-3xl font-black text-emerald-900 dark:text-emerald-200 mb-3">תודה רבה! הפנייה התקבלה בהצלחה</h4>
           <p className="text-emerald-800 dark:text-emerald-300 font-bold text-base md:text-lg max-w-xl mx-auto mb-6">
-            קיבלתי את פרטי הארגון שלך. אחזור אליך בהקדם לשיחת אבחון ואפיון ראשונית.
+            קיבלתי את פרטי הארגון שלך. אחזור אליך בהקדם לשיחת אבחון ראשונית.
           </p>
           <button
             onClick={() => {
@@ -681,7 +740,7 @@ const App: React.FC = () => {
               disabled={isSubmittingLead}
               className="btn-submit w-full py-5 rounded-2xl bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-black text-xl shadow-xl hover:shadow-cyan-500/25 transition-all active:scale-[0.99] flex items-center justify-center gap-3 disabled:opacity-50 cursor-pointer"
             >
-              {isSubmittingLead ? 'שולח פנייה...' : 'תיאום שיחת אבחון ראשונית 🚀'}
+              {isSubmittingLead ? 'שולח פנייה...' : 'תיאום שיחת אבחון — ללא עלות 🚀'}
             </button>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2 text-center">
@@ -712,7 +771,7 @@ const App: React.FC = () => {
             <div className="w-10 h-10 bg-cyan-500/10 border border-cyan-500/30 rounded-xl flex items-center justify-center text-cyan-400 text-xl font-black shadow-lg">🤖</div>
             <div className="text-right">
               <h1 className={`text-xl md:text-2xl font-black leading-none tracking-tight ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
-                בינה לתעשייה <span className="text-xs font-bold text-cyan-500 tracking-wider">ENTERPRISE AI</span>
+                בינה לתעשייה
               </h1>
             </div>
           </div>
@@ -759,7 +818,7 @@ const App: React.FC = () => {
                   : 'hover:shadow-cyan-500/20'
               }`}
             >
-              <span>שיחת אבחון</span>
+              <span>שיחת אבחון — ללא עלות</span>
               <span>📞</span>
             </button>
           </div>
@@ -794,8 +853,12 @@ const App: React.FC = () => {
                 </span>
               </h1>
 
-              <p className={`text-lg md:text-2xl font-medium max-w-3xl mx-auto leading-relaxed mb-10 ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
+              <p className={`text-lg md:text-2xl font-medium max-w-3xl mx-auto leading-relaxed mb-4 ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
                 אני מלווה עסקים וארגונים באפיון תהליכים, כתיבת מסמכי עבודה (SOPs) ואוטומציות מעשיות באמצעות כלי AI מתקדמים.
+              </p>
+
+              <p className={`text-base md:text-lg font-bold max-w-2xl mx-auto mb-10 ${isDarkMode ? 'text-cyan-400' : 'text-cyan-600'}`}>
+                שיחת אבחון ראשונית — ללא עלות
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-3xl mx-auto">
@@ -803,7 +866,7 @@ const App: React.FC = () => {
                   onClick={openContactView}
                   className="w-full sm:w-auto px-8 py-4.5 bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-black text-lg rounded-2xl shadow-xl hover:shadow-cyan-500/25 transition-all active:scale-95 flex items-center justify-center gap-2.5 cursor-pointer"
                 >
-                  <span>תיאום שיחת אבחון</span>
+                  <span>תיאום שיחת אבחון — ללא עלות</span>
                   <span>🚀</span>
                 </button>
 
@@ -826,7 +889,83 @@ const App: React.FC = () => {
               </div>
             </section>
 
-            {/* 2. WHY CUSTOM AI SECTION (המציאות בשטח) */}
+            {/* 2. FEATURED SOP PATH (מסלול 02) */}
+            <section className="py-6 space-y-8">
+              <div className="text-center max-w-3xl mx-auto">
+                <span className="text-cyan-600 dark:text-cyan-400 text-xs font-bold uppercase tracking-wider block mb-2">מסלול 02</span>
+                <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">נהלים מהידע של העסק — לא כלי מדף</h2>
+                <p className="text-slate-600 dark:text-slate-400 font-bold text-base md:text-lg">
+                  אפיון תהליכים ומסמכים שמבוססים על איך העסק באמת עובד, ומתורגמים לנהלים, הצעות מחיר ומסמכי דרישות עקביים.
+                </p>
+              </div>
+              <div className="max-w-2xl mx-auto">
+                {renderServiceCard(sopService)}
+              </div>
+            </section>
+
+            {/* 3. SOCIAL PROOF & TESTIMONIALS */}
+            <section className="bg-gradient-to-b from-slate-100/80 to-white dark:from-[#0D131F] dark:to-[#070A10] rounded-[3rem] p-8 md:p-12 border border-slate-200 dark:border-slate-800 shadow-xl dark:shadow-none space-y-8 animate-fadeIn">
+              <div className="text-center max-w-2xl mx-auto space-y-2">
+                <span className="inline-flex items-center px-4 py-1 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 rounded-full text-xs font-black border border-cyan-500/30 uppercase tracking-wider">
+                  תוצאות ומשובים מהשטח
+                </span>
+                <h3 className="text-2xl md:text-4xl font-black text-slate-900 dark:text-white">
+                  מה מנהלים ועסקים מספרים על העבודה איתי
+                </h3>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="bg-white dark:bg-[#070A10] p-6 md:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-4 shadow-sm hover:border-cyan-500/40 transition-all">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-amber-400 text-sm">★★★★★</span>
+                      <span className="text-2xl">⚡</span>
+                    </div>
+                    <p className="text-xs md:text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed">
+                      "הסדנה של אוהד הייתה ממוקדת ומעשית על הדאטה האמיתי שלנו — הצוות למד לכתוב הצעות מחיר ונהלים בצורה שיטתית, ללא התנגדויות מצד העובדים."
+                    </p>
+                  </div>
+                  <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80">
+                    <h4 className="font-black text-xs md:text-sm text-slate-900 dark:text-white">רועי ש.</h4>
+                    <p className="text-[11px] font-bold text-cyan-600 dark:text-cyan-400">סמנכ״ל תפעול בחברת שירותים</p>
+                  </div>
+                </div>
+
+                <div className="bg-white dark:bg-[#070A10] p-6 md:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-4 shadow-sm hover:border-cyan-500/40 transition-all">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-amber-400 text-sm">★★★★★</span>
+                      <span className="text-2xl">🎯</span>
+                    </div>
+                    <p className="text-xs md:text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed">
+                      "במקום עוד כלי מדף גנרי שלא מתחבר לשגרה, אוהד אפיין לנו נהלים מהידע של העסק — תהליך שעובד כל יום בדיוק מרבי ומקצר זמני תגובה ללקוחות."
+                    </p>
+                  </div>
+                  <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80">
+                    <h4 className="font-black text-xs md:text-sm text-slate-900 dark:text-white">דנה ל.</h4>
+                    <p className="text-[11px] font-bold text-cyan-600 dark:text-cyan-400">מנהלת מוצר ופרויקטים</p>
+                  </div>
+                </div>
+
+                <div className="bg-white dark:bg-[#070A10] p-6 md:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-4 shadow-sm hover:border-cyan-500/40 transition-all">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-amber-400 text-sm">★★★★★</span>
+                      <span className="text-2xl">📈</span>
+                    </div>
+                    <p className="text-xs md:text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed">
+                      "האבחון הממוקד של צווארי הבקבוק נתן לנו בהירות מיידית איפה שווה להשקיע באוטומציות AI ואיפה לא לבזבז זמן וכסף. חיסכון ותוצאות בשטח."
+                    </p>
+                  </div>
+                  <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80">
+                    <h4 className="font-black text-xs md:text-sm text-slate-900 dark:text-white">איתי מ.</h4>
+                    <p className="text-[11px] font-bold text-cyan-600 dark:text-cyan-400">מנכ״ל ובעלים</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* 4. WHY CUSTOM AI SECTION (המציאות בשטח) */}
             <section className="bg-white dark:bg-[#0D131F] rounded-[3rem] p-8 md:p-14 border border-slate-200 dark:border-slate-800 shadow-2xl dark:shadow-none">
               <div className="text-center mb-12">
                 <span className="text-cyan-600 dark:text-cyan-400 text-xs font-bold uppercase tracking-wider block mb-2">המציאות בשטח</span>
@@ -852,13 +991,13 @@ const App: React.FC = () => {
                   </div>
                   <h3 className="text-2xl font-black text-slate-900 dark:text-white">אפיון תהליכים + הכשרה מעשית</h3>
                   <p className="text-slate-600 dark:text-slate-300 text-base md:text-lg font-medium leading-relaxed">
-                    שילוב בין ניהול מוצר ואפיון תהליכים מדויק לבין הכשרה מעשית hands-on. אנחנו מתאימים את הכלים ישירות למשימות האמיתיות של העסק.
+                    שילוב בין ניהול מוצר ואפיון תהליכים מדויק לבין הכשרה מעשית hands-on. אני מתאים את הכלים ישירות למשימות האמיתיות של העסק.
                   </p>
                 </div>
               </div>
             </section>
 
-            {/* 3. CORE SERVICES (3 שירותים ממוקדים ונקיים) */}
+            {/* 5. CORE SERVICES (3 שירותים ממוקדים ונקיים) */}
             <section ref={capabilitiesRef} className="py-6 space-y-12">
               <div className="text-center max-w-3xl mx-auto">
                 <span className="text-cyan-600 dark:text-cyan-400 text-xs font-bold uppercase tracking-wider block mb-2">שירותי הליבה</span>
@@ -869,129 +1008,11 @@ const App: React.FC = () => {
               </div>
 
               <div className="grid md:grid-cols-3 gap-8">
-                {B2B_SERVICES.map((srv) => (
-                  <div
-                    key={srv.id}
-                    className="bg-white dark:bg-[#0D131F] rounded-[3rem] p-8 md:p-10 border border-slate-200 dark:border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between group shadow-xl dark:shadow-none"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between mb-6">
-                        <span className="w-10 h-10 rounded-2xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center font-black text-sm border border-cyan-500/30">
-                          {srv.num}
-                        </span>
-                        <span className="text-3xl group-hover:scale-110 transition-transform">
-                          {srv.icon}
-                        </span>
-                      </div>
-
-                      <span className="text-xs font-bold text-cyan-600 dark:text-cyan-400 block mb-1">
-                        {srv.subtitle}
-                      </span>
-                      <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-4 leading-tight">
-                        {srv.title}
-                      </h3>
-
-                      <p className="text-slate-600 dark:text-slate-300 text-sm md:text-base font-medium leading-relaxed mb-6">
-                        {srv.shortDesc}
-                      </p>
-
-                      <div className="space-y-2.5 mb-8">
-                        {srv.features.map((feat, fIdx) => (
-                          <div key={fIdx} className="flex items-start gap-2 text-xs md:text-sm text-slate-700 dark:text-slate-300 font-medium">
-                            <span className="text-cyan-500 font-bold mt-0.5">✓</span>
-                            <span>{feat}</span>
-                          </div>
-                        ))}
-                      </div>
-
-                      {srv.techBadges && srv.techBadges.length > 0 && (
-                        <div className="flex flex-wrap gap-2 mb-8">
-                          {srv.techBadges.map((badge, bIdx) => (
-                            <span
-                              key={bIdx}
-                              className="px-3 py-1 bg-slate-100 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 text-cyan-600 dark:text-cyan-400 font-mono text-xs font-bold rounded-xl"
-                            >
-                              {badge}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-
-                    <button
-                      onClick={() => prefillServiceAndScroll(srv.serviceKey || 'sop')}
-                      className="w-full py-4 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-gradient-to-r hover:from-cyan-500 hover:to-blue-600 hover:text-white font-black text-sm transition-all text-center border border-slate-200 dark:border-slate-700 shadow-sm"
-                    >
-                      {srv.ctaText} ➔
-                    </button>
-                  </div>
-                ))}
+                {B2B_SERVICES.map((srv) => renderServiceCard(srv))}
               </div>
             </section>
 
-            {/* 3.5 SOCIAL PROOF & TESTIMONIALS (המלצות ומשובים מהשטח) */}
-            <section className="bg-gradient-to-b from-slate-100/80 to-white dark:from-[#0D131F] dark:to-[#070A10] rounded-[3rem] p-8 md:p-12 border border-slate-200 dark:border-slate-800 shadow-xl dark:shadow-none space-y-8 animate-fadeIn">
-              <div className="text-center max-w-2xl mx-auto space-y-2">
-                <span className="inline-flex items-center px-4 py-1 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 rounded-full text-xs font-black border border-cyan-500/30 uppercase tracking-wider">
-                  תוצאות ומשובים מהשטח
-                </span>
-                <h3 className="text-2xl md:text-4xl font-black text-slate-900 dark:text-white">
-                  מה מנהלים ועסקים מספרים על העבודה איתי
-                </h3>
-              </div>
-
-              <div className="grid md:grid-cols-3 gap-6">
-                <div className="bg-white dark:bg-[#070A10] p-6 md:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-4 shadow-sm hover:border-cyan-500/40 transition-all">
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-amber-400 text-sm">★★★★★</span>
-                      <span className="text-2xl">⚡</span>
-                    </div>
-                    <p className="text-xs md:text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed">
-                      "הסדנה של אוהד חסכה לצוות שלנו לפחות 15 שעות שבועיות של כתיבת הצעות מחיר ונהלים. הכל היה ממוקד ומעשי על הדאטה האמיתי שלנו, ללא התנגדויות מצד העובדים."
-                    </p>
-                  </div>
-                  <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80">
-                    <h4 className="font-black text-xs md:text-sm text-slate-900 dark:text-white">רועי ש.</h4>
-                    <p className="text-[11px] font-bold text-cyan-600 dark:text-cyan-400">סמנכ״ל תפעול בחברת שירותים</p>
-                  </div>
-                </div>
-
-                <div className="bg-white dark:bg-[#070A10] p-6 md:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-4 shadow-sm hover:border-cyan-500/40 transition-all">
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-amber-400 text-sm">★★★★★</span>
-                      <span className="text-2xl">🎯</span>
-                    </div>
-                    <p className="text-xs md:text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed">
-                      "במקום עוד כלי מדף גנרי שלא מתחבר לשגרה, אוהד אפיין לנו תהליך SOP מובנה שעובד כל יום בדיוק מרבי ומקצר זמני תגובה ללקוחות ביותר מ-70%."
-                    </p>
-                  </div>
-                  <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80">
-                    <h4 className="font-black text-xs md:text-sm text-slate-900 dark:text-white">דנה ל.</h4>
-                    <p className="text-[11px] font-bold text-cyan-600 dark:text-cyan-400">מנהלת מוצר ופרויקטים</p>
-                  </div>
-                </div>
-
-                <div className="bg-white dark:bg-[#070A10] p-6 md:p-8 rounded-3xl border border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-4 shadow-sm hover:border-cyan-500/40 transition-all">
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-amber-400 text-sm">★★★★★</span>
-                      <span className="text-2xl">📈</span>
-                    </div>
-                    <p className="text-xs md:text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed">
-                      "האבחון הממוקד של צווארי הבקבוק נתן לנו בהירות מיידית איפה שווה להשקיע באוטומציות AI ואיפה לא לבזבז זמן וכסף. תוצאות וחיסכון בשטח כבר בחודש הראשון."
-                    </p>
-                  </div>
-                  <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80">
-                    <h4 className="font-black text-xs md:text-sm text-slate-900 dark:text-white">איתי מ.</h4>
-                    <p className="text-[11px] font-bold text-cyan-600 dark:text-cyan-400">מנכ״ל ובעלים</p>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* 4. METHODOLOGY (מתודולוגיית העבודה - 4 השלבים) */}
+            {/* 6. METHODOLOGY (מתודולוגיית העבודה - 4 השלבים) */}
             <section ref={methodologyRef} className="bg-white dark:bg-[#0D131F] text-slate-900 dark:text-white rounded-[3rem] p-8 md:p-14 border border-slate-200 dark:border-slate-800 shadow-2xl dark:shadow-none">
               <div className="text-center mb-14">
                 <span className="inline-flex items-center px-4 py-1.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 rounded-full text-xs font-bold border border-cyan-500/30 uppercase tracking-wider mb-2">
@@ -1022,45 +1043,7 @@ const App: React.FC = () => {
               </div>
             </section>
 
-            {/* 5. PROMPT LIBRARY SECTION */}
-            <section ref={communityRef} className="bg-white dark:bg-[#0D131F] rounded-[3rem] p-8 md:p-14 border border-slate-200 dark:border-slate-800 shadow-xl dark:shadow-none text-right">
-              <div className="grid lg:grid-cols-12 gap-10 items-center">
-                <div className="lg:col-span-8 space-y-6">
-                  <div>
-                    <span className="px-4 py-1.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 rounded-full text-xs font-bold mb-4 inline-block border border-cyan-500/30">
-                      מאגר הידע והפרומפטים
-                    </span>
-                    <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">מאגר הפרומפטים המקצועי של "מדברים בינה"</h2>
-                    <p className="text-slate-600 dark:text-slate-300 text-base md:text-xl font-medium leading-relaxed">
-                      דוגמאות והמחשות להנדסת פרומפטים נכונה. סננו לפי נושא, העתיקו והתנסו בעצמכם כדי להבין איך לרתום את המודל למשימות מוגדרות.
-                    </p>
-                  </div>
-
-                  <div className="flex flex-wrap gap-4 pt-4">
-                    <button onClick={goToPromptsView} className="px-6 py-3.5 bg-cyan-500 text-white font-black rounded-2xl text-xs hover:bg-cyan-400 transition-all shadow-md flex items-center gap-2">
-                      <span>מאגר הפרומפטים והתבניות לעסקים</span>
-                      <span>📚</span>
-                    </button>
-                    <a href="https://www.facebook.com/share/g/183u1ktJDZ/" target="_blank" rel="noopener noreferrer" className="px-6 py-3.5 bg-[#1877F2] text-white font-black rounded-2xl text-xs hover:bg-[#166fe5] transition-all shadow-md flex items-center gap-2">
-                      <span>כניסה לקהילת "מדברים בינה"</span>
-                      <span>👥</span>
-                    </a>
-                  </div>
-                </div>
-
-                <div className="lg:col-span-4 bg-slate-50 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 p-8 rounded-[2.5rem] shadow-inner text-center space-y-4">
-                  <div className="w-16 h-16 rounded-2xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 flex items-center justify-center text-3xl mx-auto">🚀</div>
-                  <h3 className="text-2xl font-black text-slate-900 dark:text-white">
-                    אוטוריטה וחדשנות
-                  </h3>
-                  <p className="text-xs text-slate-600 dark:text-slate-300 font-medium leading-relaxed">
-                    הובלת קהילת הידע והפרומפטים המובילה בישראל עם תובנות עדכניות ומתודולוגיות עבודה מוכחות.
-                  </p>
-                </div>
-              </div>
-            </section>
-
-            {/* 6. ABOUT (מי מוביל את התהליך) */}
+            {/* 5. ABOUT (מי מוביל את התהליך) */}
             <section ref={aboutRef} className="bg-white dark:bg-[#0D131F] rounded-[3rem] p-8 md:p-14 border border-slate-200 dark:border-slate-800 text-right animate-fadeIn shadow-2xl dark:shadow-none">
               <div className="grid lg:grid-cols-12 gap-10 items-center">
                 
@@ -1069,7 +1052,7 @@ const App: React.FC = () => {
                   <div className="w-64 h-64 md:w-72 md:h-72 rounded-3xl overflow-hidden shadow-2xl mb-6 border-4 border-slate-200 dark:border-slate-800 ring-4 ring-cyan-500/20 bg-slate-100 dark:bg-[#070A10] flex items-center justify-center p-2">
                     <img
                       src="/ohad.jpeg"
-                      alt="אוהד ברעם - מנהל מוצר ומוביל טרנספורמציה"
+                      alt="אוהד ברעם - מנהל מוצר ואפיון תהליכים עסקיים"
                       className="w-full h-full object-contain rounded-2xl"
                     />
                   </div>
@@ -1100,7 +1083,7 @@ const App: React.FC = () => {
                         <strong className="text-slate-900 dark:text-white font-black text-xl block mb-2">נעים להכיר, שמי אוהד ברעם.</strong>
                       </p>
                       <p>
-                        אני מנהל מוצר בכיר ובעל תואר שני בניהול ארגוני שירות בהצטיינות. המומחיות שלי היא לתרגם צרכים עסקיים מורכבים לתהליכי עבודה ברורים, מסמכי אפיון חכמים (SOPs/PRDs) ופתרונות AI שמייצרים ערך אמיתי בשטח.
+                        אני מנהל מוצר ובעל תואר שני בניהול ארגוני שירות בהצטיינות. המומחיות שלי היא לתרגם צרכים עסקיים מורכבים לתהליכי עבודה ברורים, מסמכי אפיון חכמים (SOPs/PRDs) ופתרונות AI שמייצרים ערך אמיתי בשטח.
                       </p>
                       <p>
                         לאורך השנים ליוויתי והובלתי תהליכים מורכבים משלב האבחון והגדרת הדרישות ועד להטמעה מלאה בקרב צוותים ועובדים. אני מאמין שהמפתח להצלחה ב-AI אינו "עוד כלי מדף", אלא התאמה מדויקת לתהליכי העבודה היומיומיים של העסק והכשרה מעשית של האנשים שמפעילים אותם.
@@ -1129,7 +1112,7 @@ const App: React.FC = () => {
                         <span>📈</span>
                         <span>מחויבות ל-ROI וחיסכון בזמן</span>
                       </div>
-                      <div className="text-xs font-medium text-slate-700 dark:text-slate-300 leading-relaxed">חיסכון של עשרות שעות עבודה ידניות בחודש.</div>
+                      <div className="text-xs font-medium text-slate-700 dark:text-slate-300 leading-relaxed">מיקוד בחיסכון בזמן ובעלויות שניתן למדוד.</div>
                     </div>
                   </div>
                 </div>
