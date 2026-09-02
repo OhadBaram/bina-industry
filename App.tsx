@@ -214,7 +214,6 @@ const App: React.FC = () => {
   const contactFormRef = useRef<HTMLDivElement>(null);
   const capabilitiesRef = useRef<HTMLDivElement>(null);
   const methodologyRef = useRef<HTMLDivElement>(null);
-  const communityRef = useRef<HTMLDivElement>(null);
   const aboutRef = useRef<HTMLDivElement>(null);
 
   // בדיקת ניתוב URL ושתילת פרמטר service בטופס במידה וקיים וכן פתיחה אוטומטית של הצ'אטבוט
@@ -948,7 +947,7 @@ const App: React.FC = () => {
                       <span className="text-2xl">⚡</span>
                     </div>
                     <p className="text-xs md:text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed">
-                      "הסדנה של אוהד חסכה לצוות שלנו לפחות 15 שעות שבועיות של כתיבת הצעות מחיר ונהלים. הכל היה ממוקד ומעשי על הדאטה האמיתי שלנו, ללא התנגדויות מצד העובדים."
+                      "הסדנה של אוהד הייתה ממוקדת ומעשית על הדאטה האמיתי שלנו — הצוות למד לכתוב הצעות מחיר ונהלים בצורה שיטתית, ללא התנגדויות מצד העובדים."
                     </p>
                   </div>
                   <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80">
@@ -964,7 +963,7 @@ const App: React.FC = () => {
                       <span className="text-2xl">🎯</span>
                     </div>
                     <p className="text-xs md:text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed">
-                      "במקום עוד כלי מדף גנרי שלא מתחבר לשגרה, אוהד אפיין לנו תהליך SOP מובנה שעובד כל יום בדיוק מרבי ומקצר זמני תגובה ללקוחות ביותר מ-70%."
+                      "במקום עוד כלי מדף גנרי שלא מתחבר לשגרה, אוהד אפיין לנו נהלים מהידע של העסק — תהליך שעובד כל יום בדיוק מרבי ומקצר זמני תגובה ללקוחות."
                     </p>
                   </div>
                   <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80">
@@ -980,7 +979,7 @@ const App: React.FC = () => {
                       <span className="text-2xl">📈</span>
                     </div>
                     <p className="text-xs md:text-sm font-medium text-slate-700 dark:text-slate-300 leading-relaxed">
-                      "האבחון הממוקד של צווארי הבקבוק נתן לנו בהירות מיידית איפה שווה להשקיע באוטומציות AI ואיפה לא לבזבז זמן וכסף. תוצאות וחיסכון בשטח כבר בחודש הראשון."
+                      "האבחון הממוקד של צווארי הבקבוק נתן לנו בהירות מיידית איפה שווה להשקיע באוטומציות AI ואיפה לא לבזבז זמן וכסף. חיסכון ותוצאות בשטח."
                     </p>
                   </div>
                   <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80">
@@ -1022,45 +1021,7 @@ const App: React.FC = () => {
               </div>
             </section>
 
-            {/* 5. PROMPT LIBRARY SECTION */}
-            <section ref={communityRef} className="bg-white dark:bg-[#0D131F] rounded-[3rem] p-8 md:p-14 border border-slate-200 dark:border-slate-800 shadow-xl dark:shadow-none text-right">
-              <div className="grid lg:grid-cols-12 gap-10 items-center">
-                <div className="lg:col-span-8 space-y-6">
-                  <div>
-                    <span className="px-4 py-1.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 rounded-full text-xs font-bold mb-4 inline-block border border-cyan-500/30">
-                      מאגר הידע והפרומפטים
-                    </span>
-                    <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">מאגר הפרומפטים המקצועי של "מדברים בינה"</h2>
-                    <p className="text-slate-600 dark:text-slate-300 text-base md:text-xl font-medium leading-relaxed">
-                      דוגמאות והמחשות להנדסת פרומפטים נכונה. סננו לפי נושא, העתיקו והתנסו בעצמכם כדי להבין איך לרתום את המודל למשימות מוגדרות.
-                    </p>
-                  </div>
-
-                  <div className="flex flex-wrap gap-4 pt-4">
-                    <button onClick={goToPromptsView} className="px-6 py-3.5 bg-cyan-500 text-white font-black rounded-2xl text-xs hover:bg-cyan-400 transition-all shadow-md flex items-center gap-2">
-                      <span>מאגר הפרומפטים והתבניות לעסקים</span>
-                      <span>📚</span>
-                    </button>
-                    <a href="https://www.facebook.com/share/g/183u1ktJDZ/" target="_blank" rel="noopener noreferrer" className="px-6 py-3.5 bg-[#1877F2] text-white font-black rounded-2xl text-xs hover:bg-[#166fe5] transition-all shadow-md flex items-center gap-2">
-                      <span>כניסה לקהילת "מדברים בינה"</span>
-                      <span>👥</span>
-                    </a>
-                  </div>
-                </div>
-
-                <div className="lg:col-span-4 bg-slate-50 dark:bg-[#070A10] border border-slate-200 dark:border-slate-800 p-8 rounded-[2.5rem] shadow-inner text-center space-y-4">
-                  <div className="w-16 h-16 rounded-2xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 flex items-center justify-center text-3xl mx-auto">🚀</div>
-                  <h3 className="text-2xl font-black text-slate-900 dark:text-white">
-                    אוטוריטה וחדשנות
-                  </h3>
-                  <p className="text-xs text-slate-600 dark:text-slate-300 font-medium leading-relaxed">
-                    הובלת קהילת הידע והפרומפטים המובילה בישראל עם תובנות עדכניות ומתודולוגיות עבודה מוכחות.
-                  </p>
-                </div>
-              </div>
-            </section>
-
-            {/* 6. ABOUT (מי מוביל את התהליך) */}
+            {/* 5. ABOUT (מי מוביל את התהליך) */}
             <section ref={aboutRef} className="bg-white dark:bg-[#0D131F] rounded-[3rem] p-8 md:p-14 border border-slate-200 dark:border-slate-800 text-right animate-fadeIn shadow-2xl dark:shadow-none">
               <div className="grid lg:grid-cols-12 gap-10 items-center">
                 
@@ -1129,7 +1090,7 @@ const App: React.FC = () => {
                         <span>📈</span>
                         <span>מחויבות ל-ROI וחיסכון בזמן</span>
                       </div>
-                      <div className="text-xs font-medium text-slate-700 dark:text-slate-300 leading-relaxed">חיסכון של עשרות שעות עבודה ידניות בחודש.</div>
+                      <div className="text-xs font-medium text-slate-700 dark:text-slate-300 leading-relaxed">מיקוד בחיסכון בזמן ובעלויות שניתן למדוד.</div>
                     </div>
                   </div>
                 </div>
