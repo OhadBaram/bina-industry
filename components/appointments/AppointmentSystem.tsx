@@ -1,37 +1,42 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Appointment, BusinessProfile, ServiceItem, UserSession, WaitlistEntry } from './types';
-import { MOCK_BUSINESS, MOCK_SERVICES, INITIAL_APPOINTMENTS, INITIAL_WAITLIST } from './mockData';
+import { Appointment, ServiceItem, UserSession, WaitlistEntry } from './types';
+import { MOCK_SERVICES } from './mockData';
 import { extractCustomersFromData } from './dataAdapter';
 import { getGoogleCalendarUrl, downloadIcsFile, getWazeUrl } from './CalendarUtils';
 import { AdminDashboard } from './AdminDashboard';
 import { SubTabNav } from './SubTabNav';
+import {
+  loadAppointments,
+  saveAppointments,
+  loadBusiness,
+  saveBusiness,
+  loadWaitlist,
+  saveWaitlist,
+  loadSession,
+  saveSession,
+} from './storage';
 
 export const AppointmentSystem: React.FC = () => {
-  const [business, setBusiness] = useState<BusinessProfile>(MOCK_BUSINESS);
+  const [business, setBusiness] = useState(() => loadBusiness());
   const [services] = useState<ServiceItem[]>(MOCK_SERVICES);
-  const [appointments, setAppointments] = useState<Appointment[]>(() => {
-    const saved = localStorage.getItem('executive_appointments');
-    return saved ? JSON.parse(saved) : INITIAL_APPOINTMENTS;
-  });
-
-  const [waitlist, setWaitlist] = useState<WaitlistEntry[]>(INITIAL_WAITLIST);
+  const [appointments, setAppointments] = useState<Appointment[]>(() => loadAppointments());
+  const [waitlist, setWaitlist] = useState<WaitlistEntry[]>(() => loadWaitlist());
 
   const customers = useMemo(
     () => extractCustomersFromData(appointments, waitlist),
     [appointments, waitlist]
   );
 
-  const [session, setSession] = useState<UserSession>(() => {
-    const saved = localStorage.getItem('executive_session');
-    return saved ? JSON.parse(saved) : {
-      phone: '0536244330',
-      name: 'אוהד ברעם',
-      isLoggedIn: true
-    };
-  });
+  const [session, setSession] = useState<UserSession>(() => loadSession());
 
   const [viewMode, setViewMode] = useState<'customer' | 'admin'>('customer');
   const [activeTab, setActiveTab] = useState<'active' | 'history' | 'services' | 'about'>('active');
+
+  const [showWaitlistModal, setShowWaitlistModal] = useState(false);
+  const [waitlistServiceId, setWaitlistServiceId] = useState(services[0]?.id ?? '');
+  const [waitlistPreferredDate, setWaitlistPreferredDate] = useState(
+    new Date(Date.now() + 86400000).toISOString().split('T')[0]
+  );
 
   // Booking Modal State
   const [showBookingModal, setShowBookingModal] = useState<boolean>(false);
@@ -54,12 +59,20 @@ export const AppointmentSystem: React.FC = () => {
   };
 
   useEffect(() => {
-    localStorage.setItem('executive_appointments', JSON.stringify(appointments));
+    saveAppointments(appointments);
   }, [appointments]);
 
   useEffect(() => {
-    localStorage.setItem('executive_session', JSON.stringify(session));
+    saveSession(session);
   }, [session]);
+
+  useEffect(() => {
+    saveWaitlist(waitlist);
+  }, [waitlist]);
+
+  useEffect(() => {
+    saveBusiness(business);
+  }, [business]);
 
   // Check Cancellation Permission
   const isCancelAllowed = (aptDateTime: string) => {
@@ -100,7 +113,7 @@ export const AppointmentSystem: React.FC = () => {
       status: 'CONFIRMED',
       notes: bookingNotes,
       guarantee: {
-        type: 'J5_HOLD',
+        type: business.settings?.defaultGuaranteeType || 'J5_HOLD',
         amount: business.settings?.guaranteeHoldAmount || 50,
         isHeld: true,
         isCharged: false,
@@ -129,8 +142,35 @@ export const AppointmentSystem: React.FC = () => {
     }
   };
 
-  const activeAppointments = appointments.filter(a => a.status === 'CONFIRMED');
-  const pastAppointments = appointments.filter(a => a.status === 'COMPLETED' || a.status === 'CANCELLED');
+  const handleJoinWaitlist = (e: React.FormEvent) => {
+    e.preventDefault();
+    const service = services.find(s => s.id === waitlistServiceId) ?? services[0];
+    const entry: WaitlistEntry = {
+      id: `wait_${Date.now()}`,
+      customerName: customerName || session.name,
+      customerPhone: customerPhone || session.phone,
+      serviceId: service.id,
+      serviceTitle: service.title,
+      preferredDate: waitlistPreferredDate,
+      createdAt: new Date().toISOString(),
+    };
+    setWaitlist([entry, ...waitlist]);
+    setShowWaitlistModal(false);
+    triggerToast('נרשמת לרשימת המתנה! ניצור קשר כשיתפנה מועד.');
+  };
+
+  const activeAppointments = appointments.filter(a => a.status === 'CONFIRMED' || a.status === 'PENDING');
+  const pastAppointments = appointments.filter(
+    a => a.status === 'COMPLETED' || a.status === 'CANCELLED' || a.status === 'NO_SHOW'
+  );
+
+  const statusLabel = (status: Appointment['status']) => {
+    if (status === 'CONFIRMED') return 'פגישה מאושרת ✓';
+    if (status === 'PENDING') return 'ממתין לאישור ⏳';
+    if (status === 'COMPLETED') return 'הושלם';
+    if (status === 'NO_SHOW') return 'אי-התייצבות';
+    return 'בוטל';
+  };
 
   return (
     <div className="w-full max-w-md mx-auto bg-[#F8FAFC] text-slate-900 min-h-screen rounded-[2.5rem] overflow-hidden shadow-2xl border border-slate-300 relative font-assistant text-right pb-24" dir="rtl">
@@ -248,8 +288,10 @@ export const AppointmentSystem: React.FC = () => {
                     return (
                       <div key={apt.id} className="bg-white rounded-2xl p-3.5 border border-slate-200 shadow-xs space-y-2.5">
                         <div className="flex items-center justify-between">
-                          <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">
-                            פגישה מאושרת ✓
+                          <span className={`text-[10px] font-black px-2 py-0.5 rounded-full ${
+                            apt.status === 'PENDING' ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'
+                          }`}>
+                            {statusLabel(apt.status)}
                           </span>
                           <span className="text-xs font-black text-slate-900">₪{apt.price}</span>
                         </div>
@@ -259,6 +301,11 @@ export const AppointmentSystem: React.FC = () => {
                           <p className="text-[11px] text-slate-600 font-medium">
                             {dateStr} בשעה <strong>{timeStr}</strong> ({apt.durationMinutes} דקות)
                           </p>
+                          {apt.notes && (
+                            <p className="text-[10px] text-slate-500 mt-1 bg-slate-50 p-2 rounded-lg">
+                              📝 {apt.notes}
+                            </p>
+                          )}
                         </div>
 
                         {/* Calendar & Navigation Actions */}
@@ -319,7 +366,7 @@ export const AppointmentSystem: React.FC = () => {
                     <div key={apt.id} className="bg-white/80 rounded-2xl p-3 border border-slate-200 space-y-1 text-xs opacity-75">
                       <div className="flex items-center justify-between">
                         <span className="font-bold text-slate-800">{apt.serviceTitle}</span>
-                        <span className="text-[10px] font-bold text-slate-500">{apt.status === 'COMPLETED' ? 'הושלם' : 'בוטל'}</span>
+                        <span className="text-[10px] font-bold text-slate-500">{statusLabel(apt.status)}</span>
                       </div>
                       <span className="text-[10px] text-slate-400 font-mono block">
                         {new Date(apt.dateTime).toLocaleDateString('he-IL')}
@@ -371,8 +418,15 @@ export const AppointmentSystem: React.FC = () => {
             )}
           </div>
 
-          {/* Floating Action Button (FAB) for Booking */}
-          <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-30 w-full max-w-xs px-3">
+          {/* Floating Action Buttons */}
+          <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-30 w-full max-w-xs px-3 space-y-2">
+            <button
+              onClick={() => setShowWaitlistModal(true)}
+              className="w-full py-2.5 bg-white border border-cyan-500/40 text-cyan-700 font-black text-xs rounded-2xl shadow-md flex items-center justify-center gap-2 cursor-pointer active:scale-95 transition-all"
+            >
+              <span>הצטרפות לרשימת המתנה</span>
+              <span>⏳</span>
+            </button>
             <button
               onClick={() => setShowBookingModal(true)}
               className="w-full py-3.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-black text-sm rounded-2xl shadow-xl flex items-center justify-center gap-2 border border-white cursor-pointer active:scale-95 transition-all"
@@ -500,6 +554,48 @@ export const AppointmentSystem: React.FC = () => {
                 className="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 disabled:opacity-50 text-white font-black text-xs rounded-xl shadow-md transition-all cursor-pointer"
               >
                 אישור ותיאום הפגישה 🚀
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* WAITLIST MODAL */}
+      {showWaitlistModal && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-xs z-50 flex items-center justify-center p-3">
+          <div className="bg-white rounded-3xl p-5 w-full max-w-sm border border-slate-200 shadow-2xl space-y-3 text-right font-assistant">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+              <h3 className="text-sm font-black text-slate-900">הצטרפות לרשימת המתנה</h3>
+              <button onClick={() => setShowWaitlistModal(false)} className="text-slate-400 hover:text-slate-600 font-black">✕</button>
+            </div>
+            <form onSubmit={handleJoinWaitlist} className="space-y-3 text-xs">
+              <div>
+                <label className="block font-black text-slate-800 mb-1">שירות מבוקש</label>
+                <select
+                  value={waitlistServiceId}
+                  onChange={(e) => setWaitlistServiceId(e.target.value)}
+                  className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 font-bold"
+                >
+                  {services.map(s => (
+                    <option key={s.id} value={s.id}>{s.icon} {s.title}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block font-black text-slate-800 mb-1">מועד מועדף</label>
+                <input
+                  type="date"
+                  required
+                  value={waitlistPreferredDate}
+                  onChange={(e) => setWaitlistPreferredDate(e.target.value)}
+                  className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300"
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-black rounded-xl"
+              >
+                שליחה לרשימת המתנה ⏳
               </button>
             </form>
           </div>

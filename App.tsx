@@ -10,6 +10,8 @@ import { CookieBanner } from './components/CookieBanner';
 import { AccessibilityToolbar } from './components/AccessibilityToolbar';
 import { AiChatbot } from './components/AiChatbot';
 import { AppointmentSystem } from './components/appointments/AppointmentSystem';
+import { appendStoredLead } from './shared/leadStorage';
+import { FALLBACK_ANALYSIS, type LeadAnalysis } from './shared/leadConfig';
 
 // מערכת התראות (Toast)
 const Toast: React.FC<{ message: string; show: boolean }> = ({ message, show }) => (
@@ -334,10 +336,44 @@ const App: React.FC = () => {
           const leadJson = (await leadResult.value.json()) as {
             channels?: { sheets?: string; telegram?: string };
             sheetsDetail?: string | null;
+            analysis?: LeadAnalysis;
+            lead?: typeof leadPayload;
           };
           console.log('[lead] channels', leadJson.channels);
           if (leadJson.sheetsDetail) {
             console.warn('[lead] sheetsDetail', leadJson.sheetsDetail);
+          }
+          if (leadJson.analysis) {
+            appendStoredLead(
+              {
+                full_name: combinedIdentity,
+                user_name: userName,
+                company_name: companyName,
+                phone: leadData.phone,
+                email: leadData.email,
+                message: leadData.message,
+                created_at: leadPayload.created_at,
+              },
+              leadJson.analysis
+            );
+          } else {
+            appendStoredLead(
+              {
+                full_name: combinedIdentity,
+                user_name: userName,
+                company_name: companyName,
+                phone: leadData.phone,
+                email: leadData.email,
+                message: leadData.message,
+                created_at: leadPayload.created_at,
+              },
+              {
+                ...FALLBACK_ANALYSIS,
+                summary: leadData.message
+                  ? `פנייה מ-${combinedIdentity}: ${leadData.message.slice(0, 180)}`
+                  : FALLBACK_ANALYSIS.summary,
+              }
+            );
           }
         } catch {
           /* ignore parse */

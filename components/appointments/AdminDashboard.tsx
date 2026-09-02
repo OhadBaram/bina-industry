@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { Appointment, BusinessProfile, ServiceItem, WaitlistEntry, Customer, AdminTab } from './types';
+import React, { useState, useMemo } from 'react';
+import { Appointment, BusinessProfile, ServiceItem, WaitlistEntry, Customer, AdminTab, PaymentGuaranteeType } from './types';
 import { getWazeUrl } from './CalendarUtils';
 import { SubTabNav } from './SubTabNav';
+import { loadStoredLeads } from '../../shared/leadStorage';
 
 interface AdminDashboardProps {
   business: BusinessProfile;
@@ -23,12 +24,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   setAppointments,
   services,
   waitlist,
+  setWaitlist,
   customers,
   triggerToast,
   onSwitchToCustomerView
 }) => {
   const [adminTab, setAdminTab] = useState<AdminTab>('schedule');
-  const [filterStatus, setFilterStatus] = useState<'ALL' | 'CONFIRMED' | 'COMPLETED' | 'CANCELLED'>('ALL');
+  const [filterStatus, setFilterStatus] = useState<'ALL' | 'CONFIRMED' | 'PENDING' | 'COMPLETED' | 'CANCELLED' | 'NO_SHOW'>('ALL');
+  const storedLeads = useMemo(() => loadStoredLeads(), [adminTab]);
 
   const findService = (serviceId?: string) =>
     serviceId ? services.find(s => s.id === serviceId) : undefined;
@@ -38,6 +41,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     return service?.title ?? entry.serviceTitle;
   };
 
+  const toggleRiskFlag = (aptId: string) => {
+    setAppointments(appointments.map(a =>
+      a.id === aptId ? { ...a, isRiskFlagged: !a.isRiskFlagged } : a
+    ));
+    triggerToast('סימון סיכון עודכן');
+  };
+
+  const removeWaitlistEntry = (id: string) => {
+    setWaitlist(waitlist.filter(w => w.id !== id));
+    triggerToast('הוסר מרשימת המתנה');
+  };
+
   // Update status
   const handleStatusChange = (aptId: string, status: Appointment['status']) => {
     const updated = appointments.map(a => a.id === aptId ? { ...a, status } : a);
@@ -45,6 +60,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     triggerToast(
       status === 'COMPLETED' ? 'הפגישה סומנה כהושלמה בהצלחה ✓' :
       status === 'CONFIRMED' ? 'הפגישה אושרה ביומן ✓' :
+      status === 'PENDING' ? 'הפגישה הועברה לממתין לאישור ⏳' :
       'הפגישה בוטלה והשעה התפנתה ביומן'
     );
   };
@@ -139,6 +155,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           { id: 'schedule', label: 'יומן תיאומים' },
           { id: 'products', label: 'מאגר מוצרים' },
           { id: 'customers', label: `לקוחות (${customers.length})` },
+          { id: 'leads', label: `לידים (${storedLeads.length})` },
           { id: 'business_rules', label: 'הגדרות ומדיניות 🛡️' },
           { id: 'waitlist', label: `רשימת המתנה (${waitlist.length})` },
         ]}
@@ -152,7 +169,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           <div className="flex items-center justify-between">
             <h3 className="text-xs font-black text-slate-800">רשימת פגישות</h3>
             <div className="flex items-center gap-1">
-              {(['ALL', 'CONFIRMED', 'COMPLETED', 'CANCELLED'] as const).map(st => (
+              {(['ALL', 'CONFIRMED', 'PENDING', 'COMPLETED', 'CANCELLED', 'NO_SHOW'] as const).map(st => (
                 <button
                   key={st}
                   onClick={() => setFilterStatus(st)}
@@ -162,7 +179,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       : 'bg-slate-100 text-slate-600 border-transparent hover:text-cyan-600'
                   }`}
                 >
-                  {st === 'ALL' ? 'הכל' : st === 'CONFIRMED' ? 'מאושר' : st === 'COMPLETED' ? 'הושלם' : 'בוטל'}
+                  {st === 'ALL' ? 'הכל' :
+                   st === 'CONFIRMED' ? 'מאושר' :
+                   st === 'PENDING' ? 'ממתין' :
+                   st === 'COMPLETED' ? 'הושלם' :
+                   st === 'NO_SHOW' ? 'אי-הגעה' : 'בוטל'}
                 </button>
               ))}
             </div>
@@ -197,11 +218,20 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       )}
                       <span className={`text-[10px] font-black px-2 py-0.5 rounded-full ${
                         apt.status === 'CONFIRMED' ? 'bg-emerald-100 text-emerald-700' :
+                        apt.status === 'PENDING' ? 'bg-amber-100 text-amber-700' :
                         apt.status === 'COMPLETED' ? 'bg-blue-100 text-blue-700' :
                         apt.status === 'NO_SHOW' ? 'bg-purple-100 text-purple-700' : 'bg-red-100 text-red-700'
                       }`}>
-                        {apt.status === 'CONFIRMED' ? 'מאושר ✓' : apt.status === 'COMPLETED' ? 'הושלם 🎉' : apt.status === 'NO_SHOW' ? 'אי-התייצבות' : 'מבוטל'}
+                        {apt.status === 'CONFIRMED' ? 'מאושר ✓' :
+                         apt.status === 'PENDING' ? 'ממתין ⏳' :
+                         apt.status === 'COMPLETED' ? 'הושלם 🎉' :
+                         apt.status === 'NO_SHOW' ? 'אי-התייצבות' : 'מבוטל'}
                       </span>
+                      {apt.isRiskFlagged && (
+                        <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-red-50 text-red-700 border border-red-200">
+                          סיכון ⚠️
+                        </span>
+                      )}
                     </div>
                   </div>
 
@@ -218,6 +248,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                     <span className="font-mono">{dateStr} | {timeStr}</span>
                     <span className="font-black text-slate-900">₪{servicePrice}</span>
                   </div>
+
+                  {apt.notes && (
+                    <p className="text-[10px] text-slate-600 bg-amber-50 border border-amber-100 p-2 rounded-lg">
+                      📝 {apt.notes}
+                    </p>
+                  )}
 
                   {/* Actions */}
                   <div className="flex items-center gap-1.5 pt-1 border-t border-slate-100 text-[10px]">
@@ -237,6 +273,35 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                         חייב דמי אי-התייצבות (₪{apt.guarantee.amount}) 💳
                       </button>
                     )}
+
+                    {apt.status === 'PENDING' && (
+                      <button
+                        onClick={() => handleStatusChange(apt.id, 'CONFIRMED')}
+                        className="py-1 px-2 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg font-black"
+                      >
+                        אשר ✓
+                      </button>
+                    )}
+
+                    {apt.status !== 'PENDING' && apt.status !== 'CONFIRMED' && (
+                      <button
+                        onClick={() => handleStatusChange(apt.id, 'PENDING')}
+                        className="py-1 px-2 bg-amber-50 text-amber-700 border border-amber-200 rounded-lg font-black"
+                      >
+                        החזר לממתין
+                      </button>
+                    )}
+
+                    <button
+                      onClick={() => toggleRiskFlag(apt.id)}
+                      className={`py-1 px-2 rounded-lg font-black border ${
+                        apt.isRiskFlagged
+                          ? 'bg-red-50 text-red-700 border-red-200'
+                          : 'bg-slate-50 text-slate-600 border-slate-200'
+                      }`}
+                    >
+                      {apt.isRiskFlagged ? 'בטל סיכון' : 'סמן סיכון'} ⚠️
+                    </button>
 
                     {apt.status !== 'COMPLETED' && (
                       <button
@@ -412,7 +477,168 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             <p className="text-[11px] text-slate-600 leading-relaxed">
               <strong>איך זה עובד?</strong> הלקוח מזין פרטי אשראי בעת ההזמנה. לא מבוצע חיוב בפועל, אך מתבצעת תפיסת מסגרת המאפשרת גביית דמי אי-התייצבות בלחיצה אחת במידת הצורך.
             </p>
+            <div className="flex items-center gap-1.5 pt-1">
+              {([30, 50, 75, 100] as const).map(amount => (
+                <button
+                  key={amount}
+                  onClick={() => {
+                    setBusiness(prev => ({
+                      ...prev,
+                      settings: { ...prev.settings, guaranteeHoldAmount: amount }
+                    }));
+                    triggerToast(`סכום מסגרת הביטחון עודכן ל-₪${amount}`);
+                  }}
+                  className={`flex-1 py-1.5 rounded-xl font-black text-xs transition-all ${
+                    business.settings?.guaranteeHoldAmount === amount
+                      ? 'bg-purple-600 text-white'
+                      : 'bg-slate-100 text-slate-700'
+                  }`}
+                >
+                  ₪{amount}
+                </button>
+              ))}
+            </div>
+            <div className="flex flex-wrap items-center gap-1.5 pt-1">
+              {(['NONE', 'J5_HOLD', 'PARTIAL_DEPOSIT', 'FULL_PAYMENT'] as PaymentGuaranteeType[]).map(type => (
+                <button
+                  key={type}
+                  onClick={() => {
+                    setBusiness(prev => ({
+                      ...prev,
+                      settings: { ...prev.settings, defaultGuaranteeType: type }
+                    }));
+                    triggerToast(`סוג מסגרת עודכן ל-${type}`);
+                  }}
+                  className={`px-2 py-1 rounded-lg font-black text-[10px] transition-all ${
+                    business.settings?.defaultGuaranteeType === type
+                      ? 'bg-purple-600 text-white'
+                      : 'bg-slate-100 text-slate-700'
+                  }`}
+                >
+                  {type === 'NONE' ? 'ללא' : type === 'J5_HOLD' ? 'J5' : type === 'PARTIAL_DEPOSIT' ? 'מקדמה' : 'מלא'}
+                </button>
+              ))}
+            </div>
           </div>
+
+          {/* Rule 5: Late arrival grace */}
+          <div className="bg-white rounded-2xl p-3.5 border border-slate-200 space-y-2 shadow-xs">
+            <div className="flex items-center justify-between">
+              <h4 className="font-black text-slate-900">5. זמן חסד לאיחור לקוח</h4>
+              <span className="text-[10px] text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full font-bold">גמישות תפעולית</span>
+            </div>
+            <div className="flex items-center gap-1.5 pt-1">
+              {[0, 5, 10, 15, 30].map(mins => (
+                <button
+                  key={mins}
+                  onClick={() => {
+                    setBusiness(prev => ({
+                      ...prev,
+                      settings: { ...prev.settings, lateArrivalGraceMinutes: mins }
+                    }));
+                    triggerToast(`זמן חסד לאיחור עודכן ל-${mins} דקות`);
+                  }}
+                  className={`flex-1 py-1.5 rounded-xl font-black text-xs transition-all ${
+                    business.settings?.lateArrivalGraceMinutes === mins
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-slate-100 text-slate-700'
+                  }`}
+                >
+                  {mins === 0 ? 'ללא' : `${mins} דק'`}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Business profile */}
+          <div className="bg-white rounded-2xl p-3.5 border border-slate-200 space-y-2 shadow-xs">
+            <h4 className="font-black text-slate-900">6. פרטי העסק (פרופיל)</h4>
+            <div className="grid grid-cols-1 gap-2">
+              <input
+                value={business.name}
+                onChange={(e) => setBusiness(prev => ({ ...prev, name: e.target.value }))}
+                className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold"
+                placeholder="שם העסק"
+              />
+              <input
+                value={business.phoneWhatsapp}
+                onChange={(e) => setBusiness(prev => ({ ...prev, phoneWhatsapp: e.target.value }))}
+                className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs font-mono"
+                placeholder="טלפון / וואטסאפ"
+                dir="ltr"
+              />
+              <div className="grid grid-cols-2 gap-2">
+                <input
+                  value={business.address}
+                  onChange={(e) => setBusiness(prev => ({ ...prev, address: e.target.value }))}
+                  className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs"
+                  placeholder="כתובת"
+                />
+                <input
+                  value={business.city}
+                  onChange={(e) => setBusiness(prev => ({ ...prev, city: e.target.value }))}
+                  className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs"
+                  placeholder="עיר"
+                />
+              </div>
+              <textarea
+                value={business.tagline}
+                onChange={(e) => setBusiness(prev => ({ ...prev, tagline: e.target.value }))}
+                rows={2}
+                className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs resize-none"
+                placeholder="תיאור קצר"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* TAB: LEADS FROM WEBSITE */}
+      {adminTab === 'leads' && (
+        <div className="space-y-2.5">
+          <div className="flex items-center justify-between">
+            <h3 className="text-xs font-black text-slate-800">לידים מהאתר</h3>
+            <span className="text-[10px] font-bold text-cyan-700 bg-cyan-50 px-2 py-0.5 rounded-full">
+              {storedLeads.length} פניות
+            </span>
+          </div>
+          <p className="text-[10px] text-slate-500">
+            מוצגים לידים שנשמרו מקומית לאחר שליחת טופס באתר. נתונים מלאים נשלחים גם לגיליון Google, טלגרם ומייל.
+          </p>
+          {storedLeads.length === 0 ? (
+            <div className="bg-white rounded-2xl p-5 text-center text-xs text-slate-500 border border-slate-200">
+              אין לידים שמורים עדיין. שלחו פנייה דרך טופס האתר.
+            </div>
+          ) : (
+            storedLeads.map(entry => (
+              <div key={entry.id} className="bg-white rounded-2xl p-3 border border-slate-200 shadow-xs space-y-2 text-xs">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-black text-slate-900">{entry.lead.full_name}</h4>
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                    entry.analysis.classification === 'Complaint'
+                      ? 'bg-red-100 text-red-700'
+                      : 'bg-emerald-100 text-emerald-700'
+                  }`}>
+                    {entry.analysis.classification}
+                  </span>
+                </div>
+                <p className="text-[10px] text-slate-500 font-mono" dir="ltr">{entry.lead.phone} · {entry.lead.email}</p>
+                <p className="text-[11px] text-slate-700"><strong>סיכום:</strong> {entry.analysis.summary}</p>
+                <p className="text-[11px] text-slate-600"><strong>צרכים:</strong> {entry.analysis.customer_needs}</p>
+                <p className="text-[11px] text-slate-600"><strong>פתרון:</strong> {entry.analysis.solution}</p>
+                <div className="flex items-center gap-2 text-[10px] text-slate-500">
+                  <span>דחיפות: {entry.analysis.urgency_level}</span>
+                  <span>·</span>
+                  <span>{new Date(entry.receivedAt).toLocaleString('he-IL')}</span>
+                </div>
+                {entry.lead.message && (
+                  <p className="text-[10px] text-slate-500 bg-slate-50 p-2 rounded-lg border border-slate-100">
+                    הודעה מקורית: {entry.lead.message}
+                  </p>
+                )}
+              </div>
+            ))
+          )}
         </div>
       )}
 
@@ -494,6 +720,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 <span>הודעת וואטסאפ</span>
                 <span>💬</span>
               </a>
+              <button
+                onClick={() => removeWaitlistEntry(item.id)}
+                className="px-2 py-1.5 bg-red-50 text-red-600 border border-red-200 text-[10px] font-black rounded-xl"
+              >
+                הסר ✕
+              </button>
             </div>
             );
           })}
