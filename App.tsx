@@ -804,7 +804,7 @@ const App: React.FC = () => {
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
               title={isDarkMode ? "מעבר למצב בהיר ☀️" : "מעבר למצב כהה 🌙"}
-              className="p-3 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-cyan-600 dark:text-cyan-400 hover:text-cyan-500 rounded-xl transition-all font-black text-sm flex items-center justify-center cursor-pointer shadow-md"
+              className="hidden lg:flex p-3 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-cyan-600 dark:text-cyan-400 hover:text-cyan-500 rounded-xl transition-all font-black text-sm items-center justify-center cursor-pointer shadow-md"
             >
               {isDarkMode ? '☀️' : '🌙'}
             </button>
@@ -813,10 +813,10 @@ const App: React.FC = () => {
               href="https://wa.me/972536244330?text=%D7%94%D7%99%D7%99%20%D7%90%D7%95%D7%94%D7%93%2C%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%93%D7%A8%D7%9A%20%D7%94%D7%90%D7%AA%D7%A8%20%22%D7%91%D7%99%D7%A0%D7%94%20%D7%9C%D7%AA%D7%A2%D7%A9%D7%99%D7%99%D7%94%22%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%AA%D7%90%D7%9D%20%D7%A9%D7%99%D7%97%D7%AA%20%D7%90%D7%91%D7%97%D7%95%D7%9F"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-4 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-black text-xs md:text-sm transition-all shadow-md active:scale-95 flex items-center gap-1.5 cursor-pointer border border-emerald-400/30"
+              className="hidden sm:flex px-4 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-black text-xs md:text-sm transition-all shadow-md active:scale-95 items-center gap-1.5 cursor-pointer border border-emerald-400/30"
               title="פנייה מהירה בוואטסאפ (053-6244330)"
             >
-              <span className="hidden sm:inline">וואטסאפ</span>
+              <span>וואטסאפ</span>
               <span>💬</span>
             </a>
 
@@ -856,6 +856,13 @@ const App: React.FC = () => {
               <button onClick={scrollToMethodology} className="w-full text-right px-4 py-3 rounded-xl text-sm font-black bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">תהליך העבודה</button>
               <button onClick={goToPromptsView} className={`w-full text-right px-4 py-3 rounded-xl text-sm font-black ${mainView === 'prompts' ? 'bg-cyan-500/20 text-cyan-600 dark:text-cyan-300 border border-cyan-500/40' : 'bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800'}`}>מאגר הפרומפטים</button>
               <button onClick={scrollToAbout} className="w-full text-right px-4 py-3 rounded-xl text-sm font-black bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">אודות</button>
+              <button
+                type="button"
+                onClick={() => setIsDarkMode(!isDarkMode)}
+                className="w-full text-right px-4 py-3 rounded-xl text-sm font-black bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800"
+              >
+                {isDarkMode ? 'מעבר למצב בהיר ☀️' : 'מעבר למצב כהה 🌙'}
+              </button>
               <a href="https://www.facebook.com/share/g/183u1ktJDZ/" target="_blank" rel="noopener noreferrer" className="w-full text-right px-4 py-3 rounded-xl text-sm font-black bg-blue-600 text-white">קהילה 👥</a>
             </div>
           </nav>
@@ -871,7 +878,7 @@ const App: React.FC = () => {
             {/* 1. HERO SECTION */}
             <section className="text-center py-12 md:py-24 relative">
               <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 rounded-full text-xs md:text-sm font-bold mb-8 border border-cyan-500/30 shadow-sm">
-                <span>אפיון תהליכים • סדנאות Hands-on • אוטומציה מעשית</span>
+                <span>נהלים מהידע של העסק • סדנאות מעשיות • אוטומציה בשטח</span>
               </div>
               
               <h1 className={`text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[1.1] max-w-5xl mx-auto mb-8 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
@@ -882,7 +889,7 @@ const App: React.FC = () => {
               </h1>
 
               <p className={`text-lg md:text-2xl font-medium max-w-3xl mx-auto leading-relaxed mb-4 ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
-                אני מלווה עסקים וארגונים באפיון תהליכים, כתיבת מסמכי עבודה (SOPs) ואוטומציות מעשיות באמצעות כלי AI מתקדמים.
+                אני מלווה עסקים וארגונים באפיון תהליכים, כתיבת נהלים ומסמכי עבודה, ואוטומציות מעשיות באמצעות כלי AI.
               </p>
 
               <p className={`text-base md:text-lg font-bold max-w-2xl mx-auto mb-10 ${isDarkMode ? 'text-cyan-400' : 'text-cyan-600'}`}>
@@ -923,7 +930,7 @@ const App: React.FC = () => {
                 <span className="text-cyan-600 dark:text-cyan-400 text-xs font-bold uppercase tracking-wider block mb-2">מסלול 02</span>
                 <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">נהלים מהידע של העסק — לא כלי מדף</h2>
                 <p className="text-slate-600 dark:text-slate-400 font-bold text-base md:text-lg">
-                  אפיון תהליכים ומסמכים שמבוססים על איך העסק באמת עובד, ומתורגמים לנהלים, הצעות מחיר ומסמכי דרישות עקביים.
+                  הידע שכבר קיים בעסק מתורגם לנהלים, הצעות מחיר ומסמכי דרישות שהצוות באמת עובד איתם.
                 </p>
               </div>
               <div className="max-w-2xl mx-auto">
@@ -1111,7 +1118,7 @@ const App: React.FC = () => {
                         <strong className="text-slate-900 dark:text-white font-black text-xl block mb-2">נעים להכיר, שמי אוהד ברעם.</strong>
                       </p>
                       <p>
-                        אני מנהל מוצר ובעל תואר שני בניהול ארגוני שירות בהצטיינות. המומחיות שלי היא לתרגם צרכים עסקיים מורכבים לתהליכי עבודה ברורים, מסמכי אפיון חכמים (SOPs/PRDs) ופתרונות AI שמייצרים ערך אמיתי בשטח.
+                        אני מנהל מוצר ובעל תואר שני בניהול ארגוני שירות בהצטיינות. המומחיות שלי היא לתרגם צרכים עסקיים מורכבים לתהליכי עבודה ברורים, נהלים מהידע של העסק, ופתרונות AI שמייצרים ערך אמיתי בשטח.
                       </p>
                       <p>
                         לאורך השנים ליוויתי והובלתי תהליכים מורכבים משלב האבחון והגדרת הדרישות ועד להטמעה מלאה בקרב צוותים ועובדים. אני מאמין שהמפתח להצלחה ב-AI אינו "עוד כלי מדף", אלא התאמה מדויקת לתהליכי העבודה היומיומיים של העסק והכשרה מעשית של האנשים שמפעילים אותם.
@@ -1126,7 +1133,7 @@ const App: React.FC = () => {
                         <span>🎯</span>
                         <span>אפיון תהליכים מעמיק</span>
                       </div>
-                      <div className="text-xs font-medium text-slate-700 dark:text-slate-300 leading-relaxed">בניית מסמכי SOPs ונהלי עבודה חכמים ומדויקים.</div>
+                      <div className="text-xs font-medium text-slate-700 dark:text-slate-300 leading-relaxed">בניית נהלי עבודה ומסמכים מהידע של העסק.</div>
                     </div>
                     <div className="bg-white dark:bg-[#070A10] p-5 rounded-2xl border border-blue-500/30 dark:border-slate-800 shadow-sm hover:shadow-md transition-all">
                       <div className="text-blue-700 dark:text-blue-400 font-black text-sm md:text-base mb-1.5 flex items-center gap-1.5">
@@ -1175,7 +1182,7 @@ const App: React.FC = () => {
                     <div className="p-5 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl">
                       <span className="text-xs font-black text-emerald-600 dark:text-emerald-400 block mb-1.5">✅ איתי</span>
                       <p className="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 leading-relaxed">
-                        אפיון תהליך מעמיק, מסמכי SOPs מסודרים ומתודולוגיה מובנית שמייצרת תוצרים אמינים לאורך זמן.
+                        אפיון תהליך מעמיק, נהלים מסודרים מהידע של העסק ומתודולוגיה מובנית שמייצרת תוצרים אמינים לאורך זמן.
                       </p>
                     </div>
                   </div>
@@ -1450,7 +1457,7 @@ const App: React.FC = () => {
           © 2026 בינה לתעשייה. כל הזכויות שמורות.
         </p>
         <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 text-center" aria-label="גרסת האתר">
-          גרסה 2026.09.03ב
+          גרסה 2026.09.03ג
         </p>
         
         <div className="flex flex-wrap justify-center items-center gap-4 text-xs font-bold text-slate-600 dark:text-slate-400">
