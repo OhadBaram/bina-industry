@@ -3,6 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <title>בינה לתעשייה | אפיון תהליכים, כתיבת SOPs והטמעת AI מעשית</title>
     <meta name="description" content="מטמיעים AI בעבודה האמיתית, לא במצגות. אפיון תהליכים, כתיבת מסמכי עבודה (SOPs), סדנאות Hands-on מעשיות ואוטומציות לתוצאות עסקיות בשטח." />
     <meta name="keywords" content="אפיון תהליכים, כתיבת SOPs, סדנאות AI, הטמעת AI לעסקים, הנדסת פרומפטים, אוטומציה עסקית, בינה לתעשייה" />
@@ -24,6 +27,20 @@
     <meta name="twitter:image" content="https://bina-industry.co.il/ohad.jpeg" />
 
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;500;600;700;800&family=Frank+Ruhl+Libre:wght@700;900&display=swap" rel="stylesheet">
+    <script>
+      (function () {
+        var SITE_VERSION = '2026-09-03';
+        try {
+          if (localStorage.getItem('bina_site_version') !== SITE_VERSION) {
+            localStorage.setItem('bina_site_version', SITE_VERSION);
+            if (!location.search.includes('v=' + SITE_VERSION)) {
+              var next = location.pathname + '?v=' + SITE_VERSION + location.hash;
+              location.replace(next);
+            }
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body class="bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
     <div id="root"></div>
