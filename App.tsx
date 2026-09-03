@@ -469,10 +469,7 @@ const App: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const sopService = B2B_SERVICES.find((s) => s.id === 'sop')!;
-  const otherServices = B2B_SERVICES.filter((s) => s.id !== 'sop');
-
-  const renderServiceCard = (srv: B2BService, options?: { hideHeading?: boolean }) => (
+  const renderServiceCard = (srv: B2BService) => (
     <div
       key={srv.id}
       className="bg-white dark:bg-[#0D131F] rounded-[3rem] p-8 md:p-10 border border-slate-200 dark:border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between group shadow-xl dark:shadow-none"
@@ -487,16 +484,12 @@ const App: React.FC = () => {
           </span>
         </div>
 
-        {!options?.hideHeading && (
-          <>
-            <span className="text-xs font-bold text-cyan-600 dark:text-cyan-400 block mb-1">
-              {srv.subtitle}
-            </span>
-            <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-4 leading-tight">
-              {srv.title}
-            </h3>
-          </>
-        )}
+        <span className="text-xs font-bold text-cyan-600 dark:text-cyan-400 block mb-1">
+          {srv.subtitle}
+        </span>
+        <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-4 leading-tight">
+          {srv.title}
+        </h3>
 
         <p className="text-slate-600 dark:text-slate-300 text-sm md:text-base font-medium leading-relaxed mb-6">
           {srv.shortDesc}
@@ -924,17 +917,18 @@ const App: React.FC = () => {
               </div>
             </section>
 
-            {/* 2. FEATURED SOP PATH (מסלול 02) */}
-            <section className="py-6 space-y-8">
+            {/* 2. THREE TRACKS IN ORDER 01 → 02 → 03 */}
+            <section ref={capabilitiesRef} className="py-6 space-y-12">
               <div className="text-center max-w-3xl mx-auto">
-                <span className="text-cyan-600 dark:text-cyan-400 text-xs font-bold uppercase tracking-wider block mb-2">מסלול 02</span>
-                <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">נהלים מהידע של העסק — לא כלי מדף</h2>
+                <span className="text-cyan-600 dark:text-cyan-400 text-xs font-bold uppercase tracking-wider block mb-2">שלושה מסלולים</span>
+                <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">אבחון, נהלים, והכשרת צוותים</h2>
                 <p className="text-slate-600 dark:text-slate-400 font-bold text-base md:text-lg">
-                  הידע שכבר קיים בעסק מתורגם לנהלים, הצעות מחיר ומסמכי דרישות שהצוות באמת עובד איתם.
+                  שלושה מסלולי עבודה ברורים — לפי הסדר: אבחון, נהלים מהידע של העסק, וסדנאות מעשיות.
                 </p>
               </div>
-              <div className="max-w-2xl mx-auto">
-                {renderServiceCard(sopService, { hideHeading: true })}
+
+              <div className="grid md:grid-cols-3 gap-8">
+                {B2B_SERVICES.map((srv) => renderServiceCard(srv))}
               </div>
             </section>
 
@@ -1032,22 +1026,7 @@ const App: React.FC = () => {
               </div>
             </section>
 
-            {/* 5. CORE SERVICES (מסלולים נוספים — ללא כפילות SOP) */}
-            <section ref={capabilitiesRef} className="py-6 space-y-12">
-              <div className="text-center max-w-3xl mx-auto">
-                <span className="text-cyan-600 dark:text-cyan-400 text-xs font-bold uppercase tracking-wider block mb-2">מסלולים נוספים</span>
-                <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">אבחון, סדנאות והטמעה</h2>
-                <p className="text-slate-600 dark:text-slate-400 font-bold text-base md:text-lg">
-                  שני מסלולים משלימים: אבחון צווארי בקבוק, והכשרת צוותים בפועל.
-                </p>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                {otherServices.map((srv) => renderServiceCard(srv))}
-              </div>
-            </section>
-
-            {/* 6. METHODOLOGY (מתודולוגיית העבודה - 4 השלבים) */}
+            {/* 5. METHODOLOGY (מתודולוגיית העבודה - 4 השלבים) */}
             <section ref={methodologyRef} className="bg-white dark:bg-[#0D131F] text-slate-900 dark:text-white rounded-[3rem] p-8 md:p-14 border border-slate-200 dark:border-slate-800 shadow-2xl dark:shadow-none">
               <div className="text-center mb-14">
                 <span className="inline-flex items-center px-4 py-1.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 rounded-full text-xs font-bold border border-cyan-500/30 uppercase tracking-wider mb-2">
@@ -1457,7 +1436,7 @@ const App: React.FC = () => {
           © 2026 בינה לתעשייה. כל הזכויות שמורות.
         </p>
         <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 text-center" aria-label="גרסת האתר">
-          גרסה 2026.09.03ג
+          גרסה 2026.09.03ד
         </p>
         
         <div className="flex flex-wrap justify-center items-center gap-4 text-xs font-bold text-slate-600 dark:text-slate-400">
