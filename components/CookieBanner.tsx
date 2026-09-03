@@ -25,7 +25,7 @@ export const CookieBanner: React.FC<CookieBannerProps> = ({ onOpenPrivacyPolicy,
             <h4 className="font-black text-base md:text-lg">שמירה על הפרטיות והעוגיות שלך</h4>
           </div>
           <p className="text-xs md:text-sm font-medium text-slate-300 leading-relaxed max-w-3xl">
-            אנו משתמשים בעוגיות הכרחיות ובכלים אנליטיים כדי להבטיח את תפעולו התקין של האתר, לשפר את חוויית המשתמש ולספק לך תוכן מותאם אישית.
+            האתר משתמש בעוגיות הכרחיות ובכלים אנליטיים כדי להבטיח תפעול תקין, לשפר את חוויית הגלישה ולספק תוכן מותאם.
           </p>
         </div>
 
