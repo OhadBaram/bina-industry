@@ -1430,6 +1430,9 @@ const App: React.FC = () => {
         <p className="text-sm font-black text-slate-600 dark:text-slate-400 uppercase tracking-wider text-center">
           © 2026 בינה לתעשייה. כל הזכויות שמורות.
         </p>
+        <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 text-center" aria-label="גרסת האתר">
+          גרסה 2026.09.03
+        </p>
         
         <div className="flex flex-wrap justify-center items-center gap-4 text-xs font-bold text-slate-600 dark:text-slate-400">
           <button onClick={() => setIsTermsOfServiceOpen(true)} className="hover:text-cyan-600 dark:hover:text-cyan-400 underline transition-colors cursor-pointer bg-transparent border-none">תנאי שימוש</button>
