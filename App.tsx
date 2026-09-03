@@ -41,6 +41,7 @@ const App: React.FC = () => {
     return !localStorage.getItem('b2b_cookie_consent');
   });
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
   // --- ניהול מוזיקת רקע וקריוקי סלוגן ---
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
@@ -427,7 +428,10 @@ const App: React.FC = () => {
     performCopy();
   };
 
+  const closeMobileNav = () => setIsMobileNavOpen(false);
+
   const openContactView = () => {
+    closeMobileNav();
     setMainView('home');
     setTimeout(() => {
       contactFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -435,6 +439,7 @@ const App: React.FC = () => {
   };
 
   const scrollToCapabilities = () => {
+    closeMobileNav();
     setMainView('home');
     setTimeout(() => {
       capabilitiesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -442,6 +447,7 @@ const App: React.FC = () => {
   };
 
   const scrollToMethodology = () => {
+    closeMobileNav();
     setMainView('home');
     setTimeout(() => {
       methodologyRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -449,6 +455,7 @@ const App: React.FC = () => {
   };
 
   const scrollToAbout = () => {
+    closeMobileNav();
     setMainView('home');
     setTimeout(() => {
       aboutRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -457,6 +464,7 @@ const App: React.FC = () => {
 
   // מעבר לתצוגת מאגר הפרומפטים וגלילה לראש העמוד
   const goToPromptsView = () => {
+    closeMobileNav();
     setMainView('prompts');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -464,7 +472,7 @@ const App: React.FC = () => {
   const sopService = B2B_SERVICES.find((s) => s.id === 'sop')!;
   const otherServices = B2B_SERVICES.filter((s) => s.id !== 'sop');
 
-  const renderServiceCard = (srv: B2BService, options?: { hideTitle?: boolean }) => (
+  const renderServiceCard = (srv: B2BService, options?: { hideHeading?: boolean }) => (
     <div
       key={srv.id}
       className="bg-white dark:bg-[#0D131F] rounded-[3rem] p-8 md:p-10 border border-slate-200 dark:border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between group shadow-xl dark:shadow-none"
@@ -479,13 +487,15 @@ const App: React.FC = () => {
           </span>
         </div>
 
-        <span className="text-xs font-bold text-cyan-600 dark:text-cyan-400 block mb-1">
-          {srv.subtitle}
-        </span>
-        {!options?.hideTitle && (
-          <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-4 leading-tight">
-            {srv.title}
-          </h3>
+        {!options?.hideHeading && (
+          <>
+            <span className="text-xs font-bold text-cyan-600 dark:text-cyan-400 block mb-1">
+              {srv.subtitle}
+            </span>
+            <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-4 leading-tight">
+              {srv.title}
+            </h3>
+          </>
         )}
 
         <p className="text-slate-600 dark:text-slate-300 text-sm md:text-base font-medium leading-relaxed mb-6">
@@ -781,7 +791,7 @@ const App: React.FC = () => {
           
           <nav className="hidden lg:flex items-center gap-1 bg-slate-100 dark:bg-slate-900/90 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-800">
             <button onClick={scrollToCapabilities} className="px-5 py-2.5 rounded-xl font-black text-xs md:text-sm text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all cursor-pointer">השירותים</button>
-            <button onClick={scrollToMethodology} className="px-5 py-2.5 rounded-xl font-black text-xs md:text-sm text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all cursor-pointer">תהליך האפיון</button>
+            <button onClick={scrollToMethodology} className="px-5 py-2.5 rounded-xl font-black text-xs md:text-sm text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all cursor-pointer">תהליך העבודה</button>
             <button onClick={goToPromptsView} className={`px-5 py-2.5 rounded-xl font-black text-xs md:text-sm transition-all cursor-pointer ${mainView === 'prompts' ? 'bg-cyan-500/20 text-cyan-600 dark:text-cyan-300 border border-cyan-500/40' : 'text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400'}`}>מאגר הפרומפטים</button>
             <button onClick={scrollToAbout} className="px-5 py-2.5 rounded-xl font-black text-xs md:text-sm text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-all cursor-pointer">אודות</button>
             <a href="https://www.facebook.com/share/g/183u1ktJDZ/" target="_blank" rel="noopener noreferrer" className="px-4 py-2.5 rounded-xl font-black text-xs md:text-sm text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-all flex items-center gap-1">
@@ -826,21 +836,30 @@ const App: React.FC = () => {
               <span className="sm:hidden">אבחון חינם</span>
               <span>📞</span>
             </button>
+
+            <button
+              type="button"
+              className="lg:hidden p-3 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 rounded-xl font-black text-lg leading-none cursor-pointer"
+              aria-expanded={isMobileNavOpen}
+              aria-label={isMobileNavOpen ? 'סגירת תפריט' : 'פתיחת תפריט'}
+              onClick={() => setIsMobileNavOpen((open) => !open)}
+            >
+              {isMobileNavOpen ? '✕' : '☰'}
+            </button>
           </div>
         </div>
 
-        {/* Mobile Nav */}
-        <nav className="lg:hidden mt-3 pt-3 border-t border-slate-200 dark:border-slate-800" aria-label="ניווט ראשי">
-          <div className="-mx-6 px-6 overflow-x-auto no-scrollbar">
-            <div className="flex w-max min-w-full items-center gap-2 pb-1">
-              <button onClick={scrollToCapabilities} className="px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 whitespace-nowrap bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">השירותים</button>
-              <button onClick={scrollToMethodology} className="px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 whitespace-nowrap bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">תהליך האפיון</button>
-              <button onClick={goToPromptsView} className={`px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 whitespace-nowrap ${mainView === 'prompts' ? 'bg-cyan-500/20 text-cyan-600 dark:text-cyan-300 border border-cyan-500/40' : 'bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800'}`}>מאגר הפרומפטים</button>
-              <button onClick={scrollToAbout} className="px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 whitespace-nowrap bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">אודות</button>
-              <a href="https://www.facebook.com/share/g/183u1ktJDZ/" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-xl text-xs font-black flex-shrink-0 whitespace-nowrap bg-blue-600 text-white">קהילה 👥</a>
+        {isMobileNavOpen && (
+          <nav className="lg:hidden mt-3 pt-3 border-t border-slate-200 dark:border-slate-800" aria-label="ניווט ראשי">
+            <div className="flex flex-col gap-2">
+              <button onClick={scrollToCapabilities} className="w-full text-right px-4 py-3 rounded-xl text-sm font-black bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">השירותים</button>
+              <button onClick={scrollToMethodology} className="w-full text-right px-4 py-3 rounded-xl text-sm font-black bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">תהליך העבודה</button>
+              <button onClick={goToPromptsView} className={`w-full text-right px-4 py-3 rounded-xl text-sm font-black ${mainView === 'prompts' ? 'bg-cyan-500/20 text-cyan-600 dark:text-cyan-300 border border-cyan-500/40' : 'bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800'}`}>מאגר הפרומפטים</button>
+              <button onClick={scrollToAbout} className="w-full text-right px-4 py-3 rounded-xl text-sm font-black bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">אודות</button>
+              <a href="https://www.facebook.com/share/g/183u1ktJDZ/" target="_blank" rel="noopener noreferrer" className="w-full text-right px-4 py-3 rounded-xl text-sm font-black bg-blue-600 text-white">קהילה 👥</a>
             </div>
-          </div>
-        </nav>
+          </nav>
+        )}
       </header>
 
       <main className="max-w-7xl mx-auto px-6 py-10">
@@ -908,7 +927,7 @@ const App: React.FC = () => {
                 </p>
               </div>
               <div className="max-w-2xl mx-auto">
-                {renderServiceCard(sopService, { hideTitle: true })}
+                {renderServiceCard(sopService, { hideHeading: true })}
               </div>
             </section>
 
@@ -1012,7 +1031,7 @@ const App: React.FC = () => {
                 <span className="text-cyan-600 dark:text-cyan-400 text-xs font-bold uppercase tracking-wider block mb-2">מסלולים נוספים</span>
                 <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">אבחון, סדנאות והטמעה</h2>
                 <p className="text-slate-600 dark:text-slate-400 font-bold text-base md:text-lg">
-                  מסלול SOP (02) מפורט למעלה. כאן שני המסלולים המשלימים לאבחון צווארי בקבוק והכשרת צוותים.
+                  שני מסלולים משלימים: אבחון צווארי בקבוק, והכשרת צוותים בפועל.
                 </p>
               </div>
 
@@ -1192,7 +1211,7 @@ const App: React.FC = () => {
                     <div className="p-5 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl">
                       <span className="text-xs font-black text-emerald-600 dark:text-emerald-400 block mb-1.5">✅ איתי</span>
                       <p className="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 leading-relaxed">
-                        אבחון ממוקד לזיהוי צווארי הבקבוק, חיסכון מיידי בשעות עבודה והחזר השקעה (ROI) ברור ומדיד.
+                        אבחון ממוקד לזיהוי צווארי הבקבוק, והתמקדות בהחזר השקעה שאפשר למדוד.
                       </p>
                     </div>
                   </div>
@@ -1431,7 +1450,7 @@ const App: React.FC = () => {
           © 2026 בינה לתעשייה. כל הזכויות שמורות.
         </p>
         <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 text-center" aria-label="גרסת האתר">
-          גרסה 2026.09.03
+          גרסה 2026.09.03ב
         </p>
         
         <div className="flex flex-wrap justify-center items-center gap-4 text-xs font-bold text-slate-600 dark:text-slate-400">
