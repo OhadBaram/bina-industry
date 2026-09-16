@@ -1,0 +1,17 @@
+{
+  "name": "bina-industry",
+  "install": "npm ci",
+  "terminals": [
+    {
+      "name": "vite-dev",
+      "command": "npm run dev -- --host",
+      "description": "Vite dev server serving the site plus the local /api/chat and /api/lead proxies on http://localhost:5173."
+    }
+  ],
+  "ports": [
+    {
+      "name": "vite",
+      "port": 5173
+    }
+  ]
+}
