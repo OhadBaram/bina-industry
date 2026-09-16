@@ -22,6 +22,7 @@ const Toast: React.FC<{ message: string; show: boolean }> = ({ message, show }) 
 
 // מיפוי הטקסטים הראשוניים לפי השירות שנבחר
 const serviceMessages: Record<string, string> = {
+  agents: "היי אוהד,\nאנו מעוניינים בפיתוח והטמעת סוכן AI / אוטומציה מותאמת אישית לעסק (בדומה לפרויקט BinaTor). נשמח לתאם שיחת אפיון טכנולוגית.",
   sop: "היי אוהד,\nאנו מעוניינים באפיון תהליכי עבודה ומסמכים (SOPs, הצעות מחיר ומסמכי דרישות) באמצעות כלי AI. נשמח לתאם שיחת אפיון ראשונית.",
   workshops: "היי אוהד,\nאנו מעוניינים בסדנאות Hands-on מעשיות והכשרת צוותים/הנהלה לעבודה יומיומית עם כלי AI. נשמח לקבל פרטים וסילבוס מותאם.",
   consulting: "היי אוהד,\nאנו מעוניינים באבחון וייעוץ ממוקד לזיהוי צווארי בקבוק והחזר השקעה (ROI) אמיתי בעסק. נשמח לתאם שיחת אבחון."
@@ -748,7 +749,7 @@ const App: React.FC = () => {
             {/* 1. HERO SECTION */}
             <section className="text-center py-12 md:py-24 relative">
               <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 rounded-full text-xs md:text-sm font-bold mb-8 border border-cyan-500/30 shadow-sm">
-                <span>אפיון תהליכים • סדנאות Hands-on • אוטומציה מעשית</span>
+                <span>פיתוח סוכני AI • אפיון תהליכים • סדנאות Hands-on</span>
               </div>
               
               <h1 className={`text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[1.1] max-w-5xl mx-auto mb-8 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
@@ -759,7 +760,7 @@ const App: React.FC = () => {
               </h1>
 
               <p className={`text-lg md:text-2xl font-medium max-w-3xl mx-auto leading-relaxed mb-10 ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
-                אני מלווה עסקים וארגונים באפיון תהליכים, כתיבת מסמכי עבודה (SOPs) ואוטומציות מעשיות באמצעות כלי AI מתקדמים.
+                בית הפיתוח והייעוץ שמאחורי פרויקט BinaTor. אנו מלווים עסקים בפיתוח סוכני AI אוטונומיים, אפיון תהליכים, כתיבת מסמכי עבודה (SOPs) והטמעה מעשית בשטח.
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-3xl mx-auto">
@@ -822,22 +823,31 @@ const App: React.FC = () => {
               </div>
             </section>
 
-            {/* 3. CORE SERVICES (3 שירותים ממוקדים ונקיים) */}
+            {/* 3. CORE SERVICES (4 שירותים ממוקדים ונקיים) */}
             <section ref={capabilitiesRef} className="py-6 space-y-12">
               <div className="text-center max-w-3xl mx-auto">
                 <span className="text-cyan-600 dark:text-cyan-400 text-xs font-bold uppercase tracking-wider block mb-2">שירותי הליבה</span>
-                <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">3 מסלולי עבודה ממוקדים לתוצאות</h2>
+                <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">4 מסלולי עבודה ממוקדים לתוצאות</h2>
                 <p className="text-slate-600 dark:text-slate-400 font-bold text-base md:text-lg">
                   ללא מורכבות מיותרת — פתרונות מדויקים המייצרים חיסכון בשעות עבודה וערך עסקי מיידי.
                 </p>
               </div>
 
-              <div className="grid md:grid-cols-3 gap-8">
+              <div className="grid md:grid-cols-2 gap-8">
                 {B2B_SERVICES.map((srv) => (
                   <div
                     key={srv.id}
-                    className="bg-white dark:bg-[#0D131F] rounded-[3rem] p-8 md:p-10 border border-slate-200 dark:border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col justify-between group shadow-xl dark:shadow-none"
+                    className={`bg-white dark:bg-[#0D131F] rounded-[3rem] p-8 md:p-10 border transition-all flex flex-col justify-between group shadow-xl dark:shadow-none relative ${
+                      srv.highlight
+                        ? 'ring-2 ring-cyan-500/60 shadow-2xl shadow-cyan-500/10 border-cyan-500/50 hover:border-cyan-400'
+                        : 'border-slate-200 dark:border-slate-800 hover:border-cyan-500/50'
+                    }`}
                   >
+                    {srv.highlight && (
+                      <div className="absolute -top-3.5 right-8 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-black text-[11px] px-3.5 py-1 rounded-full shadow-lg uppercase tracking-wider">
+                        השירות המוביל ★ פרויקט דגל
+                      </div>
+                    )}
                     <div>
                       <div className="flex items-center justify-between mb-6">
                         <span className="w-10 h-10 rounded-2xl bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 flex items-center justify-center font-black text-sm border border-cyan-500/30">
@@ -883,13 +893,108 @@ const App: React.FC = () => {
                     </div>
 
                     <button
-                      onClick={() => prefillServiceAndScroll(srv.serviceKey || 'sop')}
-                      className="w-full py-4 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-gradient-to-r hover:from-cyan-500 hover:to-blue-600 hover:text-white font-black text-sm transition-all text-center border border-slate-200 dark:border-slate-700 shadow-sm"
+                      onClick={() => prefillServiceAndScroll(srv.serviceKey || 'agents')}
+                      className={`w-full py-4 rounded-2xl font-black text-sm transition-all text-center border shadow-sm ${
+                        srv.highlight
+                          ? 'bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white border-transparent shadow-lg shadow-cyan-500/20'
+                          : 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-gradient-to-r hover:from-cyan-500 hover:to-blue-600 hover:text-white border-slate-200 dark:border-slate-700'
+                      }`}
                     >
                       {srv.ctaText} ➔
                     </button>
                   </div>
                 ))}
+              </div>
+            </section>
+
+            {/* 3.1 FLAGSHIP CASE STUDY / SHOWCASE: BinaTor */}
+            <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-950 to-cyan-950 text-white rounded-[3rem] p-8 md:p-14 border border-cyan-500/30 shadow-2xl space-y-10">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/2"></div>
+              <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10">
+                <div className="space-y-6 max-w-2xl text-right">
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-black border border-cyan-400/30 uppercase tracking-widest">
+                    <span>⚡ פרויקט דגל מוכח בשטח</span>
+                  </div>
+                  <h3 className="text-3xl md:text-5xl font-black text-white leading-tight">
+                    BinaTor — מערכת AI אוטונומית מקצה לקצה
+                  </h3>
+                  <p className="text-slate-300 text-base md:text-lg leading-relaxed font-medium">
+                    מערכת אמיתית שנבנתה והושקה מאפס כראיה חיה ליכולות הפיתוח והארכיטקטורה של "בינה לתעשייה": סוכן בינה מלאכותית שמזהה את הפונה בוואטסאפ או לפי קישור, שולף עבורו מידע מותאם אישית (כגון תורים קיימים שמשויכים רק לו), מאפשר ביטול או שינוי עצמאי לפי מדיניות העסק שנקבעה, מקשיב להודעות קוליות ומשריין אשראי 24/7 ללא מגע יד אדם.
+                  </p>
+                  <div className="grid sm:grid-cols-2 gap-4 pt-2">
+                    <div className="bg-white/5 border border-white/10 rounded-2xl p-4 text-right">
+                      <div className="text-2xl mb-1">👤</div>
+                      <div className="font-bold text-sm text-cyan-300">זיהוי לקוח ומידע אישי</div>
+                      <div className="text-xs text-slate-400 mt-0.5">זיהוי אוטומטי בוואטסאפ או בקישור והצגת תורים המשויכים רק לו</div>
+                    </div>
+                    <div className="bg-white/5 border border-white/10 rounded-2xl p-4 text-right">
+                      <div className="text-2xl mb-1">🔄</div>
+                      <div className="font-bold text-sm text-cyan-300">תפעול וביטול עצמאי</div>
+                      <div className="text-xs text-slate-400 mt-0.5">ביטול או שינוי תור ישירות בשיחה בהתאם למדיניות העסק שנקבעה</div>
+                    </div>
+                    <div className="bg-white/5 border border-white/10 rounded-2xl p-4 text-right">
+                      <div className="text-2xl mb-1">🎙️</div>
+                      <div className="font-bold text-sm text-cyan-300">הבנת שמע והקלטות</div>
+                      <div className="text-xs text-slate-400 mt-0.5">תמלול ופענוח כוונה בסלנג חופשי בעברית ללא מגע יד</div>
+                    </div>
+                    <div className="bg-white/5 border border-white/10 rounded-2xl p-4 text-right">
+                      <div className="text-2xl mb-1">💳</div>
+                      <div className="font-bold text-sm text-cyan-300">שריון אשראי וסנכרון יומנים</div>
+                      <div className="text-xs text-slate-400 mt-0.5">מניעת הברזות (J5 Hold) וסגירת תורים עצמאית ביומן 24/7</div>
+                    </div>
+                  </div>
+                  <div className="flex flex-col sm:flex-row items-center gap-4 pt-4">
+                    <a
+                      href="https://binator.co.il/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-slate-950 font-black text-sm md:text-base rounded-2xl shadow-xl transition-all hover:scale-105 flex items-center justify-center gap-2 text-center"
+                    >
+                      <span>כניסה לאתר BinaTor והתנסות בלייב</span>
+                      <span>➔</span>
+                    </a>
+                    <a
+                      href="https://wa.me/972552993825?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%A7%D7%91%D7%95%D7%A2%20%D7%AA%D7%95%D7%A8%20%D7%9C%D7%91%D7%93%D7%99%D7%A7%D7%94%20%5B%D7%93%D7%9E%D7%95%5D"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full sm:w-auto px-6 py-4 bg-emerald-600/90 hover:bg-emerald-500 text-white font-black text-sm md:text-base rounded-2xl border border-emerald-400/40 shadow-lg transition-all hover:scale-105 flex items-center justify-center gap-2 text-center"
+                    >
+                      <span>בדיקת בוט הוואטסאפ של המערכת 💬</span>
+                    </a>
+                  </div>
+                </div>
+                {/* Visual Architecture card */}
+                <div className="w-full lg:w-80 shrink-0 bg-slate-950/80 border border-cyan-500/30 rounded-3xl p-6 shadow-2xl text-right space-y-4 backdrop-blur-md">
+                  <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 rounded-full bg-rose-500"></div>
+                      <div className="w-3 h-3 rounded-full bg-amber-500"></div>
+                      <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
+                    </div>
+                    <span className="text-xs font-mono text-cyan-400 font-bold">binator.co.il</span>
+                  </div>
+                  <div className="space-y-3 text-xs">
+                    <div className="p-3 bg-purple-500/10 border border-purple-500/30 rounded-xl text-purple-300">
+                      <div className="font-bold">✓ זיהוי לקוח ותפעול אישי</div>
+                      <div className="text-[11px] text-slate-400 mt-0.5">תורים משויכים וביטול לפי מדיניות</div>
+                    </div>
+                    <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-emerald-300">
+                      <div className="font-bold">✓ קלט קולי / טקסטואלי</div>
+                      <div className="text-[11px] text-slate-400 mt-0.5">זיהוי שפה טבעית בעברית</div>
+                    </div>
+                    <div className="p-3 bg-blue-500/10 border border-blue-500/30 rounded-xl text-blue-300">
+                      <div className="font-bold">✓ מנוע תיאום והחלטות</div>
+                      <div className="text-[11px] text-slate-400 mt-0.5">בדיקת יומן ורשימות המתנה</div>
+                    </div>
+                    <div className="p-3 bg-indigo-500/10 border border-indigo-500/30 rounded-xl text-indigo-300">
+                      <div className="font-bold">✓ שריון אשראי (J5 Hold)</div>
+                      <div className="text-[11px] text-slate-400 mt-0.5">הגנה מוחלטת מפני ביטולים</div>
+                    </div>
+                  </div>
+                  <div className="pt-2 text-center">
+                    <span className="text-[11px] text-slate-400 font-medium">רוצים סוכן AI מותאם לעסק שלכם?</span>
+                  </div>
+                </div>
               </div>
             </section>
 

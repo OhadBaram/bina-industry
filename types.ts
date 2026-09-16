@@ -30,6 +30,7 @@ export interface B2BService {
   techBadges?: string[];
   ctaText?: string;
   serviceKey?: string;
+  highlight?: boolean;
 }
 
 export interface PainPointItem {

@@ -96,8 +96,27 @@ export const METHODOLOGY_STEPS: MethodologyStep[] = [
 
 export const B2B_SERVICES: B2BService[] = [
   {
-    id: 'consulting',
+    id: 'agents',
     num: '01',
+    serviceKey: 'agents',
+    badge: 'FLAGSHIP & AGENTIC AI',
+    subtitle: 'פיתוח והטמעה מותאמת אישית',
+    title: 'פיתוח סוכני AI ואוטומציות קצה-לקצה (End-to-End)',
+    icon: '🤖',
+    shortDesc: 'פיתוח סוכני בינה מלאכותית מורכבים המחוברים ישירות לליבת העסק: וואטסאפ, יומנים, מסדי נתונים ומערכות סליקה. מענה קולי וטקסטואלי, טיפול שוטף בלקוחות וביצוע משימות אוטונומיות ללא מגע יד אדם.',
+    features: [
+      'פיתוח סוכנים הפועלים בוואטסאפ 24/7 (כולל תמלול והבנת הודעות קוליות)',
+      'זיהוי לקוח חכם: שליפת תורים משויכים, עדכון וביטול לפי מדיניות העסק',
+      'אינטגרציה מלאה ליומנים, מסדי נתונים (CRM) ומערכות סליקה',
+      'פרויקט דגל מוכח בשטח: מערכת BinaTor לניהול תורים ולקוחות'
+    ],
+    techBadges: ['WhatsApp Cloud API', 'Voice-to-Action (Whisper)', 'Autonomous Agents', 'BinaTor Showcase'],
+    ctaText: 'לתיאום שיחת אפיון ופיתוח סוכן מותאם אישית',
+    highlight: true
+  },
+  {
+    id: 'consulting',
+    num: '02',
     serviceKey: 'consulting',
     badge: 'DIAGNOSIS & ROI',
     subtitle: 'אבחון ומיפוי צווארי בקבוק',
@@ -115,7 +134,7 @@ export const B2B_SERVICES: B2BService[] = [
   },
   {
     id: 'sop',
-    num: '02',
+    num: '03',
     serviceKey: 'sop',
     badge: 'PROCESS & SOPS',
     subtitle: 'אפיון תהליכים ומסמכים חכמים',
@@ -133,7 +152,7 @@ export const B2B_SERVICES: B2BService[] = [
   },
   {
     id: 'workshops',
-    num: '03',
+    num: '04',
     serviceKey: 'workshops',
     badge: 'HANDS-ON WORKSHOPS',
     subtitle: 'הדרכות עומק ותרגול מעשי',
