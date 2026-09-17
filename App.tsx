@@ -22,12 +22,18 @@ const Icons = {
       <line x1="21" y1="17" x2="3" y2="7" />
     </svg>
   ),
-  Tower: () => (
+  Cpu: () => (
     <svg className="w-5 h-5 text-cyan-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M6 22V7l6-5 6 5v15" />
-      <path d="M6 12h12" />
-      <path d="M6 17h12" />
-      <circle cx="12" cy="7" r="1.5" fill="currentColor" />
+      <rect x="4" y="4" width="16" height="16" rx="2" />
+      <rect x="9" y="9" width="6" height="6" />
+      <line x1="9" y1="1" x2="9" y2="4" />
+      <line x1="15" y1="1" x2="15" y2="4" />
+      <line x1="9" y1="20" x2="9" y2="23" />
+      <line x1="15" y1="20" x2="15" y2="23" />
+      <line x1="20" y1="9" x2="23" y2="9" />
+      <line x1="20" y1="14" x2="23" y2="14" />
+      <line x1="1" y1="9" x2="4" y2="9" />
+      <line x1="1" y1="14" x2="4" y2="14" />
     </svg>
   ),
   Clock: () => (
@@ -889,7 +895,7 @@ const App: React.FC = () => {
                     <div>
                       <div className="flex items-center justify-between mb-3 md:mb-4">
                         <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform shrink-0">
-                          {metric.id === 'flagship' && <Icons.Tower />}
+                          {metric.id === 'flagship' && <Icons.Cpu />}
                           {metric.id === 'hours-saved' && <Icons.Clock />}
                           {metric.id === 'product-led' && <Icons.Compass />}
                           {metric.id === 'education' && <Icons.Award />}
@@ -941,7 +947,7 @@ const App: React.FC = () => {
                           {srv.num}
                         </span>
                         <div className="w-10 h-10 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-cyan-400">
-                          {srv.id === 'agents' && <Icons.Tower />}
+                          {srv.id === 'agents' && <Icons.Cpu />}
                           {srv.id === 'consulting' && <Icons.Compass />}
                           {srv.id === 'sop' && <Icons.Clock />}
                           {srv.id === 'workshops' && <Icons.Award />}
@@ -1159,7 +1165,7 @@ const App: React.FC = () => {
                           {st.stepNum === '01' && <Icons.Compass />}
                           {st.stepNum === '02' && <Icons.Clock />}
                           {st.stepNum === '03' && <Icons.Award />}
-                          {st.stepNum === '04' && <Icons.Tower />}
+                          {st.stepNum === '04' && <Icons.Cpu />}
                         </div>
                       </div>
                       <h3 className="text-lg font-black text-slate-900 dark:text-white mb-1.5">

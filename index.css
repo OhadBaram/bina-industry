@@ -233,11 +233,11 @@ body.acc-highlight-links a, body.acc-highlight-links button {
   clip-path: polygon(18px 0%, calc(100% - 18px) 0%, 100% 18px, 100% calc(100% - 18px), calc(100% - 18px) 100%, 18px 100%, 0% calc(100% - 18px), 0% 18px);
 }
 
-@keyframes skybridgePulse {
+@keyframes dataPulse {
   0% { transform: translateX(100%); opacity: 0; }
   50% { opacity: 1; }
   100% { transform: translateX(-100%); opacity: 0; }
 }
-.animate-skybridge-pulse {
-  animation: skybridgePulse 2.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+.animate-data-pulse {
+  animation: dataPulse 2.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }

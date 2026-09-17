@@ -32,7 +32,7 @@ export const AUTHORITY_METRICS: AuthorityMetric[] = [
     value: 'פרויקט דגל בלייב',
     label: 'BinaTor — מערכת פעילה 24/7',
     sublabel: 'זיהוי פונה, שריון אשראי והבנת קול',
-    icon: 'tower'
+    icon: 'cpu'
   },
   {
     id: 'hours-saved',
@@ -68,7 +68,7 @@ export const CAPABILITIES: CapabilityItem[] = [
       'אפיון תהליכי עבודה, מסמכי דרישות (PRDs) ונהלים (SOPs)',
       'הפיכת משימות מורכבות לתהליכים פשוטים ומובנים',
       'תיעדוף משימות לפי ROI, ערך עסקי וחיסכון בזמן',
-      'גשר מקצועי ומדויק בין צרכי ההנהלה לשטח'
+      'חיבור מקצועי ומדויק בין צרכי ההנהלה לשטח'
     ],
     badge: 'מומחיות בניהול מוצר'
   },
