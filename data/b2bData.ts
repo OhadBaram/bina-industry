@@ -18,6 +18,45 @@ export interface MethodologyStep {
   icon: string;
 }
 
+export interface AuthorityMetric {
+  id: string;
+  value: string;
+  label: string;
+  sublabel: string;
+  icon: string;
+}
+
+export const AUTHORITY_METRICS: AuthorityMetric[] = [
+  {
+    id: 'flagship',
+    value: 'פרויקט דגל בלייב',
+    label: 'BinaTor — מערכת פעילה 24/7',
+    sublabel: 'זיהוי פונה, שריון אשראי והבנת קול',
+    icon: 'tower'
+  },
+  {
+    id: 'hours-saved',
+    value: '15+ שעות',
+    label: 'חיסכון שבועי ממוצע לעובד',
+    sublabel: 'באפיון נהלים ואוטומציות שגרה',
+    icon: 'clock'
+  },
+  {
+    id: 'product-led',
+    value: 'Product-Led AI',
+    label: 'ניהול מוצר ואפיון תהליכים',
+    sublabel: 'התאמה לעסק ולא כלי מדף שבירים',
+    icon: 'compass'
+  },
+  {
+    id: 'education',
+    value: 'M.A. בהצטיינות',
+    label: 'ניהול ארגוני שירות',
+    sublabel: 'שילוב ייחודי בין הנדסה לתהליכים',
+    icon: 'award'
+  }
+];
+
 export const CAPABILITIES: CapabilityItem[] = [
   {
     id: 'product-leadership',
