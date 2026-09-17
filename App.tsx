@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { CATEGORIES, ALL_PROMPTS } from './data/prompts';
-import { B2B_SERVICES, PAIN_POINTS, USE_CASES, B2B_PROMPT_CATEGORIES, B2B_PROMPTS, CAPABILITIES, METHODOLOGY_STEPS, AUTHORITY_METRICS } from './data/b2bData';
+import { B2B_SERVICES, PAIN_POINTS, USE_CASES, B2B_PROMPT_CATEGORIES, B2B_PROMPTS, CAPABILITIES, METHODOLOGY_STEPS } from './data/b2bData';
 import { B2BPrompt, B2BService } from './types';
 import { PrivacyPolicyModal } from './components/PrivacyPolicyModal';
 import { TermsOfServiceModal } from './components/TermsOfServiceModal';
@@ -883,40 +883,7 @@ const App: React.FC = () => {
               </div>
             </section>
 
-            {/* 2. AUTHORITY & IMPACT METRICS */}
-            <section className="py-2">
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
-                {AUTHORITY_METRICS.map((metric) => (
-                  <div
-                    key={metric.id}
-                    className="mirrored-glass mirrored-glass-hover hex-clip p-4 sm:p-5 md:p-8 rounded-3xl text-right flex flex-col justify-between group relative overflow-hidden"
-                  >
-                    <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-500/5 rounded-full blur-2xl pointer-events-none group-hover:bg-cyan-500/15 transition-all"></div>
-                    <div>
-                      <div className="flex items-center justify-between mb-3 md:mb-4">
-                        <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform shrink-0">
-                          {metric.id === 'flagship' && <Icons.Cpu />}
-                          {metric.id === 'hours-saved' && <Icons.Clock />}
-                          {metric.id === 'product-led' && <Icons.Compass />}
-                          {metric.id === 'education' && <Icons.Award />}
-                        </div>
-                        <span className="text-[10px] sm:text-[11px] font-mono font-black uppercase text-cyan-400 bg-cyan-500/10 px-2.5 py-1 rounded-xl border border-cyan-500/25">
-                          {metric.value}
-                        </span>
-                      </div>
-                      <h4 className="text-sm sm:text-base md:text-lg font-black text-slate-900 dark:text-white mb-1 leading-snug">
-                        {metric.label}
-                      </h4>
-                      <p className="text-[11px] sm:text-xs text-slate-600 dark:text-slate-400 font-medium leading-relaxed">
-                        {metric.sublabel}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* 3. CORE SERVICES (4 מסלולי עבודה ממוקדים לתוצאות) */}
+            {/* 2. CORE SERVICES (4 מסלולי עבודה ממוקדים לתוצאות) */}
             <section ref={capabilitiesRef} className="py-6 space-y-12">
               <div className="text-center max-w-3xl mx-auto space-y-3">
                 <span className="text-cyan-600 dark:text-cyan-400 text-xs font-bold uppercase tracking-wider block mb-2">שירותי הליבה</span>
