@@ -837,7 +837,7 @@ const App: React.FC = () => {
             {/* 1. HERO SECTION */}
             <section className="text-center py-12 md:py-24 relative overflow-hidden">
               <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 rounded-full text-xs md:text-sm font-bold mb-8 border border-cyan-500/30 shadow-sm backdrop-blur-md">
-                <span>פיתוח סוכני AI • אפיון תהליכים • סדנאות Hands-on</span>
+                <span>שירות פרימיום אישי • פיתוח סוכני AI • אפיון תהליכים</span>
               </div>
               
               <h1 className={`text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[1.1] max-w-5xl mx-auto mb-8 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
@@ -848,7 +848,7 @@ const App: React.FC = () => {
               </h1>
 
               <p className={`text-lg md:text-2xl font-medium max-w-3xl mx-auto leading-relaxed mb-4 ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
-                בית הפיתוח והייעוץ שמאחורי פרויקט BinaTor. אנו מלווים עסקים בפיתוח סוכני AI אוטונומיים, אפיון תהליכים, כתיבת מסמכי עבודה (SOPs) והטמעה מעשית בשטח.
+                אוהד ברעם — שירות פרימיום אישי לעסקים, והמפתח שמאחורי פרויקט BinaTor. אני מלווה מנהלים וארגונים בפיתוח סוכני AI אוטונומיים, אפיון תהליכים, כתיבת נהלי עבודה (SOPs) והטמעה מעשית בשטח — עבודה ישירה מולי, ללא מתווכים.
               </p>
 
               <p className={`text-base md:text-lg font-bold max-w-2xl mx-auto mb-10 ${isDarkMode ? 'text-cyan-400' : 'text-cyan-600'}`}>
@@ -983,7 +983,7 @@ const App: React.FC = () => {
                     BinaTor — מערכת AI אוטונומית מקצה לקצה
                   </h3>
                   <p className="text-slate-300 text-base md:text-lg leading-relaxed font-medium">
-                    מערכת אמיתית שנבנתה והושקה מאפס כראיה חיה ליכולות הפיתוח והארכיטקטורה של "בינה לתעשייה": סוכן בינה מלאכותית שמזהה את הפונה בוואטסאפ או לפי קישור, שולף עבורו מידע מותאם אישית (כגון תורים קיימים שמשויכים רק לו), מאפשר ביטול או שינוי עצמאי לפי מדיניות העסק שנקבעה, מקשיב להודעות קוליות ומשריין אשראי 24/7 ללא מגע יד אדם.
+                    מערכת אמיתית שפיתחתי והשקתי מאפס כהוכחה חיה ליכולות פיתוח סוכני AI ברמת פרימיום: סוכן אוטונומי שמזהה את הפונה בוואטסאפ או לפי קישור, שולף עבורו מידע מותאם אישית (כגון תורים קיימים שמשויכים רק לו), מאפשר ביטול או שינוי עצמאי לפי מדיניות העסק, מקשיב להודעות קוליות ומשריין אשראי 24/7 ללא מגע יד אדם.
                   </p>
                   <div className="grid sm:grid-cols-2 gap-4 pt-2">
                     <div className="bg-white/5 border border-white/10 rounded-2xl p-4 text-right">
@@ -1094,15 +1094,15 @@ const App: React.FC = () => {
                   </p>
                 </div>
 
-                {/* הפתרון של בינה לתעשייה */}
+                {/* שירות פרימיום מותאם אישית */}
                 <div className="p-8 md:p-10 rounded-[2.5rem] bg-cyan-950/20 dark:bg-cyan-950/15 border border-cyan-500/30 space-y-4 backdrop-blur-xl relative overflow-hidden">
                   <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-cyan-500/10 text-cyan-400 rounded-full text-xs font-black border border-cyan-500/30">
                     <Icons.Check />
-                    <span>הפתרון של בינה לתעשייה</span>
+                    <span>שירות פרימיום אישי ומדויק</span>
                   </div>
                   <h3 className="text-2xl font-black text-slate-900 dark:text-white">אפיון תהליכים + הכשרה מעשית</h3>
                   <p className="text-slate-600 dark:text-slate-300 text-base md:text-lg font-medium leading-relaxed">
-                    שילוב בין ניהול מוצר ואפיון תהליכים מדויק לבין הכשרה מעשית hands-on. אני מתאים את הכלים ישירות למשימות האמיתיות של העסק.
+                    שילוב בין ניהול מוצר ואפיון תהליכים מדויק לבין הכשרה מעשית hands-on. אני עובד ישירות מולך ומתאים את הכלים למשימות האמיתיות של העסק.
                   </p>
                 </div>
               </div>
