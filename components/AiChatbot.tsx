@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import type { ChatMessage } from '../shared/chatConfig';
-import { MAX_HISTORY_MESSAGES } from '../shared/chatConfig';
+import { MAX_HISTORY_MESSAGES, sanitizeAssistantReply } from '../shared/chatConfig';
 import { streamChatCompletion } from '../lib/streamChat';
 
 type UiMessage = {
@@ -91,7 +91,7 @@ export const AiChatbot: React.FC = () => {
             receivedAny = true;
             setMessages((prev) =>
               prev.map((m) =>
-                m.id === assistantId ? { ...m, content: m.content + token } : m
+                m.id === assistantId ? { ...m, content: sanitizeAssistantReply(m.content + token) } : m
               )
             );
           },
@@ -119,8 +119,8 @@ export const AiChatbot: React.FC = () => {
       setIsStreaming(false);
       setMessages((prev) =>
         prev.map((m) =>
-          m.id === assistantId && !m.content
-            ? { ...m, content: 'לא התקבלה תשובה. נסו שוב בעוד רגע.' }
+          m.id === assistantId
+            ? { ...m, content: sanitizeAssistantReply(m.content) || 'לא התקבלה תשובה. נסו שוב בעוד רגע.' }
             : m
         )
       );
@@ -199,13 +199,13 @@ export const AiChatbot: React.FC = () => {
             {messages.map((m) => (
               <div
                 key={m.id}
-                className={`flex ${m.role === 'user' ? 'justify-start' : 'justify-end'}`}
+                className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
                   className={`max-w-[88%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed whitespace-pre-wrap ai-chat-bubble ${
                     m.role === 'user'
-                      ? 'bg-cyan-600 text-white rounded-bl-md'
-                      : 'bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-700 rounded-br-md shadow-sm dark:shadow-none'
+                      ? 'ai-chat-bubble-user bg-cyan-600 text-white rounded-bl-sm shadow-md'
+                      : 'ai-chat-bubble-assistant bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-700 rounded-br-sm shadow-sm'
                   }`}
                   dir="rtl"
                 >
@@ -235,7 +235,7 @@ export const AiChatbot: React.FC = () => {
               onChange={(e) => setInput(e.target.value)}
               placeholder="כתבו שאלה בעברית…"
               disabled={isStreaming}
-              className="flex-1 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-sm px-3 py-2.5 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 disabled:opacity-60"
+              className="flex-1 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-sm px-3.5 py-2.5 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 disabled:opacity-60"
               dir="rtl"
               style={{ unicodeBidi: 'plaintext', wordBreak: 'break-word' }}
               aria-label="הודעה לצ'אטבוט"

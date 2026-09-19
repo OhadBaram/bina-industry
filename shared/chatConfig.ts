@@ -1,7 +1,7 @@
 /** הגדרות משותפות לשרת הצ'אט (Netlify + Vite dev) */
 
-export const DEFAULT_MODEL = 'qwen/qwen-2.5-72b-instruct';
-export const DEFAULT_FALLBACK_MODEL = 'deepseek/deepseek-chat';
+export const DEFAULT_MODEL = 'meta-llama/llama-3.3-70b-instruct';
+export const DEFAULT_FALLBACK_MODEL = 'qwen/qwen-2.5-72b-instruct';
 
 export const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
@@ -10,7 +10,7 @@ export const APP_TITLE = 'Bina Industry Digital Assistant';
 
 /** פרמטרי יצירה: עברית מדויקת, עלות חסומה */
 export const GENERATION_PARAMS = {
-  temperature: 0.4,
+  temperature: 0.3,
   max_tokens: 600,
   top_p: 0.9,
 } as const;
@@ -19,13 +19,16 @@ export const GENERATION_PARAMS = {
 export const MAX_HISTORY_MESSAGES = 8;
 
 /**
- * פרומפט מערכת קצר — מזעור טוקנים + תשובות עברית תמציתיות.
+ * פרומפט מערכת קפדני: עברית בלבד, איסור מוחלט על סינית, מיצוב אישי של אוהד ברעם
  */
-export const SYSTEM_PROMPT = `אתה העוזר הדיגיטלי של "בינה לתעשייה" (אוהד ברעם).
-ענה תמיד בעברית תקינה, בקצרה ובמדויק (2–5 משפטים אלא אם מבקשים פירוט).
-תחומי מומחיות: אפיון תהליכים, SOPs/מסמכי עבודה, סדנאות AI Hands-on, אבחון צווארי בקבוק ו-ROI, והטמעת AI בעסקים.
-אל תמציא מחירים, הבטחות או עובדות שלא נמסרו. אם חסר מידע — שאל שאלה אחת קצרה.
-כשמתאים, הפנה לתיאום שיחת אבחון או לוואטסאפ: 053-6244330 / האתר bina-industry.co.il.`;
+export const SYSTEM_PROMPT = `אתה העוזר הדיגיטלי האישי של אוהד ברעם מ"בינה לתעשייה".
+אוהד מעניק שירות פרימיום מותאם אישית (Boutique) לעסקים: אפיון תהליכים, כתיבת מסמכי עבודה (SOPs), סדנאות AI Hands-on מעשיות, ואבחון צווארי בקבוק ו-ROI.
+
+הנחיות קריטיות ומחייבות:
+1. שפה: ענה תמיד אך ורק בעברית תקנית, ברורה, אדיבה ותמציתית (2–4 משפטים, אלא אם התבקשת לפרט).
+2. איסור מוחלט על סינית או שפות זרות: לעולם אל תשתמש באותיות סיניות (כגון 你, 我, 的, 们 וכיו"ב), יפניות או בכל שפה אחרת מלבד עברית ומספרים (ומונחים מקצועיים באנגלית במידת הצורך). אל תסביר או תתנצל באנגלית על שפות.
+3. פנייה ויצירת קשר: כשמתאים להציע יצירת קשר, נסח תמיד אך ורק בעברית: "ניתן לתאם שיחת אבחון עם אוהד בוואטסאפ: 053-6244330 או באתר bina-industry.co.il".
+4. אל תמציא מחירים או התחייבויות שלא נמסרו. אם חסר מידע — שאל שאלה אחת קצרה וממקדת.`;
 
 export type ChatRole = 'system' | 'user' | 'assistant';
 
@@ -39,7 +42,9 @@ export function resolveModels(env: Record<string, string | undefined> = {}) {
   const fallback = (env.OPENROUTER_FALLBACK_MODEL || DEFAULT_FALLBACK_MODEL).trim();
   const chain = [primary];
   if (fallback && fallback !== primary) chain.push(fallback);
-  // גיבוי שלישי קשיח למקרה ששני הראשונים נכשלים
+  if (!chain.includes('qwen/qwen-2.5-72b-instruct')) {
+    chain.push('qwen/qwen-2.5-72b-instruct');
+  }
   if (!chain.includes('deepseek/deepseek-chat')) {
     chain.push('deepseek/deepseek-chat');
   }
@@ -88,3 +93,31 @@ export function buildCompletionBody(model: string, messages: ChatMessage[]) {
 
 export const LOCALIZED_FALLBACK_REPLY =
   'מצטערים, השירות עמוס כרגע. נסו שוב בעוד רגע, או פנו ישירות בוואטסאפ: 053-6244330.';
+
+/**
+ * מסנן ומנקה תוכן מתשובות המודל כדי להבטיח שלא ידלפו תווים בסינית, יפנית או הערות מטא.
+ */
+export function sanitizeAssistantReply(text: string): string {
+  if (!text) return text;
+  let cleaned = text;
+
+  // החלפת תבניות סיניות נפוצות של יצירת קשר בעברית תקנית
+  cleaned = cleaned.replace(/你可以通过以下方式联系我\s*[:：]?/g, 'ניתן ליצור איתי קשר בוואטסאפ או בטלפון: ');
+  cleaned = cleaned.replace(/或访问我们的网站\s*/g, 'או לבקר באתר: ');
+
+  // הסרת הערות מטא באנגלית על סינית
+  cleaned = cleaned.replace(/\s*[\(\)\[\]]*\s*Note:\s*The last sentence is in Chinese[^\n]*/gi, '');
+  cleaned = cleaned.replace(/\s*[\(\)\[\]]*\s*Here is the Hebrew version\s*[:：]?[^\n]*/gi, '');
+  cleaned = cleaned.replace(/\s*[\(\)\[\]]*\s*הערה:\s*המשפט האחרון בסינית[^\n]*/gi, '');
+
+  // הסרת אותיות ותווי CJK (סינית, יפנית, קוריאנית)
+  cleaned = cleaned.replace(/[\u4e00-\u9fff\u3400-\u4dbf\uf900-\ufaff\u3040-\u30ff\uac00-\ud7af]/g, '');
+
+  // ניקוי סוגריים יתומים או ריקים
+  cleaned = cleaned.replace(/\(\s*\)/g, '').replace(/\[\s*\]/g, '');
+
+  // ניקוי רווחים כפולים
+  cleaned = cleaned.replace(/[ \t]{2,}/g, ' ');
+
+  return cleaned.trim();
+}
