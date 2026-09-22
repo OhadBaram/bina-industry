@@ -28,13 +28,6 @@ export interface AuthorityMetric {
 
 export const AUTHORITY_METRICS: AuthorityMetric[] = [
   {
-    id: 'flagship',
-    value: 'פרויקט דגל בלייב',
-    label: 'BinaTor — מערכת פעילה 24/7',
-    sublabel: 'זיהוי פונה, שריון אשראי והבנת קול',
-    icon: 'cpu'
-  },
-  {
     id: 'hours-saved',
     value: '15+ שעות',
     label: 'חיסכון שבועי ממוצע לעובד',
@@ -54,6 +47,13 @@ export const AUTHORITY_METRICS: AuthorityMetric[] = [
     label: 'ניהול ארגוני שירות',
     sublabel: 'שילוב ייחודי בין הנדסה לתהליכים',
     icon: 'award'
+  },
+  {
+    id: 'flagship',
+    value: 'הוכחת יכולת טכנולוגית',
+    label: 'BinaTor — מערכת פעילה 24/7',
+    sublabel: 'זיהוי פונה, שריון אשראי והבנת קול',
+    icon: 'cpu'
   }
 ];
 
@@ -77,7 +77,7 @@ export const CAPABILITIES: CapabilityItem[] = [
     title: 'הטמעת AI מעשית בשטח',
     subtitle: 'Practical AI Implementation',
     icon: '⚡',
-    desc: 'התאמת כלי AI מתקדמים לשגרת העבודה של הצוותים, ללא הבטחות שווא וללא מורכבות מיותרת.',
+    desc: 'התאמת כלי AI מתקדמים לשגרת העבודה של הצוותים, תוך חיבור ישיר למשימות היומיומיות.',
     features: [
       'הכשרה ותרגול ישיר על משימות אמת של העסק',
       'הנדסת פרומפטים מתקדמת ב-Claude, ChatGPT ו-Gemini',
@@ -128,34 +128,15 @@ export const METHODOLOGY_STEPS: MethodologyStep[] = [
     stepNum: '04',
     title: 'הטמעה, בקרה ומדידת תוצאות',
     shortDesc: 'מעקב שוטף וחיסכון מוכח',
-    details: 'חיבור הכלים לחיי היום-יום של העסק, מדידת החיסכון בשעות עבודה ודיוק מתמיד לקבלת תוצאות מקסימליות.',
+    details: 'חיבור הכלים לחיי היום-יום של העסק, מדידת החיסכון בשעות עבודה ובקרה שוטפת על איכות התוצרים.',
     icon: '📈'
   }
 ];
 
 export const B2B_SERVICES: B2BService[] = [
   {
-    id: 'agents',
-    num: '01',
-    serviceKey: 'agents',
-    badge: 'FLAGSHIP & AGENTIC AI',
-    subtitle: 'פיתוח והטמעה מותאמת אישית',
-    title: 'פיתוח סוכני AI ואוטומציות קצה-לקצה (End-to-End)',
-    icon: '🤖',
-    shortDesc: 'פיתוח סוכני בינה מלאכותית מורכבים המחוברים ישירות לליבת העסק: וואטסאפ, יומנים, מסדי נתונים ומערכות סליקה. מענה קולי וטקסטואלי, טיפול שוטף בלקוחות וביצוע משימות אוטונומיות ללא מגע יד אדם.',
-    features: [
-      'פיתוח סוכנים הפועלים בוואטסאפ 24/7 (כולל תמלול והבנת הודעות קוליות)',
-      'זיהוי לקוח חכם: שליפת תורים משויכים, עדכון וביטול לפי מדיניות העסק',
-      'אינטגרציה מלאה ליומנים, מסדי נתונים (CRM) ומערכות סליקה',
-      'פרויקט דגל מוכח בשטח: מערכת BinaTor לניהול תורים ולקוחות'
-    ],
-    techBadges: ['WhatsApp Cloud API', 'Voice-to-Action (Whisper)', 'Autonomous Agents', 'BinaTor Showcase'],
-    ctaText: 'לתיאום שיחת אפיון ופיתוח סוכן מותאם אישית',
-    highlight: true
-  },
-  {
     id: 'consulting',
-    num: '02',
+    num: '01',
     serviceKey: 'consulting',
     badge: 'DIAGNOSIS & ROI',
     subtitle: 'אבחון ומיפוי צווארי בקבוק',
@@ -173,7 +154,7 @@ export const B2B_SERVICES: B2BService[] = [
   },
   {
     id: 'sop',
-    num: '03',
+    num: '02',
     serviceKey: 'sop',
     badge: 'PROCESS & SOPS',
     subtitle: 'נהלים מהידע של העסק',
@@ -191,13 +172,13 @@ export const B2B_SERVICES: B2BService[] = [
   },
   {
     id: 'workshops',
-    num: '04',
+    num: '03',
     serviceKey: 'workshops',
     badge: 'HANDS-ON WORKSHOPS',
     subtitle: 'הדרכות עומק ותרגול מעשי',
     title: 'סדנאות Hands-on מעשיות לצוותים והנהלה',
     icon: '🎓',
-    shortDesc: 'הכשרות מעשיות ממוקדות-תפקיד על משימות אמת של העסק. לומדים הנדסת פרומפטים מתקדמת, עבודה עם Claude, ChatGPT ו-Gemini ללא פחד וללא התנגדויות.',
+    shortDesc: 'הכשרות מעשיות ממוקדות-תפקיד על משימות אמת של העסק. לומדים הנדסת פרומפטים מתקדמת ועבודה פרקטית ומדויקת עם Claude, ChatGPT ו-Gemini.',
     features: [
       'תרגול ישיר ומעשי על משימות אמיתיות מתוך שגרת העבודה',
       'הנדסת פרומפטים מתקדמת ב-ChatGPT, Claude ו-Gemini',
@@ -206,6 +187,24 @@ export const B2B_SERVICES: B2BService[] = [
     ],
     techBadges: [],
     ctaText: 'לפרטים על סדנאות והכשרות מעשיות'
+  },
+  {
+    id: 'agents',
+    num: '04',
+    serviceKey: 'agents',
+    badge: 'CUSTOM AGENTS & AUTOMATION',
+    subtitle: 'פיתוח והטמעה מותאמת אישית',
+    title: 'פיתוח סוכני AI ואוטומציות קצה-לקצה (End-to-End)',
+    icon: '🤖',
+    shortDesc: 'פיתוח סוכני בינה מלאכותית מורכבים המחוברים ישירות לליבת העסק: וואטסאפ, יומנים, מסדי נתונים ומערכות סליקה. מענה קולי וטקסטואלי, טיפול שוטף בלקוחות וביצוע משימות אוטונומיות.',
+    features: [
+      'פיתוח סוכנים הפועלים בוואטסאפ 24/7 (כולל תמלול והבנת הודעות קוליות)',
+      'זיהוי לקוח חכם: שליפת תורים ונתונים משויכים, עדכון וביטול לפי מדיניות',
+      'אינטגרציה מלאה ליומנים, מסדי נתונים (CRM) ומערכות סליקה',
+      'פיתוח פתרונות אוטונומיים מותאמים אישית לצרכי העסק'
+    ],
+    techBadges: ['WhatsApp Cloud API', 'Voice-to-Action (Whisper)', 'Autonomous Agents'],
+    ctaText: 'לתיאום שיחת אפיון ופיתוח סוכן מותאם אישית'
   }
 ];
 

@@ -140,12 +140,11 @@ const Toast: React.FC<{ message: string; show: boolean }> = ({ message, show }) 
   </div>
 );
 
-// מיפוי הטקסטים הראשוניים לפי השירות שנבחר
 const serviceMessages: Record<string, string> = {
-  agents: "היי אוהד,\nאנו מעוניינים בפיתוח והטמעת סוכן AI / אוטומציה מותאמת אישית לעסק (בדומה לפרויקט BinaTor). נשמח לתאם שיחת אפיון טכנולוגית.",
+  consulting: "היי אוהד,\nאנו מעוניינים באבחון וייעוץ ממוקד לזיהוי צווארי בקבוק והחזר השקעה (ROI) אמיתי בעסק. נשמח לתאם שיחת אבחון.",
   sop: "היי אוהד,\nאנו מעוניינים באפיון תהליכי עבודה ומסמכים (SOPs, הצעות מחיר ומסמכי דרישות) באמצעות כלי AI. נשמח לתאם שיחת אבחון ראשונית.",
   workshops: "היי אוהד,\nאנו מעוניינים בסדנאות Hands-on מעשיות והכשרת צוותים/הנהלה לעבודה יומיומית עם כלי AI. נשמח לקבל פרטים וסילבוס מותאם.",
-  consulting: "היי אוהד,\nאנו מעוניינים באבחון וייעוץ ממוקד לזיהוי צווארי בקבוק והחזר השקעה (ROI) אמיתי בעסק. נשמח לתאם שיחת אבחון."
+  agents: "היי אוהד,\nאנו מעוניינים בפיתוח והטמעת סוכן AI / אוטומציה מותאמת אישית לעסק. נשמח לתאם שיחת אפיון טכנולוגית."
 };
 
 const App: React.FC = () => {
@@ -746,7 +745,7 @@ const App: React.FC = () => {
                 </span>
               </div>
               <span className="hidden md:block text-[11px] font-mono tracking-wider text-slate-400 mt-0.5 uppercase">
-                ייעוץ, חדשנות וארכיטקטורת AI
+                אפיון תהליכים, כתיבת SOPs והטמעת AI מעשית
               </span>
             </div>
           </div>
@@ -755,7 +754,6 @@ const App: React.FC = () => {
             <button onClick={scrollToCapabilities} className="px-4 py-2 rounded-xl font-bold text-xs md:text-sm text-slate-300 hover:text-cyan-400 hover:bg-white/5 transition-all cursor-pointer">השירותים</button>
             <button onClick={scrollToMethodology} className="px-4 py-2 rounded-xl font-bold text-xs md:text-sm text-slate-300 hover:text-cyan-400 hover:bg-white/5 transition-all cursor-pointer">תהליך העבודה</button>
             <button onClick={scrollToAbout} className="px-4 py-2 rounded-xl font-bold text-xs md:text-sm text-slate-300 hover:text-cyan-400 hover:bg-white/5 transition-all cursor-pointer">אודות אוהד</button>
-            <button onClick={goToPromptsView} className={`px-4 py-2 rounded-xl font-bold text-xs md:text-sm transition-all cursor-pointer ${mainView === 'prompts' ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40' : 'text-slate-300 hover:text-cyan-400 hover:bg-white/5'}`}>מאגר הפרומפטים</button>
             <a href="https://www.facebook.com/share/g/183u1ktJDZ/" target="_blank" rel="noopener noreferrer" className="px-3 py-2 rounded-xl font-bold text-xs md:text-sm text-blue-400 hover:bg-blue-950/40 transition-all flex items-center gap-1.5">
               <span>קהילה</span>
               <Icons.ExternalLink />
@@ -810,7 +808,6 @@ const App: React.FC = () => {
               <button onClick={scrollToCapabilities} className="w-full text-right px-4 py-3 rounded-xl text-sm font-bold bg-white/5 text-slate-200 border border-white/10">השירותים</button>
               <button onClick={scrollToMethodology} className="w-full text-right px-4 py-3 rounded-xl text-sm font-bold bg-white/5 text-slate-200 border border-white/10">תהליך העבודה</button>
               <button onClick={scrollToAbout} className="w-full text-right px-4 py-3 rounded-xl text-sm font-bold bg-white/5 text-slate-200 border border-white/10">אודות אוהד</button>
-              <button onClick={goToPromptsView} className={`w-full text-right px-4 py-3 rounded-xl text-sm font-bold ${mainView === 'prompts' ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40' : 'bg-white/5 text-slate-200 border border-white/10'}`}>מאגר הפרומפטים</button>
               <button
                 type="button"
                 onClick={() => setIsDarkMode(!isDarkMode)}
@@ -837,7 +834,7 @@ const App: React.FC = () => {
             {/* 1. HERO SECTION */}
             <section className="text-center py-12 md:py-24 relative overflow-hidden">
               <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 rounded-full text-xs md:text-sm font-bold mb-8 border border-cyan-500/30 shadow-sm backdrop-blur-md">
-                <span>שירות פרימיום אישי • פיתוח סוכני AI • אפיון תהליכים</span>
+                <span>שירות פרימיום אישי • אפיון תהליכים • כתיבת SOPs • הטמעת AI</span>
               </div>
               
               <h1 className={`text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[1.1] max-w-5xl mx-auto mb-8 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
@@ -848,7 +845,7 @@ const App: React.FC = () => {
               </h1>
 
               <p className={`text-lg md:text-2xl font-medium max-w-3xl mx-auto leading-relaxed mb-4 ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
-                אוהד ברעם — שירות פרימיום אישי לעסקים, והמפתח שמאחורי פרויקט BinaTor. אני מלווה מנהלים וארגונים בפיתוח סוכני AI אוטונומיים, אפיון תהליכים, כתיבת נהלי עבודה (SOPs) והטמעה מעשית בשטח — עבודה ישירה מולי, ללא מתווכים.
+                אוהד ברעם — ייעוץ וליווי מעשי לעסקים והנהלות. אני מלווה מנהלים וארגונים באפיון תהליכים, כתיבת נהלי עבודה (SOPs), סדנאות מעשיות והטמעת פתרונות AI מותאמים בשטח — עבודה ישירה מולי, ללא מתווכים.
               </p>
 
               <p className={`text-base md:text-lg font-bold max-w-2xl mx-auto mb-10 ${isDarkMode ? 'text-cyan-400' : 'text-cyan-600'}`}>
@@ -889,7 +886,7 @@ const App: React.FC = () => {
                 <span className="text-cyan-600 dark:text-cyan-400 text-xs font-bold uppercase tracking-wider block mb-2">שירותי הליבה</span>
                 <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">4 מסלולי עבודה ממוקדים לתוצאות</h2>
                 <p className="text-slate-600 dark:text-slate-400 font-bold text-base md:text-lg">
-                  ללא מורכבות מיותרת — פתרונות מדויקים המייצרים חיסכון בשעות עבודה וערך עסקי מיידי.
+                  פתרונות מדויקים המייצרים חיסכון בשעות עבודה וערך עסקי ישיר.
                 </p>
               </div>
 
@@ -977,13 +974,13 @@ const App: React.FC = () => {
               <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-10">
                 <div className="space-y-6 max-w-2xl text-right">
                   <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-black border border-cyan-400/30 uppercase tracking-widest">
-                    <span>⚡ פרויקט דגל מוכח בשטח</span>
+                    <span>הוכחת יכולת טכנולוגית • Case Study</span>
                   </div>
                   <h3 className="text-3xl md:text-5xl font-black text-white leading-tight">
-                    BinaTor — מערכת AI אוטונומית מקצה לקצה
+                    Case Study: פיתוח מערכת BinaTor בלייב
                   </h3>
                   <p className="text-slate-300 text-base md:text-lg leading-relaxed font-medium">
-                    מערכת אמיתית שפיתחתי והשקתי מאפס כהוכחה חיה ליכולות פיתוח סוכני AI ברמת פרימיום: סוכן אוטונומי שמזהה את הפונה בוואטסאפ או לפי קישור, שולף עבורו מידע מותאם אישית (כגון תורים קיימים שמשויכים רק לו), מאפשר ביטול או שינוי עצמאי לפי מדיניות העסק, מקשיב להודעות קוליות ומשריין אשראי 24/7 ללא מגע יד אדם.
+                    כהוכחה חיה ליכולת הנדסית ופיתוח סוכנים מורכבים ברמת קוד וארכיטקטורה: פיתוח מלא של מערכת BinaTor הפועלת בשטח 24/7. סוכן אוטונומי שמזהה לקוחות בוואטסאפ, מפענח הודעות קוליות, מאפשר שינוי וביטול תורים עצמאי לפי נהלי העסק, ומשריין אשראי ללא מגע יד אדם.
                   </p>
                   <div className="grid sm:grid-cols-2 gap-4 pt-2">
                     <div className="bg-white/5 border border-white/10 rounded-2xl p-4 text-right">
@@ -1022,16 +1019,16 @@ const App: React.FC = () => {
                       rel="noopener noreferrer"
                       className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-slate-950 font-black text-sm md:text-base rounded-2xl shadow-xl transition-all hover:scale-105 flex items-center justify-center gap-2 text-center"
                     >
-                      <span>כניסה לאתר BinaTor והתנסות בלייב</span>
+                      <span>כניסה לאתר הפרויקט והתנסות בלייב</span>
                       <Icons.ExternalLink />
                     </a>
                     <a
-                      href="https://wa.me/972552993825?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%9C%D7%A7%D7%91%D7%95%D7%A2%20%D7%AA%D7%95%D7%A8%20%D7%9C%D7%91%D7%93%D7%99%D7%A7%D7%94%20%5B%D7%93%D7%9E%D7%95%5D"
+                      href="https://wa.me/972536244330?text=%D7%94%D7%99%D7%99%20%D7%90%D7%95%D7%94%D7%93%2C%20%D7%A8%D7%90%D7%99%D7%AA%D7%99%20%D7%90%D7%AA%20%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98%20BinaTor%20%D7%95%D7%90%D7%A0%D7%95%20%D7%9E%D7%A2%D7%95%D7%A0%D7%99%D7%99%D7%A0%D7%99%D7%9D%20%D7%91%D7%A4%D7%99%D7%AA%D7%95%D7%97%20%D7%A1%D7%95%D7%9B%D7%9F%20%2F%20%D7%90%D7%95%D7%98%D7%95%D7%9E%D7%A6%D7%99%D7%94%20%D7%9E%D7%95%D7%AA%D7%90%D7%9E%D7%AA%20%D7%9C%D7%A2%D7%A1%D7%A7"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-full sm:w-auto px-6 py-4 bg-emerald-600/90 hover:bg-emerald-500 text-white font-black text-sm md:text-base rounded-2xl border border-emerald-400/40 shadow-lg transition-all hover:scale-105 flex items-center justify-center gap-2 text-center"
                     >
-                      <span>בדיקת בוט הוואטסאפ של המערכת</span>
+                      <span>שיחה על פיתוח מותאם לעסק (053-6244330)</span>
                       <Icons.WhatsApp />
                     </a>
                   </div>
@@ -1528,6 +1525,8 @@ const App: React.FC = () => {
         </p>
         
         <div className="flex flex-wrap justify-center items-center gap-4 text-xs font-bold text-slate-600 dark:text-slate-400">
+          <button onClick={goToPromptsView} className="hover:text-cyan-600 dark:hover:text-cyan-400 underline transition-colors cursor-pointer bg-transparent border-none">מאגר הפרומפטים</button>
+          <span>|</span>
           <button onClick={() => setIsTermsOfServiceOpen(true)} className="hover:text-cyan-600 dark:hover:text-cyan-400 underline transition-colors cursor-pointer bg-transparent border-none">תנאי שימוש</button>
           <span>|</span>
           <button onClick={() => setIsPrivacyPolicyOpen(true)} className="hover:text-cyan-600 dark:hover:text-cyan-400 underline transition-colors cursor-pointer bg-transparent border-none">מדיניות פרטיות</button>
