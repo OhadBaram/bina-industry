@@ -142,8 +142,8 @@ const Toast: React.FC<{ message: string; show: boolean }> = ({ message, show }) 
 
 const serviceMessages: Record<string, string> = {
   consulting: "היי אוהד,\nאנו מעוניינים באבחון וייעוץ ממוקד לזיהוי צווארי בקבוק והחזר השקעה (ROI) אמיתי בעסק. נשמח לתאם שיחת אבחון.",
-  sop: "היי אוהד,\nאנו מעוניינים באפיון תהליכי עבודה ומסמכים (SOPs, הצעות מחיר ומסמכי דרישות) באמצעות כלי AI. נשמח לתאם שיחת אבחון ראשונית.",
-  workshops: "היי אוהד,\nאנו מעוניינים בסדנאות Hands-on מעשיות והכשרת צוותים/הנהלה לעבודה יומיומית עם כלי AI. נשמח לקבל פרטים וסילבוס מותאם.",
+  sop: "היי אוהד,\nאנו מעוניינים באפיון וכתיבת נהלי עבודה (SOPs) לכל רוחב העסק — בדגש על שימור ידע, המשכיות עסקית וסקיילביליות. נשמח לתאם שיחת אבחון.",
+  workshops: "היי אוהד,\nאנו מעוניינים בסדנאות Hands-on מעשיות להכשרת צוותים/הנהלה ובניית סוכני AI ממוקדים למשימות העסק. נשמח לקבל פרטים וסילבוס מותאם.",
   agents: "היי אוהד,\nאנו מעוניינים בפיתוח והטמעת סוכן AI / אוטומציה מותאמת אישית לעסק. נשמח לתאם שיחת אפיון טכנולוגית."
 };
 
@@ -1197,16 +1197,16 @@ const App: React.FC = () => {
                       <div className="p-5 rounded-2xl bg-white/5 border border-cyan-500/30">
                         <div className="text-cyan-400 font-black text-sm md:text-base mb-1.5 flex items-center gap-2">
                           <Icons.Compass />
-                          <span>אפיון תהליכים מעמיק</span>
+                          <span>אפיון נהלים לרוחב העסק</span>
                         </div>
-                        <div className="text-xs font-medium text-slate-300 leading-relaxed">בניית נהלי עבודה ומסמכים מהידע של העסק.</div>
+                        <div className="text-xs font-medium text-slate-300 leading-relaxed">כתיבת SOPs להבטחת המשכיות, סקיילביליות וערך.</div>
                       </div>
                       <div className="p-5 rounded-2xl bg-white/5 border border-cyan-500/30">
                         <div className="text-cyan-400 font-black text-sm md:text-base mb-1.5 flex items-center gap-2">
                           <Icons.Award />
-                          <span>הכשרה מעשית Hands-on</span>
+                          <span>סדנאות ובניית סוכנים</span>
                         </div>
-                        <div className="text-xs font-medium text-slate-300 leading-relaxed">סדנאות ממוקדות על משימות אמת של העסק.</div>
+                        <div className="text-xs font-medium text-slate-300 leading-relaxed">הכשרת hands-on ובניית סוכני AI ממוקדים לצוותים.</div>
                       </div>
                       <div className="p-5 rounded-2xl bg-white/5 border border-cyan-500/30">
                         <div className="text-cyan-400 font-black text-sm md:text-base mb-1.5 flex items-center gap-2">
