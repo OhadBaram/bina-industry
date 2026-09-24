@@ -472,7 +472,11 @@ const App: React.FC = () => {
     closeMobileNav();
     setMainView('home');
     setTimeout(() => {
-      aboutRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (aboutRef.current) {
+        const yOffset = -90;
+        const y = aboutRef.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
     }, 150);
   };
 
@@ -730,19 +734,32 @@ const App: React.FC = () => {
       {/* Header */}
       <header className={`sticky top-0 z-50 backdrop-blur-2xl border-b px-6 py-4 transition-all ${isDarkMode ? 'bg-[#050811]/85 border-white/10 text-white shadow-2xl' : 'bg-white/85 border-slate-200 text-slate-900 shadow-sm'}`}>
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3 cursor-pointer group" onClick={() => setMainView('home')}>
-            <div className="w-11 h-11 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shadow-lg group-hover:scale-105 group-hover:border-cyan-400/60 transition-all">
+          <div className="flex items-center gap-3">
+            <div 
+              className="w-11 h-11 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shadow-lg hover:scale-105 hover:border-cyan-400/60 transition-all cursor-pointer"
+              onClick={() => { setMainView('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              title="חזרה לראש העמוד"
+            >
               <Icons.HexPrism />
             </div>
             <div className="text-right">
               <div className="flex items-center gap-2">
-                <span className={`text-lg md:text-xl font-black leading-none tracking-tight ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
+                <span 
+                  onClick={() => { setMainView('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                  className={`text-lg md:text-xl font-black leading-none tracking-tight cursor-pointer hover:text-cyan-400 transition-colors ${isDarkMode ? 'text-white' : 'text-slate-900'}`}
+                  title="חזרה לראש העמוד"
+                >
                   בינה לתעשייה
                 </span>
                 <span className="hidden sm:inline text-xs font-bold text-slate-500">|</span>
-                <span className="hidden sm:inline text-xs md:text-sm font-bold text-cyan-400">
+                <button
+                  type="button"
+                  onClick={scrollToAbout}
+                  className="hidden sm:inline text-xs md:text-sm font-bold text-cyan-400 hover:text-cyan-300 hover:underline cursor-pointer transition-all bg-transparent border-none p-0"
+                  title="מעבר ישיר לאזור מי אני"
+                >
                   אוהד ברעם
-                </span>
+                </button>
               </div>
               <span className="hidden md:block text-[11px] font-mono tracking-wider text-slate-400 mt-0.5 uppercase">
                 אפיון תהליכים, כתיבת SOPs והטמעת AI מעשית
@@ -753,7 +770,7 @@ const App: React.FC = () => {
           <nav className="hidden lg:flex items-center gap-1 bg-white/5 dark:bg-white/5 p-1.5 rounded-2xl border border-white/10 backdrop-blur-xl">
             <button onClick={scrollToCapabilities} className="px-4 py-2 rounded-xl font-bold text-xs md:text-sm text-slate-300 hover:text-cyan-400 hover:bg-white/5 transition-all cursor-pointer">השירותים</button>
             <button onClick={scrollToMethodology} className="px-4 py-2 rounded-xl font-bold text-xs md:text-sm text-slate-300 hover:text-cyan-400 hover:bg-white/5 transition-all cursor-pointer">תהליך העבודה</button>
-            <button onClick={scrollToAbout} className="px-4 py-2 rounded-xl font-bold text-xs md:text-sm text-slate-300 hover:text-cyan-400 hover:bg-white/5 transition-all cursor-pointer">אודות אוהד</button>
+            <button onClick={scrollToAbout} className="px-4 py-2 rounded-xl font-bold text-xs md:text-sm text-slate-300 hover:text-cyan-400 hover:bg-white/5 transition-all cursor-pointer">מי אני</button>
             <a href="https://www.facebook.com/share/g/183u1ktJDZ/" target="_blank" rel="noopener noreferrer" className="px-3 py-2 rounded-xl font-bold text-xs md:text-sm text-blue-400 hover:bg-blue-950/40 transition-all flex items-center gap-1.5">
               <span>קהילה</span>
               <Icons.ExternalLink />
@@ -807,7 +824,7 @@ const App: React.FC = () => {
             <div className="flex flex-col gap-2">
               <button onClick={scrollToCapabilities} className="w-full text-right px-4 py-3 rounded-xl text-sm font-bold bg-white/5 text-slate-200 border border-white/10">השירותים</button>
               <button onClick={scrollToMethodology} className="w-full text-right px-4 py-3 rounded-xl text-sm font-bold bg-white/5 text-slate-200 border border-white/10">תהליך העבודה</button>
-              <button onClick={scrollToAbout} className="w-full text-right px-4 py-3 rounded-xl text-sm font-bold bg-white/5 text-slate-200 border border-white/10">אודות אוהד</button>
+              <button onClick={scrollToAbout} className="w-full text-right px-4 py-3 rounded-xl text-sm font-bold bg-white/5 text-slate-200 border border-white/10">מי אני</button>
               <button
                 type="button"
                 onClick={() => setIsDarkMode(!isDarkMode)}
@@ -845,7 +862,15 @@ const App: React.FC = () => {
               </h1>
 
               <p className={`text-lg md:text-2xl font-medium max-w-3xl mx-auto leading-relaxed mb-4 ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
-                אוהד ברעם — ייעוץ וליווי מעשי לעסקים והנהלות. אני מלווה מנהלים וארגונים באפיון תהליכים, כתיבת נהלי עבודה (SOPs), סדנאות מעשיות והטמעת פתרונות AI מותאמים בשטח — עבודה ישירה מולי, ללא מתווכים.
+                <button
+                  type="button"
+                  onClick={scrollToAbout}
+                  className="font-bold text-cyan-500 dark:text-cyan-400 hover:underline cursor-pointer bg-transparent border-none p-0 inline align-baseline"
+                  title="מעבר ישיר לאזור מי אני"
+                >
+                  אוהד ברעם
+                </button>
+                {' '}— ייעוץ וליווי מעשי לעסקים והנהלות. אני מלווה מנהלים וארגונים באפיון תהליכים, כתיבת נהלי עבודה (SOPs), סדנאות מעשיות והטמעת פתרונות AI מותאמים בשטח — עבודה ישירה מולי, ללא מתווכים.
               </p>
 
               <p className={`text-base md:text-lg font-bold max-w-2xl mx-auto mb-10 ${isDarkMode ? 'text-cyan-400' : 'text-cyan-600'}`}>
@@ -1158,7 +1183,7 @@ const App: React.FC = () => {
                       />
                     </div>
                     <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-1">אוהד ברעם</h3>
-                    <p className="text-xs font-bold text-cyan-600 dark:text-cyan-400 mb-6">מנהל מוצר ואפיון תהליכים עסקיים</p>
+                    <p className="text-xs font-bold text-cyan-600 dark:text-cyan-400 mb-6">מנהל מוצר, אפיון תהליכים והטמעת מערכות</p>
                     
                     <a
                       href="https://www.linkedin.com/in/ohad-baram"
@@ -1174,9 +1199,9 @@ const App: React.FC = () => {
                   {/* Right Column: Bio */}
                   <div className="lg:col-span-8 space-y-6">
                     <div>
-                      <span className="text-cyan-600 dark:text-cyan-400 text-xs font-bold uppercase tracking-wider block mb-2">מי מוביל את התהליך</span>
+                      <span className="text-cyan-600 dark:text-cyan-400 text-xs font-bold uppercase tracking-wider block mb-2">מי אני • מי מוביל את התהליך</span>
                       <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-6 leading-tight">
-                        מומחיות בניהול מוצר ואפיון תהליכים יחד עם הנדסת AI מעשית
+                        ניהול מוצר, דאטה ואפיון תהליכים מורכבים לצד יישומי AI מעשיים
                       </h2>
                       
                       <div className="space-y-4 text-slate-600 dark:text-slate-300 text-base md:text-lg font-medium leading-relaxed">
@@ -1184,36 +1209,54 @@ const App: React.FC = () => {
                           <strong className="text-slate-900 dark:text-white font-black text-xl block mb-2">נעים להכיר, שמי אוהד ברעם.</strong>
                         </p>
                         <p>
-                          אני מנהל מוצר ובעל תואר שני בניהול ארגוני שירות בהצטיינות. המומחיות שלי היא לתרגם צרכים עסקיים מורכבים לתהליכי עבודה ברורים, נהלים מהידע של העסק, ופתרונות AI שמייצרים ערך אמיתי בשטח.
+                          בעל ניסיון רב בניהול מוצר והובלת מערכות SaaS מורכבות בסביבות B2B מקומיות ובארגונים גלובליים. מתמחה באפיון מערכות מקצה לקצה, אינטגרציות עמוקות וקבלת החלטות מבוססות נתונים, עם מומחיות בעולמות הפינטק, ההתחשבנות והשילוח הבינלאומי, לצד רקע עשיר בעולם הקמעונאות והשירות.
                         </p>
                         <p>
-                          לאורך השנים ליוויתי והובלתי תהליכים מורכבים משלב האבחון והגדרת הדרישות ועד להטמעה מלאה בקרב צוותים ועובדים. אני מאמין שהמפתח להצלחה ב-AI אינו "עוד כלי מדף", אלא התאמה מדויקת לתהליכי העבודה היומיומיים של העסק והכשרה מעשית של האנשים שמפעילים אותם.
+                          אני משלב ראייה ניהולית ומחקרית (תואר שני בהצטיינות M.A. בניהול ארגוני שירות) עם יכולת טכנולוגית מעשית. המיקוד שלי הוא לקחת מורכבות עסקית וצווארי בקבוק, לזקק אותם לדרישות מדויקות ונהלי עבודה סדורים (SOPs), ולהטמיע פתרונות אוטומציה וסוכני AI יציבים שמייצרים ערך עסקי ומדדי ביצוע (KPIs) מדידים בשטח.
                         </p>
                       </div>
                     </div>
 
-                    {/* 3 Bullets */}
-                    <div className="grid sm:grid-cols-3 gap-4 pt-6 border-t border-white/10">
+                    {/* 4 Feature Pillars */}
+                    <div className="grid sm:grid-cols-2 gap-4 pt-6 border-t border-white/10">
                       <div className="p-5 rounded-2xl bg-white/5 border border-cyan-500/30">
                         <div className="text-cyan-400 font-black text-sm md:text-base mb-1.5 flex items-center gap-2">
                           <Icons.Compass />
-                          <span>אפיון נהלים לרוחב העסק</span>
+                          <span>אפיון מוצר, פרסונות ו-APIs</span>
                         </div>
-                        <div className="text-xs font-medium text-slate-300 leading-relaxed">כתיבת SOPs להבטחת המשכיות, סקיילביליות וערך.</div>
+                        <div className="text-xs font-medium text-slate-300 leading-relaxed">
+                          הגדרת דרישות ומסמכי PRD, מיפוי פרסונות ומסעות לקוח, איתור נקודות חיכוך (Pain Points) ואפיון ממשקי APIs לסנכרון זרימת הנתונים.
+                        </div>
                       </div>
+
                       <div className="p-5 rounded-2xl bg-white/5 border border-cyan-500/30">
                         <div className="text-cyan-400 font-black text-sm md:text-base mb-1.5 flex items-center gap-2">
                           <Icons.Award />
-                          <span>סדנאות ובניית סוכנים</span>
+                          <span>דאטה, SQL והגירה לענן</span>
                         </div>
-                        <div className="text-xs font-medium text-slate-300 leading-relaxed">הכשרת hands-on ובניית סוכני AI ממוקדים לצוותים.</div>
+                        <div className="text-xs font-medium text-slate-300 leading-relaxed">
+                          ניתוח מעמיק בשאילתות SQL לקבלת החלטות מבוססות דאטה, והובלת פרויקטי הגירה מ-On-Premise לענן בריבוי חברות עם בקרת איכות ושלמות מידע.
+                        </div>
                       </div>
+
                       <div className="p-5 rounded-2xl bg-white/5 border border-cyan-500/30">
                         <div className="text-cyan-400 font-black text-sm md:text-base mb-1.5 flex items-center gap-2">
-                          <Icons.Clock />
-                          <span>מחויבות ל-ROI וחיסכון בזמן</span>
+                          <Icons.ShieldCheck />
+                          <span>רגולציה, אבטחה ותקנים</span>
                         </div>
-                        <div className="text-xs font-medium text-slate-300 leading-relaxed">מיקוד בחיסכון בזמן ובעלויות שניתן למדוד.</div>
+                        <div className="text-xs font-medium text-slate-300 leading-relaxed">
+                          התאמת מוצרים ותהליכים לדרישות הרגולציה והתקנים בישראל, בדגש על פרטיות, אבטחת מידע והבטחת המשכיות עסקית.
+                        </div>
+                      </div>
+
+                      <div className="p-5 rounded-2xl bg-white/5 border border-cyan-500/30">
+                        <div className="text-cyan-400 font-black text-sm md:text-base mb-1.5 flex items-center gap-2">
+                          <Icons.Cpu />
+                          <span>נהלים (SOPs) וסוכני AI עם בקרה</span>
+                        </div>
+                        <div className="text-xs font-medium text-slate-300 leading-relaxed">
+                          הפיכת ידע ארגוני לנהלי עבודה סדורים והובלת סוכני AI ממוקדים עם מנגנוני בקרה (Guardrails) למניעת שגיאות ומקסום ROI.
+                        </div>
                       </div>
                     </div>
                   </div>
